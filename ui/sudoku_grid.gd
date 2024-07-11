@@ -32,6 +32,7 @@ func _ready():
 	for r in columns:
 		for c in r:
 			c.add_neighbors(r)
+	clear()
 
 func check_invalid() -> bool:
 	for r in regions:
@@ -47,11 +48,19 @@ func check_solve() -> bool:
 	return true
 
 func clear() -> void:
+	active_puzzle = null
 	for r in rows:
 		for c in r:
 			c.clear()
+	%MainLabel.text = "No Active Game"
+	%MainLabel.label_settings.font_color = Color.RED
+	var arr = PuzzleGrid.Difficulty.values().duplicate()
+	arr.shuffle()
 func load_puzzle(puzzle: PuzzleGrid) -> void:
 	clear()
+	active_puzzle = puzzle
+	%MainLabel.text = "Difficulty: %s" % PuzzleGrid.Difficulty.find_key(puzzle.difficulty).to_pascal_case()
+	%MainLabel.label_settings.font_color = Color.WHITE
 	var q := 0
 	for r in rows:
 		for c in r:
