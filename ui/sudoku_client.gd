@@ -2,6 +2,7 @@
 
 @onready var settings_subtabs: Control = $Tabs/Settings/Margin/Tabs
 @onready var fields: Array[Control] = [%IP, %Port, %Slot, %Password, %Lives, %DeathLink]
+@onready var sudoku_grid: SudokuGrid = $Tabs/Sudoku
 
 var deaths_towards_amnesty := 0
 var death_amnesty := 0
@@ -46,12 +47,19 @@ func on_connect_reject(_conn: ConnectionInfo, json: Dictionary) -> void:
 
 func try_connect() -> void:
 	if Archipelago.is_ap_connected(): return
-	#TODO If grid is active, popup forfeit confirmation; if yes, clear grid, else return
+	if sudoku_grid.active_puzzle:
+		if not await PopupManager.popup_dlg("Connecting while a puzzle is active requires forfeiting the puzzle. Are you sure?", "Forfeit?"):
+			return
+		sudoku_grid.clear()
 	Archipelago.set_tag("DeathLink", %DeathLink.button_pressed)
 	death_amnesty = %Lives.get_val()
 	Archipelago.ap_connect(%IP.get_val(), %Port.get_val(), %Slot.get_val(), %Password.get_val())
 func try_disconnect() -> void:
 	if Archipelago.is_not_connected(): return
+	if sudoku_grid.active_puzzle:
+		if not await PopupManager.popup_dlg("Disconnecting while a puzzle is active requires forfeiting the puzzle. Are you sure?", "Forfeit?"):
+			return
+		sudoku_grid.clear()
 	Archipelago.ap_disconnect()
 func on_connect_button() -> void:
 	if Archipelago.is_not_connected():
