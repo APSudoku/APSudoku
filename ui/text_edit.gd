@@ -1,5 +1,10 @@
 @tool class_name CustomLineEdit extends LineEdit
 
+enum FieldType {
+	STRING, INT, FLOAT
+}
+@export var type: FieldType
+
 var font: Font :
 	get:
 		return get_theme_font("font") as Font
@@ -21,5 +26,10 @@ func update_font() -> void:
 	custom_minimum_size.y = font.get_height(font_size) + get_theme_constant("line_spacing") * 3
 	reset_size()
 
-func get_val() -> String:
-	return placeholder_text if text.is_empty() else text
+func get_val() -> Variant:
+	var txt: String = placeholder_text if text.is_empty() else text
+	if type == FieldType.INT:
+		return txt.to_int()
+	elif type == FieldType.FLOAT:
+		return txt.to_float()
+	return txt
