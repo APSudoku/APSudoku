@@ -5,3 +5,6 @@ export_presets.cfg
 # 
 build/
 todo.txt
+
+#
+addons/Todo_Manager/
