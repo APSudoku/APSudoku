@@ -1,7 +1,7 @@
 @tool extends ConsoleWindowContainer
 
 @onready var settings_subtabs: Control = $Tabs/Settings/Margin/Tabs
-@onready var fields: Array[Control] = [%IP, %Port, %Slot, %Password]
+@onready var fields: Array[Control] = [%IP, %Port, %Slot, %Password, %Lives, %DeathLink]
 
 var deaths_towards_amnesty := 0
 var death_amnesty := 0
@@ -28,15 +28,37 @@ func on_connect(_conn: ConnectionInfo, _json: Dictionary) -> void:
 	%ConnectButton.tooltip_text = "Disconnect from the Archipelago server. This will forfeit any active puzzles."
 	%ErrorLabel.text = ""
 	for field in fields:
-		field.editable = false
+		if field is LineEdit:
+			field.editable = false
+		elif field is CheckBox:
+			field.disabled = true
 func on_disconnect() -> void:
 	%ConnectButton.text = "Connect"
 	%ConnectButton.tooltip_text = "Connect to the Archipelago server. This will forfeit any active puzzles."
 	for field in fields:
-		field.editable = true
+		if field is LineEdit:
+			field.editable = true
+		elif field is CheckBox:
+			field.disabled = false
 func on_connect_reject(_conn: ConnectionInfo, json: Dictionary) -> void:
 	var err_str := "Errors: %s" % str(json["errors"])
 	%ErrorLabel.text = err_str
+
+func try_connect() -> void:
+	if Archipelago.is_ap_connected(): return
+	#TODO If grid is active, popup forfeit confirmation; if yes, clear grid, else return
+	Archipelago.set_tag("DeathLink", %DeathLink.button_pressed)
+	death_amnesty = %Lives.get_val()
+	Archipelago.ap_connect(%IP.get_val(), %Port.get_val(), %Slot.get_val(), %Password.get_val())
+func try_disconnect() -> void:
+	if Archipelago.is_not_connected(): return
+	Archipelago.ap_disconnect()
+func on_connect_button() -> void:
+	if Archipelago.is_not_connected():
+		try_connect()
+	else:
+		try_disconnect()
+
 
 func load_credentials(creds: APCredentials) -> void:
 	Archipelago.config.update_credentials(creds)
