@@ -1,24 +1,33 @@
-[gd_scene load_steps=5 format=3 uid="uid://c3eb4ejxtp2nl"]
+[gd_scene load_steps=8 format=3 uid="uid://c3eb4ejxtp2nl"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ah7d3ep4de" path="res://godot_ap/ui/common_client.tscn" id="1_yxr36"]
 [ext_resource type="Script" path="res://ui/sudoku_client.gd" id="2_drtqi"]
 [ext_resource type="Script" path="res://ui/text_edit.gd" id="2_i8w2d"]
 [ext_resource type="Script" path="res://ui/connect_button.gd" id="3_ry2b2"]
+[ext_resource type="PackedScene" uid="uid://bdweotrsewo6q" path="res://puzzles/cell.tscn" id="5_p356p"]
+[ext_resource type="Script" path="res://ui/sudoku_grid.gd" id="5_rhuh7"]
 
-[node name="ConsoleContainer" instance=ExtResource("1_yxr36")]
-custom_minimum_size = Vector2(1366, 705)
-offset_right = 214.0
-offset_bottom = 57.0
+[sub_resource type="LabelSettings" id="LabelSettings_oaxtv"]
+
+[node name="SudokuClient" instance=ExtResource("1_yxr36")]
 script = ExtResource("2_drtqi")
 
 [node name="Tabs" parent="." index="1"]
-custom_minimum_size = Vector2(1366, 705)
+current_tab = 4
+
+[node name="Console" parent="Tabs" index="1"]
+visible = false
 
 [node name="ConnectBox" parent="Tabs/Console" index="1"]
 visible = false
 
-[node name="Connection" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="2"]
+[node name="Tabs" parent="Tabs/Settings/Margin" index="0"]
+current_tab = 1
+
+[node name="TrackerPack" parent="Tabs/Settings/Margin/Tabs" index="1"]
 visible = false
+
+[node name="Connection" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="2"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
@@ -113,8 +122,28 @@ focus_next = NodePath("../IP")
 text = "Connect"
 script = ExtResource("3_ry2b2")
 
-[node name="DeathLinkGrid" type="GridContainer" parent="Tabs/Settings/Margin/Tabs/Connection/Grid" index="1"]
+[node name="DeathLinkContainer" type="VBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/Grid" index="1"]
 layout_mode = 2
+
+[node name="DeathLink" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/DeathLinkContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "DeathLink"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/DeathLinkContainer" index="1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/DeathLinkContainer/HBoxContainer" index="0"]
+layout_mode = 2
+text = "Lives:"
+
+[node name="Lives" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/DeathLinkContainer/HBoxContainer" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(169.5, 23)
+layout_mode = 2
+placeholder_text = "0"
+script = ExtResource("2_i8w2d")
+type = 1
 
 [node name="ErrorLabel" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/Grid" index="2"]
 unique_name_in_owner = true
@@ -123,13 +152,543 @@ theme_override_colors/font_color = Color(0.843137, 0, 0, 1)
 text = "Error Here"
 
 [node name="Sudoku" type="MarginContainer" parent="Tabs" index="5"]
-visible = false
+layout_mode = 2
+script = ExtResource("5_rhuh7")
+
+[node name="BG" type="ColorRect" parent="Tabs/Sudoku" index="0"]
+layout_mode = 2
+color = Color(0.174028, 0.174028, 0.174028, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku" index="1"]
 layout_mode = 2
 
-[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/IP" to="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/ConnectButton" method="on_connect" unbinds=1]
-[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Port" to="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/ConnectButton" method="on_connect" unbinds=1]
-[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Slot" to="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/ConnectButton" method="on_connect" unbinds=1]
-[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Password" to="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/ConnectButton" method="on_connect" unbinds=1]
+[node name="MarginContainer" type="MarginContainer" parent="Tabs/Sudoku/HBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "status here"
+label_settings = SubResource("LabelSettings_oaxtv")
+
+[node name="MarginContainer" type="MarginContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BG" type="ColorRect" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer" index="0"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer" index="1"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Regions" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 3
+
+[node name="Box 1" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="0" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell2" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="1" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell3" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="2" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell4" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="3" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell5" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="4" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell6" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="5" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell7" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="6" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell8" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="7" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell9" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="8" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Box 2" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="0" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell2" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="1" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell3" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="2" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell4" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="3" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell5" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="4" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell6" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="5" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell7" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="6" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell8" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="7" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell9" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="8" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Box 3" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="0" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell2" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="1" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell3" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="2" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell4" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="3" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell5" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="4" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell6" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="5" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell7" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="6" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell8" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="7" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell9" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="8" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Box 4" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="0" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell2" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="1" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell3" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="2" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell4" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="3" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell5" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="4" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell6" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="5" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell7" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="6" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell8" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="7" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell9" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="8" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Box 5" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="4"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="0" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell2" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="1" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell3" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="2" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell4" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="3" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell5" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="4" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell6" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="5" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell7" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="6" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell8" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="7" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell9" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="8" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Box 6" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="5"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="0" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell2" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="1" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell3" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="2" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell4" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="3" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell5" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="4" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell6" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="5" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell7" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="6" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell8" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="7" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell9" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="8" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Box 7" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="6"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="0" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell2" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="1" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell3" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="2" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell4" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="3" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell5" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="4" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell6" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="5" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell7" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="6" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell8" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="7" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell9" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="8" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Box 8" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="7"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="0" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell2" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="1" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell3" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="2" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell4" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="3" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell5" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="4" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell6" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="5" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell7" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="6" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell8" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="7" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell9" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="8" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Box 9" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="8"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="0" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell2" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="1" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell3" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="2" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell4" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="3" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell5" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="4" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell6" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="5" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell7" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="6" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell8" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="7" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell9" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="8" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="Tabs/Sudoku/HBoxContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/IP" to="." method="try_connect" unbinds=1]
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Port" to="." method="try_connect" unbinds=1]
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Slot" to="." method="try_connect" unbinds=1]
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Password" to="." method="try_connect" unbinds=1]
+[connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/ConnectButton" to="." method="on_connect_button"]
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/DeathLinkContainer/HBoxContainer/Lives" to="." method="try_connect" unbinds=1]
 
 [editable path="Tabs/Hints/Console"]
 [editable path="Tabs/Settings/Margin/Tabs/TrackerPack/Row/Col1/TrackVerbose"]
