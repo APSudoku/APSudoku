@@ -1,4 +1,4 @@
-@tool class_name CustomTextEdit extends TextEdit
+@tool class_name CustomLineEdit extends LineEdit
 
 var font: Font :
 	get:

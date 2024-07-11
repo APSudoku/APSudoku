@@ -10,11 +10,12 @@ config_version=5
 
 [application]
 
-config/name="GodotAP"
-config/description="Archipelago connection handler for Godot.
-See https://github.com/EmilyV99/GodotAP"
-config/version="0.1.4"
-run/main_scene="res://godot_ap/ui/main.tscn"
+config/name="APSudoku"
+config/description="Sudoku HintGame for Archipelago
+See https://github.com/APSudoku/APSudoku
+Using https://github.com/EmilyV99/GodotAP"
+config/version="0.0.0"
+run/main_scene="res://ui/sudoku_client.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
 
@@ -37,6 +38,11 @@ import/blender/enabled=false
 
 theme/custom="res://godot_ap/ui/themes/dark_theme.tres"
 theme/custom_font="res://godot_ap/ui/themes/basic_font.tres"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg")
+
 
 [rendering]
 

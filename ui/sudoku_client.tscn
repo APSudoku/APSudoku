@@ -1,0 +1,136 @@
+[gd_scene load_steps=5 format=3 uid="uid://c3eb4ejxtp2nl"]
+
+[ext_resource type="PackedScene" uid="uid://cn7ah7d3ep4de" path="res://godot_ap/ui/common_client.tscn" id="1_yxr36"]
+[ext_resource type="Script" path="res://ui/sudoku_client.gd" id="2_drtqi"]
+[ext_resource type="Script" path="res://ui/text_edit.gd" id="2_i8w2d"]
+[ext_resource type="Script" path="res://ui/connect_button.gd" id="3_ry2b2"]
+
+[node name="ConsoleContainer" instance=ExtResource("1_yxr36")]
+custom_minimum_size = Vector2(1366, 705)
+offset_right = 214.0
+offset_bottom = 57.0
+script = ExtResource("2_drtqi")
+
+[node name="Tabs" parent="." index="1"]
+custom_minimum_size = Vector2(1366, 705)
+
+[node name="ConnectBox" parent="Tabs/Console" index="1"]
+visible = false
+
+[node name="Connection" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="2"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Grid" type="GridContainer" parent="Tabs/Settings/Margin/Tabs/Connection" index="0"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+columns = 2
+
+[node name="InfoGrid" type="GridContainer" parent="Tabs/Settings/Margin/Tabs/Connection/Grid" index="0"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+columns = 2
+
+[node name="LabelIP" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="0"]
+layout_mode = 2
+tooltip_text = "The IP address running the Archipelago server."
+mouse_filter = 1
+text = "IP:"
+horizontal_alignment = 2
+
+[node name="IP" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(169.5, 23)
+layout_mode = 2
+focus_neighbor_top = NodePath("../ConnectButton")
+focus_neighbor_bottom = NodePath("../Port")
+focus_next = NodePath("../Port")
+placeholder_text = "archipelago.gg"
+script = ExtResource("2_i8w2d")
+
+[node name="LabelPort" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="2"]
+layout_mode = 2
+tooltip_text = "The port running the Archipelago server."
+mouse_filter = 1
+text = "Port:"
+horizontal_alignment = 2
+
+[node name="Port" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(169.5, 23)
+layout_mode = 2
+focus_neighbor_top = NodePath("../IP")
+focus_neighbor_bottom = NodePath("../Slot")
+focus_next = NodePath("../Slot")
+placeholder_text = "38281"
+script = ExtResource("2_i8w2d")
+
+[node name="LabelSlot" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="4"]
+layout_mode = 2
+tooltip_text = "The 'Slot' name you wish to connect to."
+mouse_filter = 1
+text = "Slot:"
+horizontal_alignment = 2
+
+[node name="Slot" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(169.5, 23)
+layout_mode = 2
+focus_neighbor_top = NodePath("../Port")
+focus_neighbor_bottom = NodePath("../Password")
+focus_next = NodePath("../Password")
+script = ExtResource("2_i8w2d")
+
+[node name="LabelPassword" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="6"]
+layout_mode = 2
+tooltip_text = "The (Optional) password of the room."
+mouse_filter = 1
+text = "Password:"
+horizontal_alignment = 2
+
+[node name="Password" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(169.5, 23)
+layout_mode = 2
+focus_neighbor_top = NodePath("../Slot")
+focus_neighbor_bottom = NodePath("../ConnectButton")
+focus_next = NodePath("../ConnectButton")
+script = ExtResource("2_i8w2d")
+
+[node name="Nil" type="Control" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="8"]
+layout_mode = 2
+
+[node name="ConnectButton" type="Button" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="9"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_next = NodePath("../IP")
+text = "Connect"
+script = ExtResource("3_ry2b2")
+
+[node name="DeathLinkGrid" type="GridContainer" parent="Tabs/Settings/Margin/Tabs/Connection/Grid" index="1"]
+layout_mode = 2
+
+[node name="ErrorLabel" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/Grid" index="2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.843137, 0, 0, 1)
+text = "Error Here"
+
+[node name="Sudoku" type="MarginContainer" parent="Tabs" index="5"]
+visible = false
+layout_mode = 2
+
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/IP" to="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/ConnectButton" method="on_connect" unbinds=1]
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Port" to="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/ConnectButton" method="on_connect" unbinds=1]
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Slot" to="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/ConnectButton" method="on_connect" unbinds=1]
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Password" to="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/ConnectButton" method="on_connect" unbinds=1]
+
+[editable path="Tabs/Hints/Console"]
+[editable path="Tabs/Settings/Margin/Tabs/TrackerPack/Row/Col1/TrackVerbose"]
+[editable path="Tabs/Settings/Margin/Tabs/TrackerPack/Row/Col1/TrackHideFinishedMap"]
