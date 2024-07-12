@@ -9,8 +9,15 @@ var death_amnesty := 0
 
 
 func _ready():
+	#TODO finish gui (radiobuttons, difficulty sel, number pad, info buttons, checkboxes)
 	super()
-	if Engine.is_editor_hint(): return
+	if Engine.is_editor_hint():
+		await get_tree().create_timer(1).timeout
+		var q := 0
+		for cell in %Sudoku.cells:
+			cell.name = "Cell %d" % q
+			q += 1
+		return
 	tabs.move_child(tabs.get_node("Sudoku"), 0)
 	tabs.current_tab = tabs.get_tab_idx_from_control($Tabs/Settings)
 	settings_subtabs.move_child(settings_subtabs.get_node("Connection"), 0)
