@@ -6,6 +6,7 @@ signal recheck_focus
 signal grid_input
 
 var is_given := false
+var draw_invalid := false
 var is_selected := false
 var solution := 0
 var value := 0
@@ -35,6 +36,8 @@ var bottomright: Cell :
 func _draw():
 	if value:
 		var text_color: Color = %Sudoku.sudoku_theme.CELL_GIVEN_TEXT if is_given else %Sudoku.sudoku_theme.CELL_ANSWER_TEXT
+		if draw_invalid:
+			text_color = %Sudoku.sudoku_theme.CELL_INVALID_TEXT
 		var s := str(value)
 		var font := get_theme_default_font()
 		var font_size := 17
@@ -141,6 +144,7 @@ func _ready():
 
 func clear() -> void:
 	is_given = false
+	draw_invalid = false
 	solution = 0
 	value = 0
 	corner_marks.fill(false)

@@ -91,10 +91,23 @@ theme_override_constants/margin_bottom = 20
 [node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer" index="0"]
 layout_mode = 2
 
-[node name="CenterCornerSwap" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer" index="0"]
+[node name="ShiftCenter" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer" index="0"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("6_fj6yn")
 text = "Shift=Center,Ctrl=Corner"
+
+[node name="ShowInvalid" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("6_fj6yn")
+text = "Show Invalid On Check"
+
+[node name="ShapesMode" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer" index="2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("6_fj6yn")
+text = "Shapes Mode"
 
 [node name="Connection" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="3"]
 layout_mode = 2
@@ -806,7 +819,9 @@ theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_mrvem")
 text = "Corner"
 
-[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/CenterCornerSwap" to="Tabs/Sudoku" method="set_shift_center"]
+[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShiftCenter" to="Tabs/Sudoku" method="set_shift_center"]
+[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShowInvalid" to="Tabs/Sudoku" method="set_show_invalid"]
+[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShapesMode" to="Tabs/Sudoku" method="set_shapes_mode"]
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/IP" to="." method="try_connect" unbinds=1]
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Port" to="." method="try_connect" unbinds=1]
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Slot" to="." method="try_connect" unbinds=1]
