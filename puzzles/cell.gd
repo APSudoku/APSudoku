@@ -52,7 +52,7 @@ func _draw() -> void:
 		while font_size and font.get_string_size(s, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size).x + MARGIN*2 >= size.x:
 			font_size -= 1
 		
-		var pos := Vector2(0,MARGIN + font.get_ascent(font_size)) #FIXME vertical center properly like centermarks
+		var pos := Vector2(0,(size.y-font.get_string_size(s, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size).y)/2 + font.get_ascent(font_size))
 		draw_string(font, pos, s, HORIZONTAL_ALIGNMENT_CENTER, size.x, font_size, text_color)
 	else:
 		var has_center := false

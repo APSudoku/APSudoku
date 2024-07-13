@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://puzzles/cell.gd" id="1_35ela"]
 
 [node name="Cell" type="ColorRect"]
-custom_minimum_size = Vector2(20, 20)
+custom_minimum_size = Vector2(40, 40)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
