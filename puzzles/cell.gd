@@ -141,8 +141,9 @@ func _draw() -> void:
 		if not _br and not (bottomright and bottomright.is_selected):
 			draw_rect(Rect2(size.x-BORDER_WID,size.y-BORDER_WID,BORDER_WID,BORDER_WID), COLOR)
 	if has_focus():
-		const FOCUS_WID = BORDER_WID / 2.0
-		draw_rect(Rect2(FOCUS_WID/2,FOCUS_WID/2,size.x - FOCUS_WID, size.y - FOCUS_WID), Color.RED, false, FOCUS_WID)
+		var COLOR: Color = %Sudoku.sudoku_theme.CELL_FOCUS
+		const FOCUS_WID := 3
+		draw_rect(Rect2(FOCUS_WID/2.0,FOCUS_WID/2.0,size.x - FOCUS_WID, size.y - FOCUS_WID), COLOR, false, FOCUS_WID)
 
 func _ready():
 	focus_next = get_path()
