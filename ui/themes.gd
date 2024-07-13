@@ -1,4 +1,4 @@
-class_name SudokuTheme extends Resource
+@tool class_name SudokuTheme extends Resource
 
 @export var LABEL_INVALID_TEXT := Color.INDIAN_RED
 
@@ -9,6 +9,7 @@ class_name SudokuTheme extends Resource
 @export var CELL_CORNER_MARK_TEXT := Color.from_string("1E6BE5", Color.DODGER_BLUE)
 @export var CELL_INVALID_TEXT := Color.from_string("AA0000", Color.RED)
 @export var CELL_SELECT := Color.from_string('4CA4FF', Color.STEEL_BLUE)
+@export var CELL_FOCUS := Color.INDIAN_RED
 @export var GRID_BG := Color.BLACK
 
 @export var KILLER_BORDER := Color.from_string("FF00FF", Color.MAGENTA)
