@@ -37,6 +37,10 @@ func _ready():
 	on_disconnect()
 	Archipelago.creds.updated.connect(load_credentials)
 	load_credentials(Archipelago.creds)
+	
+	%ShiftCenter.set_pressed_no_signal(%Sudoku.config.shift_center)
+	%ShowInvalid.set_pressed_no_signal(%Sudoku.config.show_invalid)
+	%ShapesMode.set_pressed_no_signal(%Sudoku.config.shapes_mode)
 
 func on_connect(_conn: ConnectionInfo, _json: Dictionary) -> void:
 	%ConnectButton.text = "Disconnect"
