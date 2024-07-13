@@ -144,6 +144,7 @@ func grid_input(event) -> void:
 				for c in cells:
 					if c.is_selected:
 						c.enter_val(v, mode)
+	#TODO double-click to select similar cells feature
 func recheck_focus() -> void:
 	if has_focus(): return
 	for c in cells:

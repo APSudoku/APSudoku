@@ -33,7 +33,12 @@ var bottomright: Cell :
 	get:
 		return bottom.right if bottom else (right.bottom if right else null)
 
-func _draw():
+func _draw_shapes() -> void:
+	#TODO Shapes mode
+	pass
+func _draw() -> void:
+	if %Sudoku.config.shapes_mode:
+		return _draw_shapes()
 	if value:
 		var text_color: Color = %Sudoku.sudoku_theme.CELL_GIVEN_TEXT if is_given else %Sudoku.sudoku_theme.CELL_ANSWER_TEXT
 		if draw_invalid:
@@ -47,7 +52,7 @@ func _draw():
 		while font_size and font.get_string_size(s, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size).x + MARGIN*2 >= size.x:
 			font_size -= 1
 		
-		var pos := Vector2(0,MARGIN + font.get_ascent(font_size))
+		var pos := Vector2(0,MARGIN + font.get_ascent(font_size)) #FIXME vertical center properly like centermarks
 		draw_string(font, pos, s, HORIZONTAL_ALIGNMENT_CENTER, size.x, font_size, text_color)
 	else:
 		var has_center := false
@@ -194,6 +199,7 @@ func enter_val(v: int, mode: SudokuGrid.EntryMode) -> void:
 
 func _gui_input(event):
 	if event is InputEventMouseMotion:
+		#FIXME https://github.com/godotengine/godot/issues/94283
 		if event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT):
 			_reselect(self, true)
 	elif event is InputEventMouseButton:
