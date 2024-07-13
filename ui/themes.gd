@@ -1,8 +1,12 @@
 class_name SudokuTheme extends Resource
 
+@export var LABEL_INVALID_TEXT := Color.INDIAN_RED
+
 @export var CELL_BG := Color.WHITE
 @export var CELL_GIVEN_TEXT := Color.BLACK
-@export var CELL_MARK_TEXT := Color.from_string("1E6BE5", Color.DODGER_BLUE)
+@export var CELL_ANSWER_TEXT := Color.from_string("1E6BE5", Color.DODGER_BLUE)
+@export var CELL_CENTER_MARK_TEXT := Color.from_string("1E6BE5", Color.DODGER_BLUE)
+@export var CELL_CORNER_MARK_TEXT := Color.from_string("1E6BE5", Color.DODGER_BLUE)
 @export var CELL_INVALID_TEXT := Color.from_string("AA0000", Color.RED)
 @export var CELL_SELECT := Color.from_string('4CA4FF', Color.STEEL_BLUE)
 @export var GRID_BG := Color.BLACK

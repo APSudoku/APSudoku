@@ -1,0 +1,7 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://77i3kx2kgskj"]
+
+[ext_resource type="SystemFont" uid="uid://dgq72ioiluq5i" path="res://ui/basic_font.tres" id="1_c04vc"]
+
+[resource]
+font = ExtResource("1_c04vc")
+font_size = 20
