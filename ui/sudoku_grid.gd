@@ -1,7 +1,14 @@
 class_name SudokuGrid extends MarginContainer
 
-@export var sudoku_theme := SudokuTheme.new()
+signal modifier_entry_mode(val: EntryMode)
 
+@export var sudoku_theme := SudokuTheme.new()
+var shift_center := false
+var mode: EntryMode = EntryMode.ANSWER
+var mod_mode: int = -1
+enum EntryMode {
+	ANSWER, CENTER, CORNER
+}
 var active_puzzle: PuzzleGrid
 var cells: Array[Cell] = []
 var regions = [[],[],[],[],[],[],[],[],[]]
@@ -49,7 +56,10 @@ func _ready():
 			cells[q].bottom = cells[q+9]
 		cells[q].clear_select.connect(clear_select)
 		cells[q].grid_redraw.connect(grid_redraw)
+		cells[q].grid_input.connect(grid_input)
 		cells[q].recheck_focus.connect(recheck_focus)
+	
+	%MainLabel.label_settings = %MainLabel.label_settings.duplicate() # Should be unique at runtime, *more* unique than "per scene"
 	clear()
 
 func check_invalid() -> bool:
@@ -65,6 +75,50 @@ func check_solve() -> bool:
 				return false
 	return true
 
+var _shift: bool = false
+var _ctrl: bool = false
+func grid_input(event) -> void:
+	var update_modifiers := false
+	if event is InputEventKey:
+		if event.keycode == KEY_SHIFT:
+			_shift = event.pressed
+			update_modifiers = true
+		elif event.keycode == KEY_CTRL:
+			_ctrl = event.pressed
+			update_modifiers = true
+	if update_modifiers:
+		if _shift:
+			mod_mode = EntryMode.CENTER if shift_center else EntryMode.CORNER
+			modifier_entry_mode.emit(mod_mode)
+		elif _ctrl:
+			mod_mode = EntryMode.CORNER if shift_center else EntryMode.CENTER
+			modifier_entry_mode.emit(mod_mode)
+		elif mod_mode > -1:
+			mod_mode = -1
+			modifier_entry_mode.emit(mod_mode)
+	
+	if event is InputEventKey:
+		if event.pressed and not event.echo:
+			var v := 0
+			match event.keycode:
+				KEY_1, KEY_KP_1: v = 1
+				KEY_2, KEY_KP_2: v = 2
+				KEY_3, KEY_KP_3: v = 3
+				KEY_4, KEY_KP_4: v = 4
+				KEY_5, KEY_KP_5: v = 5
+				KEY_6, KEY_KP_6: v = 6
+				KEY_7, KEY_KP_7: v = 7
+				KEY_8, KEY_KP_8: v = 8
+				KEY_9, KEY_KP_9: v = 9
+				KEY_DELETE, KEY_BACKSPACE:
+					for c in cells:
+						if c.is_selected:
+							c.erase()
+					grid_redraw()
+			if v >= 1 and v <= 9:
+				for c in cells:
+					if c.is_selected:
+						c.enter_val(v, mode)
 func recheck_focus() -> void:
 	if has_focus(): return
 	for c in cells:
@@ -83,15 +137,7 @@ func clear() -> void:
 	for c in cells:
 		c.clear()
 	%MainLabel.text = "No Active Game"
-	%MainLabel.label_settings.font_color = Color.RED
-	var arr = PuzzleGrid.Difficulty.values().duplicate()
-	arr.shuffle()
-	
-	#TODO remove temp
-	cells[21].is_selected = true
-	cells[22].is_selected = true
-	cells[30].is_selected = true
-	cells[31].is_selected = true
+	%MainLabel.label_settings.font_color = sudoku_theme.LABEL_INVALID_TEXT
 func load_puzzle(puzzle: PuzzleGrid) -> void:
 	clear()
 	active_puzzle = puzzle
@@ -105,3 +151,7 @@ func load_puzzle(puzzle: PuzzleGrid) -> void:
 				c.is_given = true
 				c.value = c.solution
 			q += 1
+
+
+func set_shift_center(val: bool) -> void:
+	shift_center = val

@@ -4,9 +4,10 @@
 @onready var fields: Array[Control] = [%IP, %Port, %Slot, %Password, %Lives, %DeathLink]
 @onready var sudoku_grid: SudokuGrid = $Tabs/Sudoku
 
+var _real_entry_mode: SudokuGrid.EntryMode = SudokuGrid.EntryMode.ANSWER
+var _entry_mode: SudokuGrid.EntryMode = SudokuGrid.EntryMode.ANSWER
 var deaths_towards_amnesty := 0
 var death_amnesty := 0
-
 
 func _ready():
 	#TODO finish gui (radiobuttons, difficulty sel, number pad, info buttons, checkboxes)
@@ -20,7 +21,13 @@ func _ready():
 		return
 	tabs.move_child(tabs.get_node("Sudoku"), 0)
 	tabs.current_tab = tabs.get_tab_idx_from_control($Tabs/Settings)
+	set_entry_mode(SudokuGrid.EntryMode.ANSWER)
+	
+	%ErrorLabel.label_settings.font_color = %Sudoku.sudoku_theme.LABEL_INVALID_TEXT
+	sudoku_grid.modifier_entry_mode.connect(set_fake_entry_mode)
+	
 	settings_subtabs.move_child(settings_subtabs.get_node("Connection"), 0)
+	settings_subtabs.move_child(settings_subtabs.get_node("Sudoku"), 1)
 	settings_subtabs.current_tab = 0
 	Archipelago.load_console(self, false)
 	
@@ -80,3 +87,27 @@ func load_credentials(creds: APCredentials) -> void:
 	%IP.text = creds.ip
 	%Port.text = creds.port
 	%Slot.text = creds.slot
+
+func select_entry_button(mode: int, from_mod := false) -> void:
+	var cboxes = [%RadioAnswer,%RadioCenter,%RadioCorner]
+	for q in 3:
+		var cbox := cboxes[q] as CheckBox
+		cbox.set_pressed_no_signal(q == mode)
+		cbox.disabled = from_mod
+		cbox.queue_redraw()
+func set_fake_entry_mode(mode: int) -> void:
+	if mode < 0:
+		return set_entry_mode(_real_entry_mode)
+	elif mode > 2: return
+	_entry_mode = mode as SudokuGrid.EntryMode
+	sudoku_grid.mode = mode as SudokuGrid.EntryMode
+	select_entry_button(mode, true)
+func set_entry_mode(mode: int, no_button := false) -> void:
+	if mode < 0 or mode > 2: return
+	_entry_mode = mode as SudokuGrid.EntryMode
+	_real_entry_mode = mode as SudokuGrid.EntryMode
+	sudoku_grid.mode = mode as SudokuGrid.EntryMode
+	if not no_button:
+		select_entry_button(mode)
+func set_entry_mode_no_button(mode: int) -> void:
+	set_entry_mode(mode, true)
