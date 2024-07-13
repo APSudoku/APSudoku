@@ -1,5 +1,5 @@
 class_name PuzzleGrid extends Resource
-
+#TODO create these with threaded generators
 enum Difficulty {
 	EASY, MEDIUM, HARD, KILLER
 }

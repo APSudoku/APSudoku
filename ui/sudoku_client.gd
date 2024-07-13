@@ -10,7 +10,8 @@ var deaths_towards_amnesty := 0
 var death_amnesty := 0
 
 func _ready():
-	#TODO finish gui (radiobuttons, difficulty sel, number pad, info buttons, checkboxes)
+	#TODO finish gui (difficulty sel, number pad, info buttons)
+	#TODO Finish grid functionality (puzzle starting, loading, failing, etc)
 	super()
 	if Engine.is_editor_hint():
 		await get_tree().create_timer(1).timeout
