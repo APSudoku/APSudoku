@@ -18,31 +18,32 @@ bg_color = Color(0.109804, 0.109804, 0.109804, 1)
 border_width_bottom = 2
 border_color = Color(0.0509804, 0.0509804, 0.0509804, 1)
 
-[sub_resource type="Resource" id="Resource_erbpf"]
+[sub_resource type="Resource" id="Resource_vn24h"]
 script = ExtResource("6_ynybo")
 LABEL_INVALID_TEXT = Color(0.803922, 0.360784, 0.360784, 1)
 CELL_BG = Color(1, 1, 1, 1)
 CELL_GIVEN_TEXT = Color(0, 0, 0, 1)
-CELL_ANSWER_TEXT = null
-CELL_CENTER_MARK_TEXT = null
-CELL_CORNER_MARK_TEXT = null
-CELL_INVALID_TEXT = null
-CELL_SELECT = null
+CELL_ANSWER_TEXT = Color(0.117647, 0.419608, 0.898039, 1)
+CELL_CENTER_MARK_TEXT = Color(0.117647, 0.419608, 0.898039, 1)
+CELL_CORNER_MARK_TEXT = Color(0.117647, 0.419608, 0.898039, 1)
+CELL_INVALID_TEXT = Color(0.666667, 0, 0, 1)
+CELL_SELECT = Color(0.298039, 0.643137, 1, 1)
+CELL_FOCUS = Color(0.803922, 0.360784, 0.360784, 1)
 GRID_BG = Color(0, 0, 0, 1)
-KILLER_BORDER = null
-KILLER_SUM = null
-SHAPE_1 = null
-SHAPE_2 = null
-SHAPE_3 = null
-SHAPE_4 = null
-SHAPE_5 = null
-SHAPE_6 = null
-SHAPE_7 = null
-SHAPE_8 = null
-SHAPE_9 = null
-SHAPE_INVALID_BG = null
+KILLER_BORDER = Color(1, 0, 1, 1)
+KILLER_SUM = Color(0, 0, 1, 1)
+SHAPE_1 = Color(1, 0, 0, 1)
+SHAPE_2 = Color(0, 0.666667, 0, 1)
+SHAPE_3 = Color(0, 0, 1, 1)
+SHAPE_4 = Color(1, 1, 0, 1)
+SHAPE_5 = Color(1, 0, 1, 1)
+SHAPE_6 = Color(0, 1, 1, 1)
+SHAPE_7 = Color(0.705882, 0, 1, 1)
+SHAPE_8 = Color(1, 0.627451, 0, 1)
+SHAPE_9 = Color(0.745098, 1, 0, 1)
+SHAPE_INVALID_BG = Color(0.666667, 0, 0, 1)
 SHAPE_BG = Color(1, 1, 1, 1)
-SHAPE_GIVEN_BG = null
+SHAPE_GIVEN_BG = Color(0.752941, 0.752941, 0.752941, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_oaxtv"]
 font = ExtResource("8_w6wjr")
@@ -246,7 +247,7 @@ layout_mode = 2
 focus_mode = 2
 mouse_filter = 0
 script = ExtResource("5_rhuh7")
-sudoku_theme = SubResource("Resource_erbpf")
+sudoku_theme = SubResource("Resource_vn24h")
 
 [node name="BG" type="ColorRect" parent="Tabs/Sudoku" index="0"]
 layout_mode = 2
