@@ -4,6 +4,7 @@ signal clear_select
 signal grid_redraw
 signal recheck_focus
 signal grid_input
+signal grid_focus(cell: Cell)
 
 var is_given := false
 var draw_invalid := false
@@ -146,6 +147,7 @@ func _draw() -> void:
 func _ready():
 	focus_next = get_path()
 	focus_previous = get_path()
+	mouse_entered.connect(_on_mouse_enter)
 
 func clear() -> void:
 	is_given = false
@@ -197,12 +199,12 @@ func enter_val(v: int, mode: SudokuGrid.EntryMode) -> void:
 			corner_marks[v-1] = not corner_marks[v-1]
 	grid_redraw.emit()
 
+func _on_mouse_enter():
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or \
+		Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+		_reselect(self, true)
 func _gui_input(event):
-	if event is InputEventMouseMotion:
-		#FIXME https://github.com/godotengine/godot/issues/94283
-		if event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT):
-			_reselect(self, true)
-	elif event is InputEventMouseButton:
+	if event is InputEventMouseButton:
 		if event.pressed:
 			_reselect(self, event.shift_pressed or event.is_command_or_control_pressed())
 	elif event is InputEventKey:
@@ -211,12 +213,16 @@ func _gui_input(event):
 			match event.keycode:
 				KEY_UP:
 					_reselect(top, multi)
+					accept_event()
 				KEY_DOWN:
 					_reselect(bottom, multi)
+					accept_event()
 				KEY_LEFT:
 					_reselect(left, multi)
+					accept_event()
 				KEY_RIGHT:
 					_reselect(right, multi)
+					accept_event()
 	grid_input.emit(event)
 
 func _reselect(c: Cell, multi: bool) -> void:
@@ -224,8 +230,7 @@ func _reselect(c: Cell, multi: bool) -> void:
 	if not multi:
 		clear_select.emit()
 	c.is_selected = true
-	release_focus()
-	c.grab_focus()
+	grid_focus.emit(c)
 	await get_tree().process_frame
 	grid_redraw.emit()
 
