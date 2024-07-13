@@ -2,18 +2,26 @@ class_name SudokuGrid extends MarginContainer
 
 signal modifier_entry_mode(val: EntryMode)
 
+var config: SudokuConfigManager :
+	get: return Archipelago.config
+	set(val): Archipelago.config = val
 @export var sudoku_theme := SudokuTheme.new()
-var shift_center := false
+
+var show_invalid := false
 var mode: EntryMode = EntryMode.ANSWER
 var mod_mode: int = -1
 enum EntryMode {
 	ANSWER, CENTER, CORNER
 }
 var active_puzzle: PuzzleGrid
+#region Cell storage
 var cells: Array[Cell] = []
 var regions = [[],[],[],[],[],[],[],[],[]]
 var rows = [[],[],[],[],[],[],[],[],[]]
 var columns = [[],[],[],[],[],[],[],[],[]]
+#endregion
+
+var _invalid := false
 
 func _ready():
 	var box_index := 0
@@ -62,11 +70,28 @@ func _ready():
 	%MainLabel.label_settings = %MainLabel.label_settings.duplicate() # Should be unique at runtime, *more* unique than "per scene"
 	clear()
 
-func check_invalid() -> bool:
-	for r in regions:
-		for c in r:
-			if not c.is_valid():
-				return false
+func submit_solution() -> bool:
+	_invalid = false
+	for c in cells:
+		c.draw_invalid = false
+	grid_redraw() # Queues the redraw, so no need to call more than once
+	if not check_filled():
+		#TODO popup mentioning grid is wrong due to having empty cells. NO DEATHLINK.
+		return false
+	if check_solve():
+		#TODO popup the hint reward!
+		return true
+	
+	for c in cells:
+		if not c.is_valid():
+			c.draw_invalid = true
+			_invalid = true
+	return false
+
+func check_filled() -> bool:
+	for c in cells:
+		if c.value == 0:
+			return false
 	return true
 func check_solve() -> bool:
 	for r in regions:
@@ -88,10 +113,10 @@ func grid_input(event) -> void:
 			update_modifiers = true
 	if update_modifiers:
 		if _shift:
-			mod_mode = EntryMode.CENTER if shift_center else EntryMode.CORNER
+			mod_mode = EntryMode.CENTER if config.shift_center else EntryMode.CORNER
 			modifier_entry_mode.emit(mod_mode)
 		elif _ctrl:
-			mod_mode = EntryMode.CORNER if shift_center else EntryMode.CENTER
+			mod_mode = EntryMode.CORNER if config.shift_center else EntryMode.CENTER
 			modifier_entry_mode.emit(mod_mode)
 		elif mod_mode > -1:
 			mod_mode = -1
@@ -152,6 +177,11 @@ func load_puzzle(puzzle: PuzzleGrid) -> void:
 				c.value = c.solution
 			q += 1
 
-
 func set_shift_center(val: bool) -> void:
-	shift_center = val
+	config.shift_center = val
+
+func set_show_invalid(val: bool) -> void:
+	config.show_invalid = val
+
+func set_shapes_mode(val: bool) -> void:
+	config.shapes_mode = val
