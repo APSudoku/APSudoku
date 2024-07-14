@@ -14,12 +14,7 @@ func _init():
 			launch_puzzle_gen(d)
 
 func generate_puzzle(diff: PuzzleGrid.Difficulty) -> void:
-	var puz := PuzzleGrid.new()
-	#TODO implement puzzle generation
-	puz.difficulty = diff
-	puz.givens[0] = true
-	puz.solutions[0] = clamp(puzzles_by_diff[diff].size(),1,9)
-	add_puzzle(puz)
+	add_puzzle(PuzzleGrid.new(diff))
 
 func launch_puzzle_gen(diff: PuzzleGrid.Difficulty) -> void:
 	WorkerThreadPool.add_task(generate_puzzle.bind(diff))
