@@ -5,31 +5,37 @@ var ip: String = "" :
 		if val != ip:
 			ip = val
 			save_cfg()
+			config_changed.emit()
 var port: String = "" :
 	set(val):
 		if val != port:
 			port = val
 			save_cfg()
+			config_changed.emit()
 var slot: String = "" :
 	set(val):
 		if val != slot:
 			slot = val
 			save_cfg()
+			config_changed.emit()
 var shift_center := false :
 	set(val):
 		if val != shift_center:
 			shift_center = val
 			save_cfg()
+			config_changed.emit()
 var show_invalid := false :
 	set(val):
 		if val != show_invalid:
 			show_invalid = val
 			save_cfg()
+			config_changed.emit()
 var shapes_mode := false :
 	set(val):
 		if val != shapes_mode:
 			shapes_mode = val
 			save_cfg()
+			config_changed.emit()
 
 func update_credentials(creds: APCredentials) -> void:
 	_pause_saving = true

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://7sxs07p5mo4o"]
+
+[ext_resource type="StyleBox" uid="uid://b7l3w40krs8op" path="res://ui/button_shadow.tres" id="1_thiyq"]
+[ext_resource type="Script" path="res://ui/infobutton.gd" id="2_1h3ci"]
+
+[node name="InfoButton" type="Button"]
+custom_minimum_size = Vector2(40, 0)
+focus_mode = 0
+theme_override_styles/normal = ExtResource("1_thiyq")
+text = "?"
+script = ExtResource("2_1h3ci")

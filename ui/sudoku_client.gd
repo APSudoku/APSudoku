@@ -26,6 +26,7 @@ func _ready():
 	
 	%ErrorLabel.label_settings.font_color = %Sudoku.sudoku_theme.LABEL_INVALID_TEXT
 	sudoku_grid.modifier_entry_mode.connect(set_fake_entry_mode)
+	sudoku_grid.cycle_entry_mode.connect(cycle_entry)
 	
 	settings_subtabs.move_child(settings_subtabs.get_node("Connection"), 0)
 	settings_subtabs.move_child(settings_subtabs.get_node("Sudoku"), 1)
@@ -107,6 +108,9 @@ func set_fake_entry_mode(mode: int) -> void:
 	_entry_mode = mode as SudokuGrid.EntryMode
 	sudoku_grid.mode = mode as SudokuGrid.EntryMode
 	select_entry_button(mode, true)
+func cycle_entry() -> void:
+	if _entry_mode != _real_entry_mode: return
+	set_entry_mode((_real_entry_mode + 1) % SudokuGrid.EntryMode.size())
 func set_entry_mode(mode: int, no_button := false) -> void:
 	if mode < 0 or mode > 2: return
 	_entry_mode = mode as SudokuGrid.EntryMode
