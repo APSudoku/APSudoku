@@ -2,6 +2,7 @@ class_name SudokuGrid extends MarginContainer
 
 signal modifier_entry_mode(val: EntryMode)
 signal cycle_entry_mode
+signal grant_hint(prog_percent: int)
 
 var config: SudokuConfigManager :
 	get: return Archipelago.config
@@ -107,8 +108,19 @@ func submit_solution() -> bool:
 		Util.freeze_popup(get_tree(), "Error", s, false).popup_centered()
 		return false
 	if check_solve():
-		s = "(TODO: HINTS)" #TODO popup the hint reward!
-		Util.freeze_popup(get_tree(), "Correct!", s, false).popup_centered()
+		if Archipelago.is_ap_connected():
+			var prog_percent: int
+			match difficulty:
+				PuzzleGrid.Difficulty.EASY:
+					prog_percent = 10
+				PuzzleGrid.Difficulty.MEDIUM:
+					prog_percent = 40
+				PuzzleGrid.Difficulty.HARD:
+					prog_percent = 80
+				PuzzleGrid.Difficulty.KILLER:
+					prog_percent = 60
+			grant_hint.emit(prog_percent)
+		else: Util.freeze_popup(get_tree(), "Correct!", "Not connected, so no hint granted.", false).popup_centered()
 		clear_active()
 		return true
 	s = "Grid contains incorrect values!"
@@ -226,9 +238,20 @@ func clear() -> void:
 	for c in cells:
 		c.clear()
 	clear_active()
+	clear_invalid()
 	grid_redraw()
 func start_puzzle() -> void:
 	if active_puzzle: return
+	if Archipelago.is_not_connected():
+		_invalid = true
+		var popup := Util.freeze_popup(get_tree(), "No Connection", "No hints can be earned while not connected. Start anyway?", true)
+		popup.confirmed.connect(func(): _invalid = false, CONNECT_ONE_SHOT)
+		popup.popup_centered()
+		await popup.tree_exited
+		if _invalid:
+			_invalid = false
+			return
+		
 	%StartButton.disabled = true
 	%GeneratingLabel.visible = true
 	var puz := await PuzzleGenManager.get_puzzle(%Sudoku.difficulty)
@@ -249,6 +272,7 @@ func load_puzzle(puzzle: PuzzleGrid) -> void:
 			if puzzle.givens[q]:
 				c.is_given = true
 				c.value = c.solution
+			c.value = c.solution
 			q += 1
 	grid_redraw()
 
@@ -295,3 +319,10 @@ func forfeit_puzzle() -> bool:
 	popup.confirmed.connect(_lost_puzzle)
 	popup.popup_centered()
 	return active_puzzle == null
+
+func deathlink_recv(source: String, cause: String, _json: Dictionary) -> void:
+	var s: String = cause
+	if s.is_empty():
+		s = "%s died, taking you with them." % source
+	Util.freeze_popup(get_tree(), "DeathLink", s, false).popup_centered()
+	clear()

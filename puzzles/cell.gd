@@ -156,6 +156,7 @@ func _ready():
 func clear() -> void:
 	is_given = false
 	draw_invalid = false
+	is_selected = has_focus()
 	solution = 0
 	value = 0
 	corner_marks.fill(false)
