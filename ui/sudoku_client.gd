@@ -6,8 +6,6 @@
 
 var _real_entry_mode: SudokuGrid.EntryMode = SudokuGrid.EntryMode.ANSWER
 var _entry_mode: SudokuGrid.EntryMode = SudokuGrid.EntryMode.ANSWER
-var deaths_towards_amnesty := 0
-var death_amnesty := 0
 
 func _ready():
 	#TODO Finish grid functionality (check, succeed, hints, failing, etc)
@@ -72,7 +70,7 @@ func try_connect() -> void:
 			return
 		sudoku_grid.clear()
 	Archipelago.set_deathlink(%DeathLink.button_pressed)
-	death_amnesty = %Lives.get_val()
+	%Sudoku.death_amnesty = %Lives.get_val()
 	Archipelago.ap_connect(%IP.get_val(), %Port.get_val(), %Slot.get_val(), %Password.get_val())
 func try_disconnect() -> void:
 	if Archipelago.is_not_connected(): return

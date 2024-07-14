@@ -8,6 +8,8 @@ var config: SudokuConfigManager :
 	set(val): Archipelago.config = val
 @export var sudoku_theme := SudokuTheme.new()
 
+var deaths_towards_amnesty := 0
+var death_amnesty := 0
 var show_invalid := false
 var mode: EntryMode = EntryMode.ANSWER
 var mod_mode: int = -1
@@ -80,11 +82,25 @@ func update_config() -> void:
 	%ControlInfo.format_args[0] = "Shift: Center, Ctrl: Corner" if \
 		config.shift_center else "Shift: Corner, Ctrl: Center"
 
-func submit_solution() -> bool:
+func set_invalid() -> void:
+	if not %Sudoku.config.show_invalid: return
+	_invalid = false
+	for c in cells:
+		c.draw_invalid = not c.is_valid()
+		if c.draw_invalid:
+			_invalid = true
+	%ClearInvalid.visible = _invalid
+	grid_redraw()
+func clear_invalid() -> void:
 	_invalid = false
 	for c in cells:
 		c.draw_invalid = false
+	%ClearInvalid.visible = false
+	grid_redraw()
+
+func submit_solution() -> bool:
 	grid_redraw() # Queues the redraw, so no need to call more than once
+	clear_invalid()
 	var s: String
 	if not check_filled():
 		s = "Grid contains unfilled cells! Please fill before submitting!"
@@ -93,15 +109,14 @@ func submit_solution() -> bool:
 	if check_solve():
 		s = "(TODO: HINTS)" #TODO popup the hint reward!
 		Util.freeze_popup(get_tree(), "Correct!", s, false).popup_centered()
+		clear_active()
 		return true
 	s = "Grid contains incorrect values!"
-	
-	Util.freeze_popup(get_tree(), "Correct!", s, false).popup_centered()
-	#TODO popup mentioning wrong solution, DEATHLINK
-	for c in cells:
-		if not c.is_valid():
-			c.draw_invalid = true
-			_invalid = true
+	if Archipelago.is_deathlink():
+		if _lost_puzzle(false):
+			s += "\nYou ran out of lives! (DeathLink sent)"
+	Util.freeze_popup(get_tree(), "Wrong!", s, false).popup_centered()
+	set_invalid()
 	return false
 
 func check_filled() -> bool:
@@ -197,15 +212,20 @@ func clear_select() -> void:
 	for c in cells:
 		c.is_selected = false
 	grid_redraw()
-func clear() -> void:
+func clear_active() -> void:
 	active_puzzle = null
 	%StartButton.disabled = false
 	%ForfeitButton.disabled = true
 	%CheckButton.disabled = true
-	for c in cells:
-		c.clear()
 	%MainLabel.text = "No Active Game"
 	%MainLabel.label_settings.font_color = sudoku_theme.LABEL_INVALID_TEXT
+	grid_redraw()
+func clear() -> void:
+	for btn in %NumPad.get_children():
+		btn.disabled = false
+	for c in cells:
+		c.clear()
+	clear_active()
 	grid_redraw()
 func start_puzzle() -> void:
 	if active_puzzle: return
@@ -253,10 +273,17 @@ func set_difficulty(diff: int):
 	[%RadioEasy,%RadioMedium,%RadioHard][diff].button_pressed = true
 	difficulty = diff as PuzzleGrid.Difficulty
 
-func _forfeited() -> void:
-	clear()
-	if Archipelago.is_ap_connected() and Archipelago.is_deathlink():
-		Archipelago.conn.send_deathlink("%s failed at %s Sudoku" % [Archipelago.conn.get_player_name(-1), PuzzleGrid.Difficulty.find_key(difficulty).to_pascal_case()])
+func _lost_puzzle(force_clear := true) -> bool:
+	if deaths_towards_amnesty == death_amnesty:
+		deaths_towards_amnesty = 0
+		if Archipelago.is_ap_connected():
+			Archipelago.conn.send_deathlink("%s failed at %s Sudoku" % [Archipelago.conn.get_player_name(-1), PuzzleGrid.Difficulty.find_key(difficulty).to_pascal_case()])
+		clear()
+		return true
+	deaths_towards_amnesty += 1
+	if force_clear:
+		clear()
+	return false
 func forfeit_puzzle() -> bool:
 	if not active_puzzle: return false
 	var s := "Are you sure you wish to forfeit the current puzzle?"
@@ -265,6 +292,6 @@ func forfeit_puzzle() -> bool:
 	var popup := Util.freeze_popup(get_tree(), "Forfeit?", s, true)
 	var lbl := popup.get_label()
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	popup.confirmed.connect(_forfeited)
+	popup.confirmed.connect(_lost_puzzle)
 	popup.popup_centered()
 	return active_puzzle == null
