@@ -1,21 +1,26 @@
 class_name APConfigManager extends Node
 
+signal config_changed
+
 var _pause_saving := false
 var is_tracking := false :
 	set(val):
 		if val != is_tracking:
 			is_tracking = val
 			save_cfg()
+			config_changed.emit()
 var verbose_trackerpack := false :
 	set(val):
 		if val != verbose_trackerpack:
 			verbose_trackerpack = val
 			save_cfg()
+			config_changed.emit()
 var hide_finished_map_squares := false :
 	set(val):
 		if val != hide_finished_map_squares:
 			hide_finished_map_squares = val
 			save_cfg()
+			config_changed.emit()
 
 func _ready():
 	load_cfg()

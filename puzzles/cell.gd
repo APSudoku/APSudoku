@@ -201,27 +201,44 @@ func enter_val(v: int, mode: SudokuGrid.EntryMode) -> void:
 	grid_redraw.emit()
 
 func _on_mouse_enter():
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or \
-		Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+	if get_tree().paused: return
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		_reselect(self, true)
+	elif Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+		if %Sudoku._shift or %Sudoku._ctrl:
+			is_selected = false
+			if has_focus():
+				release_focus()
+				%Sudoku.grab_focus()
+			grid_redraw.emit()
+		else: _reselect(self, true)
+		
 func _gui_input(event):
+	if get_tree().paused: return
+	var multi = %Sudoku._shift or %Sudoku._ctrl
 	if event is InputEventMouseButton:
 		if event.pressed:
-			_reselect(self, event.shift_pressed or event.is_command_or_control_pressed())
+			if event.button_index == MOUSE_BUTTON_RIGHT and multi:
+				is_selected = false
+				if has_focus():
+					release_focus()
+					%Sudoku.grab_focus()
+				grid_redraw.emit()
+			else: _reselect(self, multi)
+			accept_event()
 	elif event is InputEventKey:
 		if event.pressed:
-			var multi = event.shift_pressed or event.is_command_or_control_pressed()
 			match event.keycode:
-				KEY_UP:
+				KEY_UP, KEY_W:
 					_reselect(top, multi)
 					accept_event()
-				KEY_DOWN:
+				KEY_DOWN, KEY_S:
 					_reselect(bottom, multi)
 					accept_event()
-				KEY_LEFT:
+				KEY_LEFT, KEY_A:
 					_reselect(left, multi)
 					accept_event()
-				KEY_RIGHT:
+				KEY_RIGHT, KEY_D:
 					_reselect(right, multi)
 					accept_event()
 	grid_input.emit(event)
