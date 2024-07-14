@@ -11,12 +11,15 @@ func _init():
 	puzzles_by_diff.resize(PuzzleGrid.Difficulty.size())
 	for q in 10:
 		for d in PuzzleGrid.Difficulty.values():
+			if d == PuzzleGrid.Difficulty.KILLER: continue #FIXME when killer is done
 			launch_puzzle_gen(d)
 
 func generate_puzzle(diff: PuzzleGrid.Difficulty) -> void:
-	add_puzzle(PuzzleGrid.new(diff))
+	if not running: return
+	add_puzzle.call_deferred(PuzzleGrid.new(diff))
 
 func launch_puzzle_gen(diff: PuzzleGrid.Difficulty) -> void:
+	if not running: return
 	WorkerThreadPool.add_task(generate_puzzle.bind(diff))
 
 func get_puzzle(diff: PuzzleGrid.Difficulty) -> PuzzleGrid:
@@ -36,7 +39,11 @@ func get_puzzle(diff: PuzzleGrid.Difficulty) -> PuzzleGrid:
 	return ret
 
 func add_puzzle(puz: PuzzleGrid) -> void:
+	if not running: return
 	puz_mutex.lock()
 	puzzles_by_diff[puz.difficulty].append(puz)
 	puz_mutex.unlock()
 	puzzle_added.emit()
+
+func _exit_tree():
+	running = false # Quick-exit any still-running threads
