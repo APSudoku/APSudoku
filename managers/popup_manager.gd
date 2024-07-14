@@ -3,9 +3,17 @@ extends Node
 
 var last_return: bool = false
 
+class SudokuPopup extends AcceptDialog:
+	func pop_open() -> bool:
+		return await PopupManager.pop_popup(self)
+
 signal popup_closed
-func popup_dlg(text: String, title := "Confirm", cancel := true) -> bool:
-	var popup = AcceptDialog.new()
+func popup_dlg(text: String, title := "", cancel := true) -> bool:
+	return await pop_popup(create_popup(text, title, cancel))
+func create_popup(text: String, title := "", cancel := true) -> SudokuPopup:
+	if title.is_empty():
+		title = "Confirm?" if cancel else "Info"
+	var popup = SudokuPopup.new()
 	popup.title = title
 	popup.dialog_text = text
 	popup.keep_title_visible = true
@@ -29,5 +37,8 @@ func popup_dlg(text: String, title := "Confirm", cancel := true) -> bool:
 		popup.queue_free()
 		last_return = false
 		popup_closed.emit())
+	return popup
+func pop_popup(popup: SudokuPopup) -> bool:
+	popup.popup_centered()
 	await popup_closed
 	return last_return

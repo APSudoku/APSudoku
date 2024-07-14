@@ -68,7 +68,7 @@ func grant_hint(prog_percent: int) -> void:
 	if _prog_locs.is_empty():
 		prog_percent = 0
 		if _non_prog_locs.is_empty():
-			Util.freeze_popup(get_tree(), "Correct!", "No hints left to earn, though!", false).popup_centered()
+			await PopupManager.popup_dlg("No hints left to earn, though!", "Correct!", false)
 			return
 	elif _non_prog_locs.is_empty(): prog_percent = 100
 	var itm: NetworkItem
@@ -82,7 +82,7 @@ func display_hint(hints: Array[NetworkHint], loc: int) -> void:
 	for hint in hints:
 		if hint.item.loc_id == loc:
 			var s: String = hint.as_plain_string()
-			Util.freeze_popup(get_tree(), "Correct!", s, false).popup_centered()
+			await PopupManager.popup_dlg(s, "Correct!", false)
 			return
 
 func on_connect(conn: ConnectionInfo, _json: Dictionary) -> void:

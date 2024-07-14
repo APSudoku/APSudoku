@@ -1,5 +1,7 @@
 class_name SudokuGrid extends MarginContainer
 
+const CHEAT_MODE := true
+
 signal modifier_entry_mode(val: EntryMode)
 signal cycle_entry_mode
 signal grant_hint(prog_percent: int)
@@ -105,7 +107,7 @@ func submit_solution() -> bool:
 	var s: String
 	if not check_filled():
 		s = "Grid contains unfilled cells! Please fill before submitting!"
-		Util.freeze_popup(get_tree(), "Error", s, false).popup_centered()
+		await PopupManager.popup_dlg(s, "Error", false)
 		return false
 	if check_solve():
 		if Archipelago.is_ap_connected():
@@ -120,15 +122,16 @@ func submit_solution() -> bool:
 				PuzzleGrid.Difficulty.KILLER:
 					prog_percent = 60
 			grant_hint.emit(prog_percent)
-		else: Util.freeze_popup(get_tree(), "Correct!", "Not connected, so no hint granted.", false).popup_centered()
+		else: await PopupManager.popup_dlg("Not connected, so no hint granted.", "Correct!", false)
 		clear_active()
 		return true
 	s = "Grid contains incorrect values!"
 	if Archipelago.is_deathlink():
 		if _lost_puzzle(false):
 			s += "\nYou ran out of lives! (DeathLink sent)"
-	Util.freeze_popup(get_tree(), "Wrong!", s, false).popup_centered()
+	
 	set_invalid()
+	await PopupManager.popup_dlg(s, "Wrong!", false)
 	return false
 
 func check_filled() -> bool:
@@ -244,14 +247,9 @@ func start_puzzle() -> void:
 	if active_puzzle: return
 	if Archipelago.is_not_connected():
 		_invalid = true
-		var popup := Util.freeze_popup(get_tree(), "No Connection", "No hints can be earned while not connected. Start anyway?", true)
-		popup.confirmed.connect(func(): _invalid = false, CONNECT_ONE_SHOT)
-		popup.popup_centered()
-		await popup.tree_exited
-		if _invalid:
-			_invalid = false
+		var popup := PopupManager.create_popup("No hints can be earned while not connected. Start anyway?", "No Connection", true)
+		if not await popup.pop_open():
 			return
-		
 	%StartButton.disabled = true
 	%GeneratingLabel.visible = true
 	var puz := await PuzzleGenManager.get_puzzle(%Sudoku.difficulty)
@@ -274,7 +272,8 @@ func load_puzzle(puzzle: PuzzleGrid) -> void:
 			if puzzle.givens[q]:
 				c.is_given = true
 				c.value = c.solution
-			c.value = c.solution
+			if OS.is_debug_build() and CHEAT_MODE:
+				c.value = c.solution
 			q += 1
 	grid_redraw()
 
@@ -318,16 +317,17 @@ func forfeit_puzzle() -> bool:
 	var s := "Are you sure you wish to forfeit the current puzzle?"
 	if Archipelago.is_ap_connected() and Archipelago.is_deathlink():
 		s += "\nForfeiting counts as a death towards DeathLink!"
-	var popup := Util.freeze_popup(get_tree(), "Forfeit?", s, true)
+	var popup := PopupManager.create_popup(s, "Forfeit?", true)
 	var lbl := popup.get_label()
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	popup.confirmed.connect(_lost_puzzle)
-	popup.popup_centered()
-	return active_puzzle == null
+	if await popup.pop_open():
+		_lost_puzzle(true)
+		return true
+	return false
 
 func deathlink_recv(source: String, cause: String, _json: Dictionary) -> void:
 	var s: String = cause
 	if s.is_empty():
 		s = "%s died, taking you with them." % source
-	Util.freeze_popup(get_tree(), "DeathLink", s, false).popup_centered()
+	await PopupManager.popup_dlg(s, "DeathLink", false)
 	clear()
