@@ -21,7 +21,7 @@ func _ready():
 			q += 1
 		return
 	tabs.move_child(tabs.get_node("Sudoku"), 0)
-	tabs.current_tab = tabs.get_tab_idx_from_control($Tabs/Settings)
+	tabs.current_tab = 0 if OS.is_debug_build() else tabs.get_tab_idx_from_control($Tabs/Settings)
 	set_entry_mode(SudokuGrid.EntryMode.ANSWER)
 	
 	%ErrorLabel.label_settings.font_color = %Sudoku.sudoku_theme.LABEL_INVALID_TEXT
