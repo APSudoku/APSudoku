@@ -847,6 +847,14 @@ theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_mrvem")
 text = "Corner"
 
+[node name="ClearInvalid" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="4"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "    Clear 'Invalid' color    "
+
 [node name="GridContainer" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="1"]
 layout_mode = 2
 size_flags_vertical = 10
@@ -854,13 +862,14 @@ theme_override_constants/h_separation = 2
 theme_override_constants/v_separation = 2
 columns = 2
 
-[node name="GridContainer" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="0"]
+[node name="NumPad" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="0"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 2
 theme_override_constants/v_separation = 2
 columns = 3
 
-[node name="Entry1" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="0"]
+[node name="Entry1" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="0"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
@@ -868,7 +877,7 @@ theme_override_styles/normal = ExtResource("6_72vag")
 text = "1"
 script = ExtResource("15_83fxp")
 
-[node name="Entry2" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="1"]
+[node name="Entry2" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="1"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
@@ -876,7 +885,7 @@ theme_override_styles/normal = ExtResource("6_72vag")
 text = "2"
 script = ExtResource("15_83fxp")
 
-[node name="Entry3" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="2"]
+[node name="Entry3" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="2"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
@@ -884,7 +893,7 @@ theme_override_styles/normal = ExtResource("6_72vag")
 text = "3"
 script = ExtResource("15_83fxp")
 
-[node name="Entry4" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="3"]
+[node name="Entry4" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="3"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
@@ -892,7 +901,7 @@ theme_override_styles/normal = ExtResource("6_72vag")
 text = "4"
 script = ExtResource("15_83fxp")
 
-[node name="Entry5" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="4"]
+[node name="Entry5" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="4"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
@@ -900,7 +909,7 @@ theme_override_styles/normal = ExtResource("6_72vag")
 text = "5"
 script = ExtResource("15_83fxp")
 
-[node name="Entry6" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="5"]
+[node name="Entry6" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="5"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
@@ -908,7 +917,7 @@ theme_override_styles/normal = ExtResource("6_72vag")
 text = "6"
 script = ExtResource("15_83fxp")
 
-[node name="Entry7" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="6"]
+[node name="Entry7" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="6"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
@@ -916,7 +925,7 @@ theme_override_styles/normal = ExtResource("6_72vag")
 text = "7"
 script = ExtResource("15_83fxp")
 
-[node name="Entry8" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="7"]
+[node name="Entry8" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="7"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
@@ -924,7 +933,7 @@ theme_override_styles/normal = ExtResource("6_72vag")
 text = "8"
 script = ExtResource("15_83fxp")
 
-[node name="Entry9" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="8"]
+[node name="Entry9" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="8"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
@@ -1045,15 +1054,16 @@ text = "Check"
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioAnswer" to="." method="set_entry_mode_no_button" binds= [0]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCenter" to="." method="set_entry_mode_no_button" binds= [1]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCorner" to="." method="set_entry_mode_no_button" binds= [2]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry1" to="Tabs/Sudoku" method="type_number" binds= [1]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry2" to="Tabs/Sudoku" method="type_number" binds= [2]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry3" to="Tabs/Sudoku" method="type_number" binds= [3]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry4" to="Tabs/Sudoku" method="type_number" binds= [4]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry5" to="Tabs/Sudoku" method="type_number" binds= [5]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry6" to="Tabs/Sudoku" method="type_number" binds= [6]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry7" to="Tabs/Sudoku" method="type_number" binds= [7]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry8" to="Tabs/Sudoku" method="type_number" binds= [8]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry9" to="Tabs/Sudoku" method="type_number" binds= [9]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/ClearInvalid" to="Tabs/Sudoku" method="clear_invalid"]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry1" to="Tabs/Sudoku" method="type_number" binds= [1]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry2" to="Tabs/Sudoku" method="type_number" binds= [2]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry3" to="Tabs/Sudoku" method="type_number" binds= [3]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry4" to="Tabs/Sudoku" method="type_number" binds= [4]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry5" to="Tabs/Sudoku" method="type_number" binds= [5]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry6" to="Tabs/Sudoku" method="type_number" binds= [6]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry7" to="Tabs/Sudoku" method="type_number" binds= [7]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry8" to="Tabs/Sudoku" method="type_number" binds= [8]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry9" to="Tabs/Sudoku" method="type_number" binds= [9]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/DeleteButton" to="Tabs/Sudoku" method="clear_selected"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/RadioEasy" to="Tabs/Sudoku" method="set_difficulty" binds= [0]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/RadioMedium" to="Tabs/Sudoku" method="set_difficulty" binds= [1]]
