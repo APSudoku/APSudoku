@@ -116,7 +116,9 @@ func type_number(v: int) -> void:
 
 var _shift: bool = false
 var _ctrl: bool = false
-func _input(event):
+func _gui_input(event):
+	if _has_mouse_directly and event is InputEventMouseButton:
+		accept_event()
 	grid_input(event)
 func grid_input(event) -> void:
 	if get_tree().paused: return
@@ -167,10 +169,10 @@ func grid_input(event) -> void:
 	#TODO double-click to select similar cells feature
 func grid_focus(cell: Cell) -> void:
 	if cell.has_focus(): return
-	get_viewport().gui_get_focus_owner().release_focus()
+	var foc_owner = get_viewport().gui_get_focus_owner()
+	if foc_owner: foc_owner.release_focus()
 	cell.grab_focus()
 func recheck_focus() -> void:
-	if has_focus(): return
 	for c in cells:
 		if c.has_focus():
 			return
@@ -179,9 +181,14 @@ func grid_redraw() -> void:
 	queue_redraw()
 	for c in cells:
 		c.queue_redraw()
+func clear_selected():
+	for c in cells:
+		if c.is_selected:
+			c.erase()
 func clear_select() -> void:
 	for c in cells:
 		c.is_selected = false
+	grid_redraw()
 func clear() -> void:
 	active_puzzle = null
 	for c in cells:
@@ -210,3 +217,11 @@ func set_show_invalid(val: bool) -> void:
 
 func set_shapes_mode(val: bool) -> void:
 	config.shapes_mode = val
+
+var _has_mouse_directly := false
+func _notification(what):
+	match what:
+		NOTIFICATION_MOUSE_ENTER_SELF:
+			_has_mouse_directly = true
+		NOTIFICATION_MOUSE_EXIT_SELF:
+			_has_mouse_directly = false
