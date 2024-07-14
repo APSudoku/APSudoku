@@ -94,6 +94,9 @@ class GenGrid:
 	
 	func is_unique() -> bool:
 		var copy := duplicate()
+		for c in copy.cells:
+			if not c.given:
+				c.val = 0
 		return copy.solve(true)
 	
 	class GenOptions:

@@ -10,8 +10,7 @@ var deaths_towards_amnesty := 0
 var death_amnesty := 0
 
 func _ready():
-	#TODO finish gui (difficulty sel, number pad, info buttons)
-	#TODO Finish grid functionality (puzzle starting, loading, failing, etc)
+	#TODO Finish grid functionality (check, succeed, hints, failing, etc)
 	super()
 	get_window().min_size = Vector2(850,500)
 	if Engine.is_editor_hint():
@@ -72,7 +71,7 @@ func try_connect() -> void:
 		if not await PopupManager.popup_dlg("Connecting while a puzzle is active requires forfeiting the puzzle. Are you sure?", "Forfeit?"):
 			return
 		sudoku_grid.clear()
-	Archipelago.set_tag("DeathLink", %DeathLink.button_pressed)
+	Archipelago.set_deathlink(%DeathLink.button_pressed)
 	death_amnesty = %Lives.get_val()
 	Archipelago.ap_connect(%IP.get_val(), %Port.get_val(), %Slot.get_val(), %Password.get_val())
 func try_disconnect() -> void:
