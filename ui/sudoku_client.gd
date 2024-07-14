@@ -25,6 +25,7 @@ func _ready():
 	%ErrorLabel.label_settings.font_color = %Sudoku.sudoku_theme.LABEL_INVALID_TEXT
 	sudoku_grid.modifier_entry_mode.connect(set_fake_entry_mode)
 	sudoku_grid.cycle_entry_mode.connect(cycle_entry)
+	sudoku_grid.grant_hint.connect(grant_hint)
 	
 	settings_subtabs.move_child(settings_subtabs.get_node("Connection"), 0)
 	settings_subtabs.move_child(settings_subtabs.get_node("Sudoku"), 1)
@@ -42,7 +43,53 @@ func _ready():
 	%ShowInvalid.set_pressed_no_signal(%Sudoku.config.show_invalid)
 	%ShapesMode.set_pressed_no_signal(%Sudoku.config.shapes_mode)
 
-func on_connect(_conn: ConnectionInfo, _json: Dictionary) -> void:
+var _prog_locs: Array[NetworkItem] = []
+var _non_prog_locs: Array[NetworkItem] = []
+func refresh_hint_count() -> void:
+	_prog_locs.clear()
+	_non_prog_locs.clear()
+	
+	var locs := Archipelago.conn._scout_cache.keys()
+	for hint in Archipelago.conn.hints:
+		locs.erase(hint.item.loc_id)
+	var q := 0
+	while q < locs.size():
+		if Archipelago.conn.slot_locations[locs[q]]:
+			locs.pop_at(q)
+		else: q += 1
+	for loc in locs:
+		var itm: NetworkItem = Archipelago.conn._scout_cache[loc]
+		if itm.is_prog():
+			_prog_locs.append(itm)
+		else: _non_prog_locs.append(itm)
+	var count := locs.size()
+	%CountLabel.text = "%d unhinted" % count if count else "Hinted Out!"
+
+func grant_hint(prog_percent: int) -> void:
+	if _prog_locs.is_empty():
+		prog_percent = 0
+		if _non_prog_locs.is_empty():
+			Util.freeze_popup(get_tree(), "Correct!", "No hints left to earn, though!", false).popup_centered()
+			return
+	elif _non_prog_locs.is_empty(): prog_percent = 100
+	var itm: NetworkItem
+	if randi_range(0,100) < prog_percent:
+		itm = _prog_locs.pick_random()
+	else:
+		itm = _non_prog_locs.pick_random()
+	Archipelago.conn.scout(itm.loc_id, 1, Callable())
+	Archipelago.conn.on_hint_update.connect(display_hint.bind(itm.loc_id), CONNECT_ONE_SHOT)
+func display_hint(hints: Array[NetworkHint], loc: int) -> void:
+	for hint in hints:
+		if hint.item.loc_id == loc:
+			var s: String = hint.as_plain_string()
+			Util.freeze_popup(get_tree(), "Correct!", s, false).popup_centered()
+			return
+
+func on_connect(conn: ConnectionInfo, _json: Dictionary) -> void:
+	conn.roomupdate.connect(refresh_hint_count.unbind(1))
+	conn.on_hint_update.connect(refresh_hint_count.unbind(1))
+	conn.deathlink.connect(%Sudoku.deathlink_recv)
 	%ConnectButton.text = "Disconnect"
 	%ConnectButton.tooltip_text = "Disconnect from the Archipelago server. This will forfeit any active puzzles."
 	%ErrorLabel.text = ""
@@ -51,9 +98,13 @@ func on_connect(_conn: ConnectionInfo, _json: Dictionary) -> void:
 			field.editable = false
 		elif field is CheckBox:
 			field.disabled = true
+	%CountLabel.text = ""
+	conn.all_scout_cached.connect(refresh_hint_count, CONNECT_ONE_SHOT)
+	conn.force_scout_all()
 func on_disconnect() -> void:
 	%ConnectButton.text = "Connect"
 	%ConnectButton.tooltip_text = "Connect to the Archipelago server. This will forfeit any active puzzles."
+	%CountLabel.text = ""
 	for field in fields:
 		if field is LineEdit:
 			field.editable = true
