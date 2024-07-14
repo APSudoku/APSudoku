@@ -277,15 +277,6 @@ func load_puzzle(puzzle: PuzzleGrid) -> void:
 			q += 1
 	grid_redraw()
 
-func set_shift_center(val: bool) -> void:
-	config.shift_center = val
-
-func set_show_invalid(val: bool) -> void:
-	config.show_invalid = val
-
-func set_shapes_mode(val: bool) -> void:
-	config.shapes_mode = val
-
 var _has_mouse_directly := false
 func _notification(what):
 	match what:

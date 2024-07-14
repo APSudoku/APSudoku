@@ -1047,9 +1047,9 @@ focus_mode = 0
 theme_override_styles/normal = ExtResource("6_72vag")
 text = "Check"
 
-[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShiftCenter" to="Tabs/Sudoku" method="set_shift_center"]
-[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShowInvalid" to="Tabs/Sudoku" method="set_show_invalid"]
-[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShapesMode" to="Tabs/Sudoku" method="set_shapes_mode"]
+[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShiftCenter" to="." method="set_shift_center"]
+[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShowInvalid" to="." method="set_show_invalid"]
+[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShapesMode" to="." method="set_shapes_mode"]
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/IP" to="." method="try_connect" unbinds=1]
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Port" to="." method="try_connect" unbinds=1]
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Slot" to="." method="try_connect" unbinds=1]
