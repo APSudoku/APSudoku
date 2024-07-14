@@ -82,7 +82,7 @@ func submit_solution() -> bool:
 	if check_solve():
 		#TODO popup the hint reward!
 		return true
-	
+	#TODO popup mentioning wrong solution, DEATHLINK
 	for c in cells:
 		if not c.is_valid():
 			c.draw_invalid = true
