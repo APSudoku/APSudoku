@@ -280,14 +280,19 @@ size_flags_horizontal = 3
 [node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer" index="0"]
 layout_mode = 2
 
-[node name="MainLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
+[node name="CountLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = ExtResource("9_16nn7")
+
+[node name="MainLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 text = "No Active Game"
 label_settings = SubResource("LabelSettings_oaxtv")
 
-[node name="ControlInfo" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
+[node name="ControlInfo" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="2" instance=ExtResource("13_7ct3a")]
 unique_name_in_owner = true
 layout_mode = 2
 title = "Controls"

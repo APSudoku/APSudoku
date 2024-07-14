@@ -48,7 +48,6 @@ func _cleanup_threads() -> void:
 	running = false
 	# Queue all the threads to run, so they can exit after detecting `running == false`
 	for data in puzzle_datas:
-		data.out_semaphore.post() # Doubt this should be needed? putting it here for sanity
 		for q in data.threads.size():
 			data.gen_semaphore.post()
 	# Actually wait for them all to exit (should be instant for any that were waiting prior)
