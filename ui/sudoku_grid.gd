@@ -264,6 +264,8 @@ func load_puzzle(puzzle: PuzzleGrid) -> void:
 	%ForfeitButton.disabled = false
 	%CheckButton.disabled = false
 	%MainLabel.text = "Difficulty: %s" % PuzzleGrid.Difficulty.find_key(puzzle.difficulty).to_pascal_case()
+	if death_amnesty:
+		%MainLabel.text += " (%d/%d Lives)" % [death_amnesty-deaths_towards_amnesty,death_amnesty]
 	%MainLabel.label_settings.font_color = Color.WHITE
 	var q := 0
 	for r in rows:
@@ -305,6 +307,9 @@ func _lost_puzzle(force_clear := true) -> bool:
 		clear()
 		return true
 	deaths_towards_amnesty += 1
+	%MainLabel.text = "Difficulty: %s" % PuzzleGrid.Difficulty.find_key(difficulty).to_pascal_case()
+	if death_amnesty:
+		%MainLabel.text += " (%d/%d Lives)" % [death_amnesty-deaths_towards_amnesty,death_amnesty]
 	if force_clear:
 		clear()
 	return false
