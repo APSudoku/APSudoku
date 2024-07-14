@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c3eb4ejxtp2nl"]
+[gd_scene load_steps=22 format=3 uid="uid://c3eb4ejxtp2nl"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ah7d3ep4de" path="res://godot_ap/ui/common_client.tscn" id="1_yxr36"]
 [ext_resource type="Script" path="res://ui/sudoku_client.gd" id="2_drtqi"]
@@ -54,6 +54,8 @@ font = ExtResource("8_w6wjr")
 font_size = 25
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_mrvem"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_7l32q"]
 
 [node name="SudokuClient" instance=ExtResource("1_yxr36")]
 script = ExtResource("2_drtqi")
@@ -947,6 +949,90 @@ info = "LClick: Enter value (all selected cells)
 RClick: Toggle button (useful for marking finished values)
 'Delete' buton: Clear contents (all selected cells)"
 
+[node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="0"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer" index="0"]
+layout_mode = 2
+text = "Difficulty:"
+label_settings = ExtResource("9_16nn7")
+
+[node name="InfoButton" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
+layout_mode = 2
+title = "How to Play / Difficulty Info"
+info = "Fill every Row, Column, and outlined Region (3x3 box) with the digits 1-9, exactly once each.
+For each difficulty, information is listed in the format:
+`Name: # Givens digits, chance of reward being progression hint`
+Easy: 46, 10%%        Normal: 35, 40%%
+Hard: 26, 80%%        Killer*: 26, 60%%
+* In 'Killer' mode, outlined Cages must sum to the indicated total."
+
+[node name="RadioEasy" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("6_fj6yn")
+button_group = SubResource("ButtonGroup_7l32q")
+text = "Easy"
+
+[node name="RadioMedium" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="2"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("6_fj6yn")
+button_group = SubResource("ButtonGroup_7l32q")
+text = "Medium"
+
+[node name="RadioHard" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="3"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("6_fj6yn")
+button_group = SubResource("ButtonGroup_7l32q")
+text = "Hard"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="1"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="GeneratingLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2" index="0"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Generating puzzle..."
+label_settings = ExtResource("9_16nn7")
+
+[node name="StartButton" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "Start"
+
+[node name="ForfeitButton" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2" index="2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "Forfeit"
+
+[node name="CheckButton" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2" index="3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "Check"
+
 [connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShiftCenter" to="Tabs/Sudoku" method="set_shift_center"]
 [connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShowInvalid" to="Tabs/Sudoku" method="set_show_invalid"]
 [connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShapesMode" to="Tabs/Sudoku" method="set_shapes_mode"]
@@ -969,6 +1055,12 @@ RClick: Toggle button (useful for marking finished values)
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry8" to="Tabs/Sudoku" method="type_number" binds= [8]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry9" to="Tabs/Sudoku" method="type_number" binds= [9]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/DeleteButton" to="Tabs/Sudoku" method="clear_selected"]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/RadioEasy" to="Tabs/Sudoku" method="set_difficulty" binds= [0]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/RadioMedium" to="Tabs/Sudoku" method="set_difficulty" binds= [1]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/RadioHard" to="Tabs/Sudoku" method="set_difficulty" binds= [2]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/StartButton" to="Tabs/Sudoku" method="start_puzzle"]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/ForfeitButton" to="Tabs/Sudoku" method="forfeit_puzzle"]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/CheckButton" to="Tabs/Sudoku" method="submit_solution"]
 
 [editable path="Tabs/Hints/Console"]
 [editable path="Tabs/Settings/Margin/Tabs/TrackerPack/Row/Col1/TrackVerbose"]
