@@ -25,6 +25,7 @@ Archipelago="*res://godot_ap/autoloads/archipelago.tscn"
 Saves="*res://godot_ap/autoloads/saves.gd"
 TrackerManager="*res://godot_ap/autoloads/tracker_manager.gd"
 PopupManager="*res://managers/popup_manager.gd"
+PuzzleGenManager="*res://puzzles/puzzle_gen_manager.gd"
 
 [display]
 
