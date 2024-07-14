@@ -143,16 +143,23 @@ func load_credentials(creds: APCredentials) -> void:
 	%Slot.text = creds.slot
 
 func select_entry_button(mode: int, from_mod := false) -> void:
+	assert(not (%Sudoku.config.shapes_mode and mode == SudokuGrid.EntryMode.CENTER))
 	var cboxes = [%RadioAnswer,%RadioCenter,%RadioCorner]
 	for q in 3:
 		var cbox := cboxes[q] as CheckBox
-		cbox.set_pressed_no_signal(q == mode)
-		cbox.disabled = from_mod
+		if q == SudokuGrid.EntryMode.CENTER and %Sudoku.config.shapes_mode:
+			cbox.disabled = true
+			cbox.set_pressed_no_signal(false)
+		else:
+			cbox.set_pressed_no_signal(q == mode)
+			cbox.disabled = from_mod
 		cbox.queue_redraw()
 func set_fake_entry_mode(mode: int) -> void:
 	if mode < 0:
 		return set_entry_mode(_real_entry_mode)
 	elif mode > 2: return
+	if %Sudoku.config.shapes_mode and mode == SudokuGrid.EntryMode.CENTER:
+		mode = SudokuGrid.EntryMode.CORNER
 	_entry_mode = mode as SudokuGrid.EntryMode
 	sudoku_grid.mode = mode as SudokuGrid.EntryMode
 	select_entry_button(mode, true)
@@ -161,6 +168,8 @@ func cycle_entry() -> void:
 	set_entry_mode((_real_entry_mode + 1) % SudokuGrid.EntryMode.size())
 func set_entry_mode(mode: int, no_button := false) -> void:
 	if mode < 0 or mode > 2: return
+	if %Sudoku.config.shapes_mode and mode == SudokuGrid.EntryMode.CENTER:
+		mode = SudokuGrid.EntryMode.CORNER
 	_entry_mode = mode as SudokuGrid.EntryMode
 	_real_entry_mode = mode as SudokuGrid.EntryMode
 	sudoku_grid.mode = mode as SudokuGrid.EntryMode
@@ -168,3 +177,22 @@ func set_entry_mode(mode: int, no_button := false) -> void:
 		select_entry_button(mode)
 func set_entry_mode_no_button(mode: int) -> void:
 	set_entry_mode(mode, true)
+
+func set_shift_center(val: bool) -> void:
+	%Sudoku.config.shift_center = val
+
+func set_show_invalid(val: bool) -> void:
+	%Sudoku.config.show_invalid = val
+
+func set_shapes_mode(val: bool) -> void:
+	%Sudoku.config.shapes_mode = val
+	if val:
+		if _entry_mode == SudokuGrid.EntryMode.CENTER:
+			_entry_mode = SudokuGrid.EntryMode.CORNER
+			sudoku_grid.mode = _entry_mode
+		if _real_entry_mode == SudokuGrid.EntryMode.CENTER:
+			_real_entry_mode = SudokuGrid.EntryMode.CORNER
+		select_entry_button(_entry_mode)
+	else:
+		%RadioCenter.disabled = false
+		%RadioCenter.queue_redraw()
