@@ -1,49 +1,79 @@
 extends Node
 #Autoload 'PuzzleGenManager'
 
-signal puzzle_added
+const PUZZLES_TO_KEEP := 10
 
 var running: bool = true
-var puz_mutex := Mutex.new()
-var puzzles_by_diff: Array[Array] = []
+class PuzzleData:
+	var diff: PuzzleGrid.Difficulty
+	var puzzles: Array[PuzzleGrid] = []
+	var threads: Array[Thread] = []
+	var gen_semaphore := Semaphore.new()
+	var mutex := Mutex.new()
+	signal puzzle_added
+	
+	func _init(d: PuzzleGrid.Difficulty, count := 1):
+		diff = d
+		for q in count:
+			threads.append(Thread.new())
+		setup_puzzle_limit()
+	func setup_puzzle_limit() -> void:
+		for q in PuzzleGenManager.PUZZLES_TO_KEEP:
+			gen_semaphore.post() # Ask for that many puzzles
+			await PuzzleGenManager.get_tree().create_timer(5).timeout # Delay so all difficulties build up evenly at the start
+	func start() -> void:
+		var prio := Thread.PRIORITY_LOW
+		match diff:
+			PuzzleGrid.Difficulty.HARD, PuzzleGrid.Difficulty.KILLER:
+				prio = Thread.PRIORITY_HIGH
+		for q in threads.size():
+			threads[q].start(thread_proc, prio)
+	func thread_proc() -> void:
+		gen_semaphore.wait()
+		while PuzzleGenManager.running:
+			add_puzzle(PuzzleGrid.new(diff))
+			gen_semaphore.wait()
+	func add_puzzle(puz: PuzzleGrid) -> void:
+		if not PuzzleGenManager.running: return
+		mutex.lock()
+		puzzles.append(puz)
+		#print(PuzzleGrid.Difficulty.find_key(diff), ": ", puzzles.size())
+		mutex.unlock()
+		_on_add_puzzle.call_deferred()
+	func _on_add_puzzle() -> void:
+		puzzle_added.emit()
+var puzzle_datas: Array[PuzzleData] = []
 
-func _init():
-	puzzles_by_diff.resize(PuzzleGrid.Difficulty.size())
-	for q in 10:
-		for d in PuzzleGrid.Difficulty.values():
-			if d == PuzzleGrid.Difficulty.KILLER: continue #FIXME when killer is done
-			launch_puzzle_gen(d)
+func _cleanup_threads() -> void:
+	running = false
+	# Queue all the threads to run, so they can exit after detecting `running == false`
+	for data in puzzle_datas:
+		data.out_semaphore.post() # Doubt this should be needed? putting it here for sanity
+		for q in data.threads.size():
+			data.gen_semaphore.post()
+	# Actually wait for them all to exit (should be instant for any that were waiting prior)
+	for data in puzzle_datas:
+		for t in data.threads:
+			t.wait_to_finish()
 
-func generate_puzzle(diff: PuzzleGrid.Difficulty) -> void:
-	if not running: return
-	add_puzzle.call_deferred(PuzzleGrid.new(diff))
-
-func launch_puzzle_gen(diff: PuzzleGrid.Difficulty) -> void:
-	if not running: return
-	WorkerThreadPool.add_task(generate_puzzle.bind(diff))
+func _ready():
+	var thread_counts: Array[int] = [1,1,3,3]
+	for d in PuzzleGrid.Difficulty.values():
+		puzzle_datas.append(PuzzleData.new(d, thread_counts[d]))
+		puzzle_datas.back().start()
 
 func get_puzzle(diff: PuzzleGrid.Difficulty) -> PuzzleGrid:
-	var ret: PuzzleGrid
-	puz_mutex.lock()
-	if puzzles_by_diff[diff].is_empty():
-		puz_mutex.unlock()
-		while not ret:
-			await puzzle_added
-			puz_mutex.lock()
-			if not puzzles_by_diff[diff].is_empty():
-				break # Found a puzzle to return, break out of the waiting loop
-			puz_mutex.unlock()
-	ret = puzzles_by_diff[diff].pop_front()
-	puz_mutex.unlock()
-	launch_puzzle_gen(diff) # Replace the taken puzzle
+	var data := puzzle_datas[diff]
+	data.gen_semaphore.post() # request replacement puzzle
+	data.mutex.lock()
+	while data.puzzles.is_empty():
+		data.mutex.unlock()
+		await data.puzzle_added
+		data.mutex.lock()
+	var ret: PuzzleGrid = data.puzzles.pop_front()
+	#print(PuzzleGrid.Difficulty.find_key(data.diff), ": ", data.puzzles.size())
+	data.mutex.unlock()
 	return ret
 
-func add_puzzle(puz: PuzzleGrid) -> void:
-	if not running: return
-	puz_mutex.lock()
-	puzzles_by_diff[puz.difficulty].append(puz)
-	puz_mutex.unlock()
-	puzzle_added.emit()
-
 func _exit_tree():
-	running = false # Quick-exit any still-running threads
+	_cleanup_threads()
