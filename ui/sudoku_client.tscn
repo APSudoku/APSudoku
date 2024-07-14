@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://c3eb4ejxtp2nl"]
+[gd_scene load_steps=21 format=3 uid="uid://c3eb4ejxtp2nl"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ah7d3ep4de" path="res://godot_ap/ui/common_client.tscn" id="1_yxr36"]
 [ext_resource type="Script" path="res://ui/sudoku_client.gd" id="2_drtqi"]
@@ -14,6 +14,13 @@
 [ext_resource type="SystemFont" uid="uid://dgq72ioiluq5i" path="res://ui/basic_font.tres" id="8_w6wjr"]
 [ext_resource type="LabelSettings" uid="uid://77i3kx2kgskj" path="res://ui/basic_label.tres" id="9_16nn7"]
 [ext_resource type="PackedScene" uid="uid://7sxs07p5mo4o" path="res://ui/infobutton.tscn" id="13_7ct3a"]
+[ext_resource type="Script" path="res://ui/actual_grid.gd" id="14_3xquc"]
+[ext_resource type="Script" path="res://ui/button_toggle_disabled.gd" id="15_83fxp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5dvs7"]
+bg_color = Color(0.109804, 0.109804, 0.109804, 1)
+border_width_bottom = 2
+border_color = Color(0.0509804, 0.0509804, 0.0509804, 1)
 
 [sub_resource type="Resource" id="Resource_vn24h"]
 script = ExtResource("6_ynybo")
@@ -203,7 +210,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 focus_next = NodePath("../IP")
-theme_override_styles/normal = ExtResource("6_72vag")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5dvs7")
 text = "Connect"
 script = ExtResource("3_ry2b2")
 
@@ -309,9 +316,11 @@ theme_override_constants/margin_bottom = 4
 [node name="Regions" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 0
 theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 4
 columns = 3
+script = ExtResource("14_3xquc")
 
 [node name="Box 1" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="0"]
 layout_mode = 2
@@ -804,12 +813,15 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer" index="0"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="0"]
 layout_mode = 2
 text = "Entry:"
 label_settings = ExtResource("9_16nn7")
 
-[node name="RadioAnswer" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="1"]
+[node name="RadioAnswer" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -817,7 +829,7 @@ theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_mrvem")
 text = "Answer"
 
-[node name="RadioCenter" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="2"]
+[node name="RadioCenter" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -825,13 +837,115 @@ theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_mrvem")
 text = "Center"
 
-[node name="RadioCorner" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="3"]
+[node name="RadioCorner" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="3"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_mrvem")
 text = "Corner"
+
+[node name="GridContainer" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 2
+
+[node name="GridContainer" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="0"]
+layout_mode = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Entry1" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="0"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "1"
+script = ExtResource("15_83fxp")
+
+[node name="Entry2" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="1"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "2"
+script = ExtResource("15_83fxp")
+
+[node name="Entry3" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="2"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "3"
+script = ExtResource("15_83fxp")
+
+[node name="Entry4" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="3"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "4"
+script = ExtResource("15_83fxp")
+
+[node name="Entry5" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="4"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "5"
+script = ExtResource("15_83fxp")
+
+[node name="Entry6" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="5"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "6"
+script = ExtResource("15_83fxp")
+
+[node name="Entry7" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="6"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "7"
+script = ExtResource("15_83fxp")
+
+[node name="Entry8" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="7"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "8"
+script = ExtResource("15_83fxp")
+
+[node name="Entry9" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer" index="8"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "9"
+script = ExtResource("15_83fxp")
+
+[node name="Node" type="Control" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="1"]
+layout_mode = 2
+
+[node name="DeleteButton" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="2"]
+custom_minimum_size = Vector2(180, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = ExtResource("6_72vag")
+text = "Delete"
+
+[node name="InfoButton" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="3" instance=ExtResource("13_7ct3a")]
+layout_mode = 2
+title = "Entry Pad"
+info = "LClick: Enter value (all selected cells)
+RClick: Toggle button (useful for marking finished values)
+'Delete' buton: Clear contents (all selected cells)"
 
 [connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShiftCenter" to="Tabs/Sudoku" method="set_shift_center"]
 [connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShowInvalid" to="Tabs/Sudoku" method="set_show_invalid"]
@@ -842,9 +956,19 @@ text = "Corner"
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/Password" to="." method="try_connect" unbinds=1]
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid/ConnectButton" to="." method="on_connect_button"]
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/Grid/DeathLinkContainer/HBoxContainer/Lives" to="." method="try_connect" unbinds=1]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/RadioAnswer" to="." method="set_entry_mode_no_button" binds= [0]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/RadioCenter" to="." method="set_entry_mode_no_button" binds= [1]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/RadioCorner" to="." method="set_entry_mode_no_button" binds= [2]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioAnswer" to="." method="set_entry_mode_no_button" binds= [0]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCenter" to="." method="set_entry_mode_no_button" binds= [1]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCorner" to="." method="set_entry_mode_no_button" binds= [2]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry1" to="Tabs/Sudoku" method="type_number" binds= [1]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry2" to="Tabs/Sudoku" method="type_number" binds= [2]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry3" to="Tabs/Sudoku" method="type_number" binds= [3]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry4" to="Tabs/Sudoku" method="type_number" binds= [4]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry5" to="Tabs/Sudoku" method="type_number" binds= [5]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry6" to="Tabs/Sudoku" method="type_number" binds= [6]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry7" to="Tabs/Sudoku" method="type_number" binds= [7]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry8" to="Tabs/Sudoku" method="type_number" binds= [8]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/GridContainer/Entry9" to="Tabs/Sudoku" method="type_number" binds= [9]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/DeleteButton" to="Tabs/Sudoku" method="clear_selected"]
 
 [editable path="Tabs/Hints/Console"]
 [editable path="Tabs/Settings/Margin/Tabs/TrackerPack/Row/Col1/TrackVerbose"]
