@@ -1,6 +1,7 @@
 class_name SudokuGrid extends MarginContainer
 
 signal modifier_entry_mode(val: EntryMode)
+signal cycle_entry_mode
 
 var config: SudokuConfigManager :
 	get: return Archipelago.config
@@ -70,6 +71,12 @@ func _ready():
 	
 	%MainLabel.label_settings = %MainLabel.label_settings.duplicate() # Should be unique at runtime, *more* unique than "per scene"
 	clear()
+	
+	config.config_changed.connect(update_config)
+
+func update_config() -> void:
+	%ControlInfo.format_args[0] = "Shift: Center, Ctrl: Corner" if \
+		config.shift_center else "Shift: Corner, Ctrl: Center"
 
 func submit_solution() -> bool:
 	_invalid = false
@@ -101,9 +108,18 @@ func check_solve() -> bool:
 				return false
 	return true
 
+func type_number(v: int) -> void:
+	if v < 1 or v > 9: return
+	for c in cells:
+		if c.is_selected:
+			c.enter_val(v, mode)
+
 var _shift: bool = false
 var _ctrl: bool = false
+func _input(event):
+	grid_input(event)
 func grid_input(event) -> void:
+	if get_tree().paused: return
 	var update_modifiers := false
 	if event is InputEventKey:
 		if event.keycode == KEY_SHIFT:
@@ -142,10 +158,11 @@ func grid_input(event) -> void:
 							c.erase()
 					grid_redraw()
 					accept_event()
+				KEY_TAB:
+					cycle_entry_mode.emit()
+					accept_event()
 			if v >= 1 and v <= 9:
-				for c in cells:
-					if c.is_selected:
-						c.enter_val(v, mode)
+				type_number(v)
 				accept_event()
 	#TODO double-click to select similar cells feature
 func grid_focus(cell: Cell) -> void:

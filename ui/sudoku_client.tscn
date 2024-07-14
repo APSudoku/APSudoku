@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c3eb4ejxtp2nl"]
+[gd_scene load_steps=18 format=3 uid="uid://c3eb4ejxtp2nl"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ah7d3ep4de" path="res://godot_ap/ui/common_client.tscn" id="1_yxr36"]
 [ext_resource type="Script" path="res://ui/sudoku_client.gd" id="2_drtqi"]
@@ -7,16 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://bdweotrsewo6q" path="res://puzzles/cell.tscn" id="5_p356p"]
 [ext_resource type="Script" path="res://ui/sudoku_grid.gd" id="5_rhuh7"]
 [ext_resource type="LabelSettings" uid="uid://b7m7jxj4l8en6" path="res://ui/basic_err_label.tres" id="6_1yrws"]
+[ext_resource type="StyleBox" uid="uid://b7l3w40krs8op" path="res://ui/button_shadow.tres" id="6_72vag"]
 [ext_resource type="Theme" uid="uid://bbme64t0s1a4c" path="res://ui/sudoku_theme.tres" id="6_fj6yn"]
 [ext_resource type="Script" path="res://ui/themes.gd" id="6_ynybo"]
 [ext_resource type="Texture2D" uid="uid://c5febtmw1vnx3" path="res://graphics/grabber.png" id="7_leeka"]
 [ext_resource type="SystemFont" uid="uid://dgq72ioiluq5i" path="res://ui/basic_font.tres" id="8_w6wjr"]
 [ext_resource type="LabelSettings" uid="uid://77i3kx2kgskj" path="res://ui/basic_label.tres" id="9_16nn7"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5dvs7"]
-bg_color = Color(0.109804, 0.109804, 0.109804, 1)
-border_width_bottom = 2
-border_color = Color(0.0509804, 0.0509804, 0.0509804, 1)
+[ext_resource type="PackedScene" uid="uid://7sxs07p5mo4o" path="res://ui/infobutton.tscn" id="13_7ct3a"]
 
 [sub_resource type="Resource" id="Resource_vn24h"]
 script = ExtResource("6_ynybo")
@@ -206,7 +203,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 focus_next = NodePath("../IP")
-theme_override_styles/normal = SubResource("StyleBoxFlat_5dvs7")
+theme_override_styles/normal = ExtResource("6_72vag")
 text = "Connect"
 script = ExtResource("3_ry2b2")
 
@@ -271,12 +268,28 @@ theme_override_constants/margin_bottom = 20
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MainLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="MainLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 6
 text = "No Active Game"
 label_settings = SubResource("LabelSettings_oaxtv")
+
+[node name="ControlInfo" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
+unique_name_in_owner = true
+layout_mode = 2
+title = "Controls"
+info = "LClick: Select (Hold / Shift / Ctrl: Multi)
+TODO Double-LClick: Select Matching (Shift / Ctrl: Multi)
+RClick: Select (Shift / Ctrl: deselect, Hold: Multi)
+WASD/🠅🠄🠇🠆: Move selection (Shift / Ctrl: Multi)
+Numbers: Enter value (%s)
+Tab: Cycle number entry mode
+Delete/Backspace: Clear cell (Answers then Center then Corner)"
+format_args = Array[String](["Shift: Corner, Ctrl: Center"])
 
 [node name="MarginContainer" type="MarginContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer" index="1"]
 layout_mode = 2
