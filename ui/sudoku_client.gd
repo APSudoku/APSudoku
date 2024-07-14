@@ -13,6 +13,7 @@ func _ready():
 	#TODO finish gui (difficulty sel, number pad, info buttons)
 	#TODO Finish grid functionality (puzzle starting, loading, failing, etc)
 	super()
+	get_window().min_size = Vector2(850,500)
 	if Engine.is_editor_hint():
 		await get_tree().create_timer(1).timeout
 		var q := 0

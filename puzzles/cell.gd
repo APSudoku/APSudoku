@@ -6,6 +6,8 @@ signal recheck_focus
 signal grid_input
 signal grid_focus(cell: Cell)
 
+var _skip_focus_recheck := false
+var has_mouse := false
 var is_given := false
 var draw_invalid := false
 var is_selected := false
@@ -149,6 +151,7 @@ func _ready():
 	focus_next = get_path()
 	focus_previous = get_path()
 	mouse_entered.connect(_on_mouse_enter)
+	mouse_exited.connect(_on_mouse_exit)
 
 func clear() -> void:
 	is_given = false
@@ -179,14 +182,17 @@ func erase() -> void:
 	if is_given: return
 	if value:
 		value = 0
+		grid_redraw.emit()
 		return
 	for mark in center_marks:
 		if mark:
 			center_marks.fill(false)
+			grid_redraw.emit()
 			return
 	for mark in corner_marks:
 		if mark:
 			corner_marks.fill(false)
+			grid_redraw.emit()
 			return
 
 func enter_val(v: int, mode: SudokuGrid.EntryMode) -> void:
@@ -201,31 +207,37 @@ func enter_val(v: int, mode: SudokuGrid.EntryMode) -> void:
 	grid_redraw.emit()
 
 func _on_mouse_enter():
+	has_mouse = true
 	if get_tree().paused: return
+	if not %Regions.allow_grid_sel: return
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		_reselect(self, true)
 	elif Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		if %Sudoku._shift or %Sudoku._ctrl:
 			is_selected = false
 			if has_focus():
+				_skip_focus_recheck = true
 				release_focus()
 				%Sudoku.grab_focus()
 			grid_redraw.emit()
 		else: _reselect(self, true)
-		
+func _on_mouse_exit():
+	has_mouse = false
 func _gui_input(event):
 	if get_tree().paused: return
 	var multi = %Sudoku._shift or %Sudoku._ctrl
 	if event is InputEventMouseButton:
-		if event.pressed:
+		if event.pressed and has_mouse:
 			if event.button_index == MOUSE_BUTTON_RIGHT and multi:
 				is_selected = false
 				if has_focus():
+					_skip_focus_recheck = true
 					release_focus()
 					%Sudoku.grab_focus()
 				grid_redraw.emit()
 			else: _reselect(self, multi)
 			accept_event()
+			return
 	elif event is InputEventKey:
 		if event.pressed:
 			match event.keycode:
@@ -255,5 +267,8 @@ func _reselect(c: Cell, multi: bool) -> void:
 func _notification(what):
 	match what:
 		NOTIFICATION_FOCUS_EXIT:
+			if _skip_focus_recheck:
+				_skip_focus_recheck = false
+				return
 			await get_tree().process_frame
 			recheck_focus.emit()
