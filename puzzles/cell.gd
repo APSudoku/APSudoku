@@ -236,7 +236,6 @@ func _gui_input(event):
 					%Sudoku.grab_focus()
 				grid_redraw.emit()
 			else: _reselect(self, multi)
-			accept_event()
 			return
 	elif event is InputEventKey:
 		if event.pressed:
