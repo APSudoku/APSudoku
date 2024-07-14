@@ -8,7 +8,6 @@ var _real_entry_mode: SudokuGrid.EntryMode = SudokuGrid.EntryMode.ANSWER
 var _entry_mode: SudokuGrid.EntryMode = SudokuGrid.EntryMode.ANSWER
 
 func _ready():
-	#TODO Finish grid functionality (check, succeed, hints, failing, etc)
 	super()
 	get_window().min_size = Vector2(850,500)
 	if Engine.is_editor_hint():
