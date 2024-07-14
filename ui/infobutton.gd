@@ -8,7 +8,7 @@ func _ready():
 	pressed.connect(show_info)
 
 func show_info() -> void:
-	var popup := Util.freeze_popup(get_tree(), title, info % format_args, false)
+	var popup := PopupManager.create_popup(info % format_args, title, false)
 	var lbl := popup.get_label()
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	popup.popup_centered()
+	await popup.pop_open()
