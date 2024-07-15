@@ -939,18 +939,19 @@ RClick: Toggle button (useful for marking finished values)
 layout_mode = 2
 size_flags_horizontal = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="0"]
+[node name="DiffContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="0"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="0"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/HBoxContainer" index="0"]
 layout_mode = 2
 text = "Difficulty:"
 label_settings = ExtResource("9_16nn7")
 
-[node name="InfoButton" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
+[node name="InfoButton" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
 layout_mode = 2
 title = "How to Play / Difficulty Info"
 info = "Fill every Row, Column, and outlined Region (3x3 box) with the digits 1-9, exactly once each.
@@ -960,7 +961,7 @@ Easy: 46, 10%%        Normal: 35, 40%%
 Hard: 26, 80%%        Killer*: 26, 60%%
 * In 'Killer' mode, outlined Cages must sum to the indicated total."
 
-[node name="RadioEasy" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="1"]
+[node name="RadioEasy" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -968,7 +969,7 @@ theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_7l32q")
 text = "Easy"
 
-[node name="RadioMedium" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="2"]
+[node name="RadioMedium" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -976,7 +977,7 @@ theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_7l32q")
 text = "Medium"
 
-[node name="RadioHard" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="3"]
+[node name="RadioHard" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="3"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -984,7 +985,7 @@ theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_7l32q")
 text = "Hard"
 
-[node name="RadioKiller" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="4"]
+[node name="RadioKiller" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="4"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1050,10 +1051,10 @@ text = "Check"
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry8" to="Tabs/Sudoku" method="type_number" binds= [8]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry9" to="Tabs/Sudoku" method="type_number" binds= [9]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/DeleteButton" to="Tabs/Sudoku" method="clear_selected"]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/RadioEasy" to="Tabs/Sudoku" method="set_difficulty" binds= [0]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/RadioMedium" to="Tabs/Sudoku" method="set_difficulty" binds= [1]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/RadioHard" to="Tabs/Sudoku" method="set_difficulty" binds= [2]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/RadioKiller" to="Tabs/Sudoku" method="set_difficulty" binds= [3]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/RadioEasy" to="Tabs/Sudoku" method="set_difficulty" binds= [0]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/RadioMedium" to="Tabs/Sudoku" method="set_difficulty" binds= [1]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/RadioHard" to="Tabs/Sudoku" method="set_difficulty" binds= [2]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/RadioKiller" to="Tabs/Sudoku" method="set_difficulty" binds= [3]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/StartButton" to="Tabs/Sudoku" method="start_puzzle"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/ForfeitButton" to="Tabs/Sudoku" method="forfeit_puzzle"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/CheckButton" to="Tabs/Sudoku" method="submit_solution"]
