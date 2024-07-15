@@ -1,6 +1,6 @@
-class_name SudokuGrid extends MarginContainer
+@tool class_name SudokuGrid extends MarginContainer
 
-const CHEAT_MODE := true
+const CHEAT_MODE := false
 
 signal modifier_entry_mode(val: EntryMode)
 signal cycle_entry_mode
@@ -9,7 +9,7 @@ signal grant_hint(prog_percent: int)
 var config: SudokuConfigManager :
 	get: return Archipelago.config
 	set(val): Archipelago.config = val
-@export var sudoku_theme := SudokuTheme.new()
+@export var sudoku_theme: SudokuTheme
 
 var deaths_towards_amnesty := 0
 var death_amnesty := 0
@@ -52,6 +52,8 @@ func _ready():
 	for r in rows:
 		for c in r:
 			cells.append(c)
+	if Engine.is_editor_hint(): return
+	
 	for r in regions:
 		for c in r:
 			c.add_neighbors(r)
@@ -78,6 +80,7 @@ func _ready():
 		cells[q].grid_focus.connect(grid_focus)
 		cells[q].select_alike.connect(select_alike)
 	
+	if not sudoku_theme: sudoku_theme = SudokuTheme.new()
 	%MainLabel.label_settings = %MainLabel.label_settings.duplicate() # Should be unique at runtime, *more* unique than "per scene"
 	clear()
 	
@@ -85,10 +88,12 @@ func _ready():
 	set_difficulty(PuzzleGrid.Difficulty.MEDIUM)
 
 func update_config() -> void:
+	if Engine.is_editor_hint(): return
 	%ControlInfo.format_args[0] = "Shift: Center, Ctrl: Corner" if \
 		config.shift_center else "Shift: Corner, Ctrl: Center"
 
 func set_invalid() -> void:
+	if Engine.is_editor_hint(): return
 	if not %Sudoku.config.show_invalid: return
 	_invalid = false
 	for c in cells:
@@ -98,6 +103,7 @@ func set_invalid() -> void:
 	%ClearInvalid.visible = _invalid
 	grid_redraw()
 func clear_invalid() -> void:
+	if Engine.is_editor_hint(): return
 	_invalid = false
 	for c in cells:
 		c.draw_invalid = false
@@ -158,10 +164,12 @@ func type_number(v: int) -> void:
 var _shift: bool = false
 var _ctrl: bool = false
 func _gui_input(event):
+	if Engine.is_editor_hint(): return
 	if _has_mouse_directly and event is InputEventMouseButton:
 		accept_event()
 	grid_input(event)
 func grid_input(event) -> void:
+	if Engine.is_editor_hint(): return
 	if get_tree().paused: return
 	var update_modifiers := false
 	if event is InputEventKey:
@@ -208,6 +216,7 @@ func grid_input(event) -> void:
 				type_number(v)
 				accept_event()
 func grid_focus(cell: Cell) -> void:
+	if Engine.is_editor_hint(): return
 	if cell.has_focus(): return
 	var foc_owner = get_viewport().gui_get_focus_owner()
 	if foc_owner: foc_owner.release_focus()
