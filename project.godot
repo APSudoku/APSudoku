@@ -17,7 +17,8 @@ Using https://github.com/EmilyV99/GodotAP"
 config/version="0.0.0"
 run/main_scene="res://ui/sudoku_client.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
-config/icon="res://icon.svg"
+config/icon="res://graphics/icon/icon.png"
+config/windows_native_icon="res://graphics/icon/icon.ico"
 
 [autoload]
 
@@ -43,6 +44,10 @@ theme/custom_font="res://godot_ap/ui/themes/basic_font.tres"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg")
+
+[filesystem]
+
+import/blender/enabled=false
 
 [input]
 
