@@ -13,7 +13,7 @@
 @export var GRID_BG := Color.BLACK
 
 @export var KILLER_BORDER := Color.from_string("FF00FF", Color.MAGENTA)
-@export var KILLER_SUM := Color.from_string("0000FF", Color.BLUE)
+@export var KILLER_SUM := Color.from_string("AA00FF", Color.PURPLE)
 
 @export var SHAPE_1 := Color.from_string("FF0000", Color.RED)
 @export var SHAPE_2 := Color.from_string("00AA00", Color.GREEN)

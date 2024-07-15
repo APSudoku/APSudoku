@@ -6,6 +6,7 @@ enum Difficulty {
 var difficulty: Difficulty
 var solutions: Array[int] = []
 var givens: Array[bool] = []
+var cages: Array[PuzzleCage] = []
 
 func _init(diff: Difficulty):
 	solutions.resize(81)
@@ -19,6 +20,7 @@ func _init(diff: Difficulty):
 		givens[q] = c.given
 		solutions[q] = c.sol
 		q += 1
+	cages.assign(grid.cages)
 
 func _to_string():
 	var s: String = "---PUZZLEGRID %s---\n" % Difficulty.find_key(difficulty)
@@ -40,12 +42,17 @@ func _to_string():
 
 class GenGrid:
 	class GenCell:
+		var parent_grid: GenGrid
+		var index: int = -1
+		
 		var sol: int = 0
 		var val: int = 0
 		var given: bool = false
 		var options: Array[int]
-		#TODO cages
-		func _init():
+		var cage: PuzzleCage
+		func _init(parent: GenGrid, ind: int):
+			parent_grid = parent
+			index = ind
 			clear()
 		func clear():
 			sol = 0
@@ -54,8 +61,8 @@ class GenGrid:
 			reset_options()
 		func reset_options() -> void:
 			options = [1,2,3,4,5,6,7,8,9]
-		func duplicate() -> GenCell:
-			var other := GenCell.new()
+		func duplicate(parent: GenGrid) -> GenCell:
+			var other := GenCell.new(parent, index)
 			other.sol = sol
 			other.val = val
 			other.given = given
@@ -63,7 +70,18 @@ class GenGrid:
 			return other
 		func _to_string():
 			return "%d [%d]%s %s" % [val,sol," Given" if given else "",options]
-	
+		func top() -> GenCell:
+			if index - 9 < 0: return null
+			return parent_grid.cells[index-9]
+		func bottom() -> GenCell:
+			if index + 9 >= 81: return null
+			return parent_grid.cells[index+9]
+		func left() -> GenCell:
+			if index % 9 == 0: return null
+			return parent_grid.cells[index-1]
+		func right() -> GenCell:
+			if index % 9 == 8: return null
+			return parent_grid.cells[index+1]
 	class GridFillHistory:
 		var ind := 0
 		var checked: Dictionary ## of Array[int]
@@ -76,10 +94,11 @@ class GenGrid:
 	
 	var diff: Difficulty
 	var cells: Array[GenCell] = []
+	var cages: Array[PuzzleCage] = []
 	func _init(d: Difficulty):
 		diff = d
 		for q in 81:
-			cells.append(GenCell.new())
+			cells.append(GenCell.new(self, q))
 	func clear() -> void:
 		for c in cells:
 			c.clear()
@@ -89,7 +108,7 @@ class GenGrid:
 	func duplicate() -> GenGrid:
 		var other = GenGrid.new(diff)
 		for q in 81:
-			other.cells[q] = cells[q].duplicate()
+			other.cells[q] = cells[q].duplicate(other)
 		return other
 	
 	func is_unique() -> bool:
@@ -106,7 +125,7 @@ class GenGrid:
 		# banned[cell index] -> Array[int] of banned values for that index
 		var killer := false
 		for ind in 81:
-			if not PuzzleGenManager.running: return null
+			if not PuzzleGenManager.check_running(): return null
 			if cells[ind].val:
 				cells[ind].options.clear()
 				continue # Skip filled cells
@@ -125,13 +144,44 @@ class GenGrid:
 				neighbors[9*q + col] = true # same column
 				neighbors[9*row + q] = true # same row
 				neighbors[9*(3*floor(box/3.0) + floor(q/3.0)) + (3*(box%3) + (q%3))] = true # same box
-			# TODO cage neighbors
+			if cells[ind].cage:
+				for c in cells[ind].cage.cells:
+					neighbors[c] = true
 			
 			# values placed in neighbor cells cannot be duplicated
 			for q in neighbors.keys():
 				cells[ind].options.erase(cells[q].val)
 		if killer:
-			pass # TODO killer logic
+			var didsomething := true
+			while didsomething:
+				didsomething = false
+				for q in 81:
+					var cell_q := cells[q]
+					if cell_q.val: continue # filled
+					var cage := cell_q.cage
+					if not cage: continue # uncaged
+					var target := cage.sum
+					if cage.cells.size() == 1:
+						# single-cell, force value as optimization
+						cell_q.options.assign([target])
+						continue
+					var lowest := 0 # Sum of lowest possibilities, excluding [q]
+					var highest := 0 # Sum of highest possibilities, excluding [q]
+					for ind in cage.cells:
+						if ind == q: continue
+						var cell := cells[ind]
+						if cell.val:
+							lowest += cell.val
+							highest += cell.val
+						elif not cell.options.is_empty():
+							lowest += cell.options.front()
+							highest += cell.options.back()
+					# Now use sums to eliminate possibilities
+					for opt in cell_q.options.duplicate():
+						if (lowest + opt > target or # Too high
+							highest + opt < target): # Too low
+							cell_q.options.erase(opt)
+							didsomething = true
 		var least_opts := {}
 		var least_count := 9
 		for ind in 81:
@@ -248,10 +298,10 @@ class GenGrid:
 					if not killer_fill(): return false
 					if givens.size() == target_givens:
 						return true
-					#TODO for cage in cages:
-						#if cage.cells.size() == 1:
-							#killer_singles.append(cage.cells.front())
-					if killer_singles.size() > target_givens: #HACK not sure what this was doing? Should check this logic again...
+					for cage in cages:
+						if cage.cells.size() == 1:
+							killer_singles.append(cage.cells.front())
+					if killer_singles.size() > target_givens: # Too many givens forced by cages
 						continue
 					history.append(GridGivenHistory.new())
 					continue
@@ -280,7 +330,38 @@ class GenGrid:
 			return build()
 		assert(false, "Non-variant grid found no solution") # Should be unreachable; a non-variant grid should always find a solution
 		return false
-	##TODO Fills the (populated) grid with random killer cages
+	##Fills the (populated) grid with random killer cages
 	func killer_fill() -> bool:
 		if not PuzzleGenManager.running: return false # Program exiting, quick exit thread
+		cages.clear()
+		for cell in cells:
+			cell.cage = null
+		const LOWSZ := 2
+		const HIGHSZ := 7
+		var remaining: Array[int] = []
+		for q in 81: remaining.append(q)
+		while not remaining.is_empty():
+			var cage := PuzzleCage.new()
+			cages.append(cage)
+			var target := randi_range(LOWSZ,HIGHSZ)
+			var core: int = remaining.pick_random()
+			remaining.erase(core)
+			cage.cells.append(core)
+			var cage_cells: Array[GenCell] = [cells[core]]
+			while cage.cells.size() < target:
+				var neighbors: Array[GenCell] = []
+				for c in cage_cells:
+					for sub_c in [c.top(),c.bottom(),c.left(),c.right()]:
+						if (not sub_c) or sub_c in cage_cells: continue
+						if cage_cells.any(func(ccell): return ccell.sol == sub_c.sol):
+							continue
+						neighbors.append(sub_c)
+				if neighbors.is_empty():
+					break # Dead-end before target size
+				var next: GenCell = neighbors.pick_random()
+				remaining.erase(next.index)
+				cage.cells.append(next.index)
+				cage_cells.append(next)
+			cage.sum = cage_cells.reduce(func(accum,c): return accum + c.sol, 0)
+			cage.cells.sort()
 		return true

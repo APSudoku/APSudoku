@@ -7,6 +7,9 @@ signal grid_input
 signal grid_focus(cell: Cell)
 signal select_alike(cell: Cell)
 
+var index: int = -1
+var cage: PuzzleCage
+
 var _skip_focus_recheck := false
 var has_mouse := false
 var is_given := false
@@ -97,19 +100,19 @@ func _draw_numbers() -> void:
 			var text_color: Color = %Sudoku.sudoku_theme.CELL_CORNER_MARK_TEXT
 			var row: Array[int] = [0,0,2,2,0,2,1,1,1]
 			var col: Array[int] = [0,2,0,2,1,1,0,2,1]
-			var index := 0
+			var ind := 0
 			var sz := size - Vector2(MARGIN,MARGIN)
 			for q in corner_marks.size():
 				if not corner_marks[q]: continue
 				var s := str(q+1)
 				
-				var pos := Vector2(col[index] * sz.x/3,(row[index] * sz.y/3)+font.get_ascent(font_size))
+				var pos := Vector2(col[ind] * sz.x/3,(row[ind] * sz.y/3)+font.get_ascent(font_size))
 				
-				if index == 8:
+				if ind == 8:
 					pos -= Vector2(4,4)
 				
 				draw_string(font, pos, s, HORIZONTAL_ALIGNMENT_CENTER, size.x/3, font_size, text_color)
-				index += 1
+				ind += 1
 		if has_center:
 			var s := ""
 			for q in center_marks.size():
@@ -127,14 +130,14 @@ func _draw_numbers() -> void:
 			
 			var pos := Vector2(0,(size.y-font.get_string_size(s, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size).y)/2 + font.get_ascent(font_size))
 			draw_string(font, pos, s, HORIZONTAL_ALIGNMENT_CENTER, size.x, font_size, text_color)
+const _BORDER_WID := 6
 func _draw() -> void:
 	if %Sudoku.config.shapes_mode:
 		_draw_shapes()
 	else: _draw_numbers()
 	_draw_selection()
-	#TODO Draw cages?
+	_draw_cages()
 func _draw_selection() -> void:
-	const BORDER_WID := 5
 	if is_selected: # Border
 		var COLOR: Color = %Sudoku.sudoku_theme.CELL_SELECT
 		var _tl := false
@@ -142,34 +145,96 @@ func _draw_selection() -> void:
 		var _bl := false
 		var _br := false
 		if not (left and left.is_selected):
-			draw_rect(Rect2(0,0,BORDER_WID,size.y), COLOR)
+			draw_rect(Rect2(0,0,_BORDER_WID,size.y), COLOR)
 			_tl = true
 			_bl = true
 		if not (right and right.is_selected):
-			draw_rect(Rect2(size.x-BORDER_WID,0,BORDER_WID,size.y), COLOR)
+			draw_rect(Rect2(size.x-_BORDER_WID,0,_BORDER_WID,size.y), COLOR)
 			_tr = true
 			_br = true
 		if not (top and top.is_selected):
-			draw_rect(Rect2(0,0,size.x,BORDER_WID), COLOR)
+			draw_rect(Rect2(0,0,size.x,_BORDER_WID), COLOR)
 			_tl = true
 			_tr = true
 		if not (bottom and bottom.is_selected):
-			draw_rect(Rect2(0,size.y-BORDER_WID,size.x,BORDER_WID), COLOR)
+			draw_rect(Rect2(0,size.y-_BORDER_WID,size.x,_BORDER_WID), COLOR)
 			_bl = true
 			_br = true
 		if not _tl and not (topleft and topleft.is_selected):
-			draw_rect(Rect2(0,0,BORDER_WID,BORDER_WID), COLOR)
+			draw_rect(Rect2(0,0,_BORDER_WID,_BORDER_WID), COLOR)
 		if not _tr and not (topright and topright.is_selected):
-			draw_rect(Rect2(size.x-BORDER_WID,0,BORDER_WID,BORDER_WID), COLOR)
+			draw_rect(Rect2(size.x-_BORDER_WID,0,_BORDER_WID,_BORDER_WID), COLOR)
 		if not _bl and not (bottomleft and bottomleft.is_selected):
-			draw_rect(Rect2(0,size.y-BORDER_WID,BORDER_WID,BORDER_WID), COLOR)
+			draw_rect(Rect2(0,size.y-_BORDER_WID,_BORDER_WID,_BORDER_WID), COLOR)
 		if not _br and not (bottomright and bottomright.is_selected):
-			draw_rect(Rect2(size.x-BORDER_WID,size.y-BORDER_WID,BORDER_WID,BORDER_WID), COLOR)
+			draw_rect(Rect2(size.x-_BORDER_WID,size.y-_BORDER_WID,_BORDER_WID,_BORDER_WID), COLOR)
 	if has_focus():
 		var COLOR: Color = %Sudoku.sudoku_theme.CELL_FOCUS
-		const FOCUS_WID := 3
+		const FOCUS_WID := _BORDER_WID / 2.0
 		draw_rect(Rect2(FOCUS_WID/2.0,FOCUS_WID/2.0,size.x - FOCUS_WID, size.y - FOCUS_WID), COLOR, false, FOCUS_WID)
-
+func _draw_cages() -> void:
+	if not cage: return # Nothing to draw here
+	const CAGE_BWID := _BORDER_WID / 2.0
+	var border_col: Color = %Sudoku.sudoku_theme.KILLER_BORDER
+	var sum_col: Color = %Sudoku.sudoku_theme.KILLER_SUM
+	var x0: float = 1
+	var y0: float = 1
+	var x1: float = CAGE_BWID
+	var y1: float = CAGE_BWID
+	var x2: float = size.x-CAGE_BWID
+	var y2: float = size.y-CAGE_BWID
+	var x3: float = size.x-1
+	var y3: float = size.y-1
+	#region BORDER
+	var t := not top or top.cage != cage
+	var b := not bottom or bottom.cage != cage
+	var l := not left or left.cage != cage
+	var r := not right or right.cage != cage
+	var lx = x1 if l else x0
+	var rx = x2 if r else x3
+	var ty = y1 if t else y0
+	var by = y2 if b else y3
+	if t:
+		draw_dashed_line(Vector2(lx,y1), Vector2(rx,y1), border_col, 2)
+	if b:
+		draw_dashed_line(Vector2(lx,y2), Vector2(rx,y2), border_col, 2)
+	if l:
+		draw_dashed_line(Vector2(x1,ty), Vector2(x1,by), border_col, 2)
+	if r:
+		draw_dashed_line(Vector2(x2,ty), Vector2(x2,by), border_col, 2)
+	if topleft and topleft.cage != cage:
+		if not (t or l):
+			draw_line(Vector2(x1,y1), Vector2(x1,y0), border_col, 2)
+			draw_line(Vector2(x1,y1), Vector2(x0,y1), border_col, 2)
+	if topright and topright.cage != cage:
+		if not (t or r):
+			draw_line(Vector2(x2,y1), Vector2(x2,y0), border_col, 2)
+			draw_line(Vector2(x2,y1), Vector2(x3,y1), border_col, 2)
+	if bottomleft and bottomleft.cage != cage:
+		if not (b or l):
+			draw_line(Vector2(x1,y2), Vector2(x1,y3), border_col, 2)
+			draw_line(Vector2(x1,y2), Vector2(x0,y2), border_col, 2)
+	if bottomright and bottomright.cage != cage:
+		if not (b or r):
+			draw_line(Vector2(x2,y2), Vector2(x2,y3), border_col, 2)
+			draw_line(Vector2(x2,y2), Vector2(x3,y2), border_col, 2)
+	#endregion BORDER
+	if index == cage.cells.front(): #region SUM
+		const TXT_BWID := 3
+		var WID := size.x - CAGE_BWID*2
+		var HEI := (size.y - CAGE_BWID*2) / 3
+		var s := str(cage.sum)
+		var font := get_theme_default_font()
+		var font_size := 1
+		while font.get_height(font_size) <= HEI:
+			font_size += 1
+		font_size -= 1
+		while font_size and font.get_string_size(s, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x >= WID:
+			font_size -= 1
+		var pos := Vector2(x1+TXT_BWID,y1+TXT_BWID+font.get_string_size(s, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).y/2)
+		draw_string(font, pos, s, HORIZONTAL_ALIGNMENT_LEFT, WID, font_size, sum_col)
+	#endregion SUM
+	pass
 func _ready():
 	focus_next = get_path()
 	focus_previous = get_path()
@@ -202,6 +267,7 @@ func clear() -> void:
 	value = 0
 	corner_marks.fill(false)
 	center_marks.fill(false)
+	cage = null
 
 func add_neighbors(arr: Array) -> void:
 	for n in arr:
@@ -266,9 +332,14 @@ func _on_mouse_enter():
 func _on_mouse_exit():
 	has_mouse = false
 func _gui_input(event):
-	if get_tree().paused: return
+	if get_tree().paused:
+		accept_event()
+		return
 	var multi = %Sudoku._shift or %Sudoku._ctrl
 	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP or event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			accept_event()
+			return
 		if event.pressed and has_mouse:
 			if event.button_index == MOUSE_BUTTON_RIGHT and multi:
 				is_selected = false
