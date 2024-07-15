@@ -352,7 +352,8 @@ class GenGrid:
 				var neighbors: Array[GenCell] = []
 				for c in cage_cells:
 					for sub_c in [c.top(),c.bottom(),c.left(),c.right()]:
-						if (not sub_c) or sub_c in cage_cells: continue
+						if not sub_c: continue
+						if not (sub_c.index in remaining): continue
 						if cage_cells.any(func(ccell): return ccell.sol == sub_c.sol):
 							continue
 						neighbors.append(sub_c)
@@ -364,4 +365,7 @@ class GenGrid:
 				cage_cells.append(next)
 			cage.sum = cage_cells.reduce(func(accum,c): return accum + c.sol, 0)
 			cage.cells.sort()
+
+		assert(cages.reduce(func(ac, cage): return ac + cage.cells.size(), 0) == 81
+			and cages.reduce(func(ac, cage): return ac + cage.sum, 0) == 45*9)
 		return true
