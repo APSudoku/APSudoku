@@ -27,3 +27,16 @@
 @export var SHAPE_INVALID_BG := Color.from_string("AA0000", Color.RED)
 @export var SHAPE_BG := Color.WHITE
 @export var SHAPE_GIVEN_BG := Color.from_string("C0C0C0", Color.WEB_GRAY)
+
+func get_shape_color(val: int) -> Color:
+	match val:
+		1: return SHAPE_1
+		2: return SHAPE_2
+		3: return SHAPE_3
+		4: return SHAPE_4
+		5: return SHAPE_5
+		6: return SHAPE_6
+		7: return SHAPE_7
+		8: return SHAPE_8
+		9: return SHAPE_9
+		_: return Color.WHITE
