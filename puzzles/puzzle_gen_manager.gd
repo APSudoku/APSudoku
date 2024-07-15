@@ -3,7 +3,13 @@ extends Node
 
 const PUZZLES_TO_KEEP := 10
 
+var run_mutex := Mutex.new()
 var running: bool = true
+func check_running() -> bool:
+	run_mutex.lock()
+	var r := running
+	run_mutex.unlock()
+	return r
 class PuzzleData:
 	var diff: PuzzleGrid.Difficulty
 	var puzzles: Array[PuzzleGrid] = []
@@ -30,11 +36,11 @@ class PuzzleData:
 			threads[q].start(thread_proc, prio)
 	func thread_proc() -> void:
 		gen_semaphore.wait()
-		while PuzzleGenManager.running:
+		while PuzzleGenManager.check_running():
 			add_puzzle(PuzzleGrid.new(diff))
 			gen_semaphore.wait()
 	func add_puzzle(puz: PuzzleGrid) -> void:
-		if not PuzzleGenManager.running: return
+		if not PuzzleGenManager.check_running(): return
 		mutex.lock()
 		puzzles.append(puz)
 		#print(PuzzleGrid.Difficulty.find_key(diff), ": ", puzzles.size())
@@ -45,7 +51,9 @@ class PuzzleData:
 var puzzle_datas: Array[PuzzleData] = []
 
 func _cleanup_threads() -> void:
+	run_mutex.lock()
 	running = false
+	run_mutex.unlock()
 	# Queue all the threads to run, so they can exit after detecting `running == false`
 	for data in puzzle_datas:
 		for q in data.threads.size():
