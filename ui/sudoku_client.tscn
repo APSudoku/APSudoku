@@ -297,7 +297,7 @@ unique_name_in_owner = true
 layout_mode = 2
 title = "Controls"
 info = "LClick: Select (Hold / Shift / Ctrl: Multi)
-TODO Double-LClick: Select Matching (Shift / Ctrl: Multi)
+Double-LClick: Select Matching (Shift / Ctrl: Multi)
 RClick: Select (Shift / Ctrl: deselect, Hold: Multi)
 WASD/🠅🠄🠇🠆: Move selection (Shift / Ctrl: Multi)
 Numbers: Enter value (%s)
