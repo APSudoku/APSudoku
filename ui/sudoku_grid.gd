@@ -74,6 +74,7 @@ func _ready():
 		cells[q].grid_input.connect(grid_input)
 		cells[q].recheck_focus.connect(recheck_focus)
 		cells[q].grid_focus.connect(grid_focus)
+		cells[q].select_alike.connect(select_alike)
 	
 	%MainLabel.label_settings = %MainLabel.label_settings.duplicate() # Should be unique at runtime, *more* unique than "per scene"
 	clear()
@@ -204,12 +205,27 @@ func grid_input(event) -> void:
 			if v >= 1 and v <= 9:
 				type_number(v)
 				accept_event()
-	#TODO double-click to select similar cells feature
 func grid_focus(cell: Cell) -> void:
 	if cell.has_focus(): return
 	var foc_owner = get_viewport().gui_get_focus_owner()
 	if foc_owner: foc_owner.release_focus()
 	cell.grab_focus()
+func select_alike(cell: Cell) -> void:
+	var _bool: Callable = func(b: bool) -> bool: return b
+	for c in cells:
+		if cell.value != c.value:
+			continue
+		if not cell.value:
+			if cell.center_marks.any(_bool):
+				if c.center_marks != cell.center_marks:
+					continue
+			elif cell.corner_marks.any(_bool):
+				if c.corner_marks != cell.corner_marks:
+					continue
+			elif c.center_marks.any(_bool) or c.corner_marks.any(_bool):
+				continue
+		c.is_selected = true
+	grid_redraw()
 func recheck_focus() -> void:
 	for c in cells:
 		if c.has_focus():
