@@ -27,6 +27,7 @@ var regions = [[],[],[],[],[],[],[],[],[]]
 var rows = [[],[],[],[],[],[],[],[],[]]
 var columns = [[],[],[],[],[],[],[],[],[]]
 #endregion
+var cages: Array[PuzzleCage] = []
 
 var _invalid := false
 
@@ -69,6 +70,7 @@ func _ready():
 			cells[q].top = cells[q-9]
 		if floor(q/9.0) != 8:
 			cells[q].bottom = cells[q+9]
+		cells[q].index = q
 		cells[q].clear_select.connect(clear_select)
 		cells[q].grid_redraw.connect(grid_redraw)
 		cells[q].grid_input.connect(grid_input)
@@ -282,15 +284,18 @@ func load_puzzle(puzzle: PuzzleGrid) -> void:
 		%MainLabel.text += " (%d/%d Lives)" % [death_amnesty-deaths_towards_amnesty,death_amnesty]
 	%MainLabel.label_settings.font_color = Color.WHITE
 	var q := 0
-	for r in rows:
-		for c in r:
-			c.solution = puzzle.solutions[q]
-			if puzzle.givens[q]:
-				c.is_given = true
-				c.value = c.solution
-			if OS.is_debug_build() and CHEAT_MODE:
-				c.value = c.solution
-			q += 1
+	for c in cells:
+		c.solution = puzzle.solutions[q]
+		if puzzle.givens[q]:
+			c.is_given = true
+			c.value = c.solution
+		if OS.is_debug_build() and CHEAT_MODE:
+			c.value = c.solution
+		q += 1
+	cages = puzzle.cages.duplicate(true)
+	for cage in cages:
+		for ind in cage.cells:
+			cells[ind].cage = cage
 	grid_redraw()
 
 var _has_mouse_directly := false
@@ -302,7 +307,7 @@ func _notification(what):
 			_has_mouse_directly = false
 
 func set_difficulty(diff: int):
-	[%RadioEasy,%RadioMedium,%RadioHard][diff].button_pressed = true
+	[%RadioEasy,%RadioMedium,%RadioHard,%RadioKiller][diff].button_pressed = true
 	difficulty = diff as PuzzleGrid.Difficulty
 
 func _lost_puzzle(force_clear := true) -> bool:
