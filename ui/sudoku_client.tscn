@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://c3eb4ejxtp2nl"]
+[gd_scene load_steps=20 format=3 uid="uid://c3eb4ejxtp2nl"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ah7d3ep4de" path="res://godot_ap/ui/common_client.tscn" id="1_yxr36"]
 [ext_resource type="Script" path="res://ui/sudoku_client.gd" id="2_drtqi"]
@@ -9,7 +9,6 @@
 [ext_resource type="LabelSettings" uid="uid://b7m7jxj4l8en6" path="res://ui/basic_err_label.tres" id="6_1yrws"]
 [ext_resource type="StyleBox" uid="uid://b7l3w40krs8op" path="res://ui/button_shadow.tres" id="6_72vag"]
 [ext_resource type="Theme" uid="uid://bbme64t0s1a4c" path="res://ui/sudoku_theme.tres" id="6_fj6yn"]
-[ext_resource type="Script" path="res://ui/themes.gd" id="6_ynybo"]
 [ext_resource type="Texture2D" uid="uid://c5febtmw1vnx3" path="res://graphics/grabber.png" id="7_leeka"]
 [ext_resource type="SystemFont" uid="uid://dgq72ioiluq5i" path="res://ui/basic_font.tres" id="8_w6wjr"]
 [ext_resource type="LabelSettings" uid="uid://77i3kx2kgskj" path="res://ui/basic_label.tres" id="9_16nn7"]
@@ -21,33 +20,6 @@
 bg_color = Color(0.109804, 0.109804, 0.109804, 1)
 border_width_bottom = 2
 border_color = Color(0.0509804, 0.0509804, 0.0509804, 1)
-
-[sub_resource type="Resource" id="Resource_vn24h"]
-script = ExtResource("6_ynybo")
-LABEL_INVALID_TEXT = Color(0.803922, 0.360784, 0.360784, 1)
-CELL_BG = Color(1, 1, 1, 1)
-CELL_GIVEN_TEXT = Color(0, 0, 0, 1)
-CELL_ANSWER_TEXT = Color(0.117647, 0.419608, 0.898039, 1)
-CELL_CENTER_MARK_TEXT = Color(0.117647, 0.419608, 0.898039, 1)
-CELL_CORNER_MARK_TEXT = Color(0.117647, 0.419608, 0.898039, 1)
-CELL_INVALID_TEXT = Color(0.666667, 0, 0, 1)
-CELL_SELECT = Color(0.298039, 0.643137, 1, 1)
-CELL_FOCUS = Color(0.803922, 0.360784, 0.360784, 1)
-GRID_BG = Color(0, 0, 0, 1)
-KILLER_BORDER = Color(1, 0, 1, 1)
-KILLER_SUM = Color(0, 0, 1, 1)
-SHAPE_1 = Color(1, 0, 0, 1)
-SHAPE_2 = Color(0, 0.666667, 0, 1)
-SHAPE_3 = Color(0, 0, 1, 1)
-SHAPE_4 = Color(1, 1, 0, 1)
-SHAPE_5 = Color(1, 0, 1, 1)
-SHAPE_6 = Color(0, 1, 1, 1)
-SHAPE_7 = Color(0.705882, 0, 1, 1)
-SHAPE_8 = Color(1, 0.627451, 0, 1)
-SHAPE_9 = Color(0.745098, 1, 0, 1)
-SHAPE_INVALID_BG = Color(0.666667, 0, 0, 1)
-SHAPE_BG = Color(1, 1, 1, 1)
-SHAPE_GIVEN_BG = Color(0.752941, 0.752941, 0.752941, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_oaxtv"]
 font = ExtResource("8_w6wjr")
@@ -253,7 +225,6 @@ layout_mode = 2
 focus_mode = 2
 mouse_filter = 0
 script = ExtResource("5_rhuh7")
-sudoku_theme = SubResource("Resource_vn24h")
 
 [node name="BG" type="ColorRect" parent="Tabs/Sudoku" index="0"]
 layout_mode = 2
@@ -324,6 +295,7 @@ theme_override_constants/margin_bottom = 4
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 0
+mouse_force_pass_scroll_events = false
 theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 4
 columns = 3
@@ -1012,6 +984,14 @@ theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_7l32q")
 text = "Hard"
 
+[node name="RadioKiller" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="4"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("6_fj6yn")
+button_group = SubResource("ButtonGroup_7l32q")
+text = "Killer"
+
 [node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="1"]
 layout_mode = 2
 size_flags_vertical = 10
@@ -1073,6 +1053,7 @@ text = "Check"
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/RadioEasy" to="Tabs/Sudoku" method="set_difficulty" binds= [0]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/RadioMedium" to="Tabs/Sudoku" method="set_difficulty" binds= [1]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/RadioHard" to="Tabs/Sudoku" method="set_difficulty" binds= [2]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/RadioKiller" to="Tabs/Sudoku" method="set_difficulty" binds= [3]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/StartButton" to="Tabs/Sudoku" method="start_puzzle"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/ForfeitButton" to="Tabs/Sudoku" method="forfeit_puzzle"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/CheckButton" to="Tabs/Sudoku" method="submit_solution"]

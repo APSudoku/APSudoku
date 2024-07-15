@@ -82,5 +82,5 @@ func get_puzzle(diff: PuzzleGrid.Difficulty) -> PuzzleGrid:
 	data.mutex.unlock()
 	return ret
 
-func _exit_tree():
+func _exiting_tree():
 	_cleanup_threads()
