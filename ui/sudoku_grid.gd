@@ -247,6 +247,9 @@ func clear_select() -> void:
 	grid_redraw()
 func clear_active() -> void:
 	active_puzzle = null
+	for node in %DiffContainer.get_children():
+		if node is CheckBox:
+			node.disabled = false
 	%StartButton.disabled = false
 	%ForfeitButton.disabled = true
 	%CheckButton.disabled = true
@@ -269,6 +272,9 @@ func start_puzzle() -> void:
 		if not await popup.pop_open():
 			return
 	%StartButton.disabled = true
+	for node in %DiffContainer.get_children():
+		if node is CheckBox:
+			node.disabled = true
 	%GeneratingLabel.visible = true
 	var puz := await PuzzleGenManager.get_puzzle(%Sudoku.difficulty)
 	%GeneratingLabel.visible = false
@@ -276,6 +282,9 @@ func start_puzzle() -> void:
 func load_puzzle(puzzle: PuzzleGrid) -> void:
 	clear()
 	active_puzzle = puzzle
+	for node in %DiffContainer.get_children():
+		if node is CheckBox:
+			node.disabled = true
 	%StartButton.disabled = true
 	%ForfeitButton.disabled = false
 	%CheckButton.disabled = false
