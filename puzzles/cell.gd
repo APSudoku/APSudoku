@@ -36,9 +36,28 @@ var bottomright: Cell :
 	get:
 		return bottom.right if bottom else (right.bottom if right else null)
 
+var _shape_textures: Array[Texture2D] = []
+var _small_shape_textures: Array[Texture2D] = []
+func _draw_shape(val: int, rect: Rect2) -> void:
+	if val < 1 or val > 9: return
+	var tex: Texture2D = _shape_textures[val-1]
+	if rect.size.x < 30 and rect.size.y < 30:
+		tex = _small_shape_textures[val-1]
+	draw_texture_rect(tex, rect, false, %Sudoku.sudoku_theme.get_shape_color(val))
 func _draw_shapes() -> void:
-	#TODO Shapes mode
-	pass
+	var bg_col: Color = %Sudoku.sudoku_theme.SHAPE_BG
+	if is_given: bg_col = %Sudoku.sudoku_theme.SHAPE_GIVEN_BG
+	elif draw_invalid: bg_col = %Sudoku.sudoku_theme.SHAPE_INVALID_BG
+	draw_rect(Rect2(Vector2.ZERO,size), bg_col)
+	if value:
+		_draw_shape(value, Rect2(Vector2.ZERO,size))
+	else:
+		for col in 3:
+			for row in 3:
+				var indx := col + row * 3
+				if corner_marks[indx]:
+					_draw_shape(1 + indx, Rect2(Vector2(col * size.x/3, row * size.y/3), size/3))
+	_draw_selection()
 func _draw() -> void:
 	if %Sudoku.config.shapes_mode:
 		return _draw_shapes()
@@ -111,6 +130,8 @@ func _draw() -> void:
 			var pos := Vector2(0,(size.y-font.get_string_size(s, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size).y)/2 + font.get_ascent(font_size))
 			draw_string(font, pos, s, HORIZONTAL_ALIGNMENT_CENTER, size.x, font_size, text_color)
 		pass
+	_draw_selection()
+func _draw_selection() -> void:
 	const BORDER_WID := 5
 	if is_selected: # Border
 		var COLOR: Color = %Sudoku.sudoku_theme.CELL_SELECT
@@ -152,6 +173,24 @@ func _ready():
 	focus_previous = get_path()
 	mouse_entered.connect(_on_mouse_enter)
 	mouse_exited.connect(_on_mouse_exit)
+	_shape_textures.append(preload("res://graphics/shapes/1.png"))
+	_shape_textures.append(preload("res://graphics/shapes/2.png"))
+	_shape_textures.append(preload("res://graphics/shapes/3.png"))
+	_shape_textures.append(preload("res://graphics/shapes/4.png"))
+	_shape_textures.append(preload("res://graphics/shapes/5.png"))
+	_shape_textures.append(preload("res://graphics/shapes/6.png"))
+	_shape_textures.append(preload("res://graphics/shapes/7.png"))
+	_shape_textures.append(preload("res://graphics/shapes/8.png"))
+	_shape_textures.append(preload("res://graphics/shapes/9.png"))
+	_small_shape_textures.append(preload("res://graphics/shapes/1small.png"))
+	_small_shape_textures.append(preload("res://graphics/shapes/2small.png"))
+	_small_shape_textures.append(preload("res://graphics/shapes/3small.png"))
+	_small_shape_textures.append(preload("res://graphics/shapes/4small.png"))
+	_small_shape_textures.append(preload("res://graphics/shapes/5small.png"))
+	_small_shape_textures.append(preload("res://graphics/shapes/6small.png"))
+	_small_shape_textures.append(preload("res://graphics/shapes/7small.png"))
+	_small_shape_textures.append(preload("res://graphics/shapes/8small.png"))
+	_small_shape_textures.append(preload("res://graphics/shapes/9small.png"))
 
 func clear() -> void:
 	is_given = false
