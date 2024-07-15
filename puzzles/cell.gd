@@ -5,6 +5,7 @@ signal grid_redraw
 signal recheck_focus
 signal grid_input
 signal grid_focus(cell: Cell)
+signal select_alike(cell: Cell)
 
 var _skip_focus_recheck := false
 var has_mouse := false
@@ -57,10 +58,7 @@ func _draw_shapes() -> void:
 				var indx := col + row * 3
 				if corner_marks[indx]:
 					_draw_shape(1 + indx, Rect2(Vector2(col * size.x/3, row * size.y/3), size/3))
-	_draw_selection()
-func _draw() -> void:
-	if %Sudoku.config.shapes_mode:
-		return _draw_shapes()
+func _draw_numbers() -> void:
 	if value:
 		var text_color: Color = %Sudoku.sudoku_theme.CELL_GIVEN_TEXT if is_given else %Sudoku.sudoku_theme.CELL_ANSWER_TEXT
 		if draw_invalid:
@@ -129,8 +127,12 @@ func _draw() -> void:
 			
 			var pos := Vector2(0,(size.y-font.get_string_size(s, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size).y)/2 + font.get_ascent(font_size))
 			draw_string(font, pos, s, HORIZONTAL_ALIGNMENT_CENTER, size.x, font_size, text_color)
-		pass
+func _draw() -> void:
+	if %Sudoku.config.shapes_mode:
+		_draw_shapes()
+	else: _draw_numbers()
 	_draw_selection()
+	#TODO Draw cages?
 func _draw_selection() -> void:
 	const BORDER_WID := 5
 	if is_selected: # Border
@@ -276,6 +278,8 @@ func _gui_input(event):
 					%Sudoku.grab_focus()
 				grid_redraw.emit()
 			else: _reselect(self, multi)
+			if event.button_index == MOUSE_BUTTON_LEFT and event.double_click:
+				select_alike.emit(self)
 			return
 	elif event is InputEventKey:
 		if event.pressed:
