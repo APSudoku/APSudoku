@@ -21,7 +21,6 @@ func _ready():
 	tabs.current_tab = 0 if OS.is_debug_build() else tabs.get_tab_idx_from_control($Tabs/Settings)
 	set_entry_mode(SudokuGrid.EntryMode.ANSWER)
 	
-	%ErrorLabel.label_settings.font_color = %Sudoku.sudoku_theme.LABEL_INVALID_TEXT
 	sudoku_grid.modifier_entry_mode.connect(set_fake_entry_mode)
 	sudoku_grid.cycle_entry_mode.connect(cycle_entry)
 	sudoku_grid.grant_hint.connect(grant_hint)

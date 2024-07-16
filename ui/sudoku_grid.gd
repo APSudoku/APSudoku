@@ -81,7 +81,6 @@ func _ready():
 		cells[q].select_alike.connect(select_alike)
 	
 	if not sudoku_theme: sudoku_theme = SudokuTheme.new()
-	%MainLabel.label_settings = %MainLabel.label_settings.duplicate() # Should be unique at runtime, *more* unique than "per scene"
 	clear()
 	
 	config.config_changed.connect(update_config)
@@ -263,7 +262,7 @@ func clear_active() -> void:
 	%ForfeitButton.disabled = true
 	%CheckButton.disabled = true
 	%MainLabel.text = "No Active Game"
-	%MainLabel.label_settings.font_color = sudoku_theme.LABEL_INVALID_TEXT
+	%MainLabel.theme_type_variation = "ErrLabel"
 	grid_redraw()
 func clear() -> void:
 	for btn in %NumPad.get_children():
@@ -300,7 +299,7 @@ func load_puzzle(puzzle: PuzzleGrid) -> void:
 	%MainLabel.text = "Difficulty: %s" % PuzzleGrid.Difficulty.find_key(puzzle.difficulty).to_pascal_case()
 	if death_amnesty:
 		%MainLabel.text += " (%d/%d Lives)" % [death_amnesty-deaths_towards_amnesty,death_amnesty]
-	%MainLabel.label_settings.font_color = Color.WHITE
+	%MainLabel.theme_type_variation = ""
 	var q := 0
 	for c in cells:
 		c.solution = puzzle.solutions[q]

@@ -1,29 +1,37 @@
-[gd_scene load_steps=20 format=3 uid="uid://c3eb4ejxtp2nl"]
+[gd_scene load_steps=23 format=3 uid="uid://c3eb4ejxtp2nl"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ah7d3ep4de" path="res://godot_ap/ui/common_client.tscn" id="1_yxr36"]
 [ext_resource type="Script" path="res://ui/sudoku_client.gd" id="2_drtqi"]
 [ext_resource type="Script" path="res://ui/text_edit.gd" id="2_i8w2d"]
+[ext_resource type="Texture2D" uid="uid://gx66b3mmi6dg" path="res://graphics/cbox_check.png" id="3_o3j5h"]
 [ext_resource type="Script" path="res://ui/connect_button.gd" id="3_ry2b2"]
+[ext_resource type="Texture2D" uid="uid://ccf7tgt6qm1qp" path="res://graphics/cbox_check_dis.png" id="4_ni7xp"]
+[ext_resource type="Texture2D" uid="uid://dgm6q0xhqkgja" path="res://graphics/radio_check.png" id="5_k0r4h"]
 [ext_resource type="PackedScene" uid="uid://bdweotrsewo6q" path="res://puzzles/cell.tscn" id="5_p356p"]
 [ext_resource type="Script" path="res://ui/sudoku_grid.gd" id="5_rhuh7"]
-[ext_resource type="LabelSettings" uid="uid://b7m7jxj4l8en6" path="res://ui/basic_err_label.tres" id="6_1yrws"]
-[ext_resource type="StyleBox" uid="uid://b7l3w40krs8op" path="res://ui/button_shadow.tres" id="6_72vag"]
-[ext_resource type="Theme" uid="uid://bbme64t0s1a4c" path="res://ui/sudoku_theme.tres" id="6_fj6yn"]
+[ext_resource type="Texture2D" uid="uid://drb1lo6t5ahfo" path="res://graphics/radio_check_dis.png" id="6_em03n"]
+[ext_resource type="Texture2D" uid="uid://d1dke3omp76j2" path="res://graphics/radio_uncheck.png" id="7_abb2d"]
 [ext_resource type="Texture2D" uid="uid://c5febtmw1vnx3" path="res://graphics/grabber.png" id="7_leeka"]
-[ext_resource type="SystemFont" uid="uid://dgq72ioiluq5i" path="res://ui/basic_font.tres" id="8_w6wjr"]
-[ext_resource type="LabelSettings" uid="uid://77i3kx2kgskj" path="res://ui/basic_label.tres" id="9_16nn7"]
+[ext_resource type="Texture2D" uid="uid://p0icwdmcvod3" path="res://graphics/radio_uncheck_dis.png" id="8_gnm0k"]
+[ext_resource type="Texture2D" uid="uid://cgojnpx75y4im" path="res://graphics/cbox_uncheck.png" id="9_30ved"]
+[ext_resource type="Texture2D" uid="uid://c5hwl8l8c6qj6" path="res://graphics/cbox_uncheck_dis.png" id="10_35877"]
 [ext_resource type="PackedScene" uid="uid://7sxs07p5mo4o" path="res://ui/infobutton.tscn" id="13_7ct3a"]
 [ext_resource type="Script" path="res://ui/actual_grid.gd" id="14_3xquc"]
 [ext_resource type="Script" path="res://ui/button_toggle_disabled.gd" id="15_83fxp"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5dvs7"]
-bg_color = Color(0.109804, 0.109804, 0.109804, 1)
-border_width_bottom = 2
-border_color = Color(0.0509804, 0.0509804, 0.0509804, 1)
+[sub_resource type="ButtonGroup" id="ButtonGroup_oyu55"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_oaxtv"]
-font = ExtResource("8_w6wjr")
-font_size = 25
+[sub_resource type="Theme" id="Theme_ej5yg"]
+CheckBox/constants/check_v_offset = 1
+CheckBox/font_sizes/font_size = 20
+CheckBox/icons/checked = ExtResource("3_o3j5h")
+CheckBox/icons/checked_disabled = ExtResource("4_ni7xp")
+CheckBox/icons/radio_checked = ExtResource("5_k0r4h")
+CheckBox/icons/radio_checked_disabled = ExtResource("6_em03n")
+CheckBox/icons/radio_unchecked = ExtResource("7_abb2d")
+CheckBox/icons/radio_unchecked_disabled = ExtResource("8_gnm0k")
+CheckBox/icons/unchecked = ExtResource("9_30ved")
+CheckBox/icons/unchecked_disabled = ExtResource("10_35877")
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_mrvem"]
 
@@ -32,7 +40,7 @@ font_size = 25
 [node name="SudokuClient" instance=ExtResource("1_yxr36")]
 script = ExtResource("2_drtqi")
 
-[node name="Tabs" parent="." index="1"]
+[node name="Tabs" parent="." index="0"]
 current_tab = 3
 
 [node name="Console" parent="Tabs" index="1"]
@@ -47,17 +55,16 @@ visible = true
 [node name="Tabs" parent="Tabs/Settings/Margin" index="0"]
 current_tab = 2
 
-[node name="TrackerPack" parent="Tabs/Settings/Margin/Tabs" index="1"]
+[node name="Theme" parent="Tabs/Settings/Margin/Tabs" index="1"]
 visible = false
 
-[node name="CBox" parent="Tabs/Settings/Margin/Tabs/TrackerPack/Row/Col1/TrackVerbose" index="0"]
-theme = ExtResource("6_fj6yn")
+[node name="DarkTheme" parent="Tabs/Settings/Margin/Tabs/Theme/Row/Col1" index="0"]
+button_group = SubResource("ButtonGroup_oyu55")
 
-[node name="CBox" parent="Tabs/Settings/Margin/Tabs/TrackerPack/Row/Col1/TrackHideFinishedMap" index="0"]
-theme = ExtResource("6_fj6yn")
+[node name="LightTheme" parent="Tabs/Settings/Margin/Tabs/Theme/Row/Col1" index="1"]
+button_group = SubResource("ButtonGroup_oyu55")
 
-[node name="Sudoku" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="2"]
-visible = false
+[node name="Sudoku" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="3"]
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs/Sudoku" index="0"]
@@ -73,22 +80,23 @@ layout_mode = 2
 [node name="ShiftCenter" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("6_fj6yn")
+theme = SubResource("Theme_ej5yg")
 text = "Shift=Center,Ctrl=Corner"
 
 [node name="ShowInvalid" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("6_fj6yn")
+theme = SubResource("Theme_ej5yg")
 text = "Show Invalid On Check"
 
 [node name="ShapesMode" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("6_fj6yn")
+theme = SubResource("Theme_ej5yg")
 text = "Shapes Mode"
 
-[node name="Connection" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="3"]
+[node name="Connection" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="4"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
@@ -112,12 +120,11 @@ layout_mode = 2
 tooltip_text = "The IP address running the Archipelago server."
 mouse_filter = 1
 text = "IP:"
-label_settings = ExtResource("9_16nn7")
 horizontal_alignment = 2
 
 [node name="IP" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="1"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(169.5, 23)
+custom_minimum_size = Vector2(159, 19)
 layout_mode = 2
 focus_neighbor_top = NodePath("../ConnectButton")
 focus_neighbor_bottom = NodePath("../Port")
@@ -130,12 +137,11 @@ layout_mode = 2
 tooltip_text = "The port running the Archipelago server."
 mouse_filter = 1
 text = "Port:"
-label_settings = ExtResource("9_16nn7")
 horizontal_alignment = 2
 
 [node name="Port" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="3"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(169.5, 23)
+custom_minimum_size = Vector2(159, 19)
 layout_mode = 2
 focus_neighbor_top = NodePath("../IP")
 focus_neighbor_bottom = NodePath("../Slot")
@@ -148,12 +154,11 @@ layout_mode = 2
 tooltip_text = "The 'Slot' name you wish to connect to."
 mouse_filter = 1
 text = "Slot:"
-label_settings = ExtResource("9_16nn7")
 horizontal_alignment = 2
 
 [node name="Slot" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="5"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(169.5, 23)
+custom_minimum_size = Vector2(159, 19)
 layout_mode = 2
 focus_neighbor_top = NodePath("../Port")
 focus_neighbor_bottom = NodePath("../Password")
@@ -165,12 +170,11 @@ layout_mode = 2
 tooltip_text = "The (Optional) password of the room."
 mouse_filter = 1
 text = "Password:"
-label_settings = ExtResource("9_16nn7")
 horizontal_alignment = 2
 
 [node name="Password" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/InfoGrid" index="7"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(169.5, 23)
+custom_minimum_size = Vector2(159, 19)
 layout_mode = 2
 focus_neighbor_top = NodePath("../Slot")
 focus_neighbor_bottom = NodePath("../ConnectButton")
@@ -184,7 +188,6 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 focus_next = NodePath("../IP")
-theme_override_styles/normal = SubResource("StyleBoxFlat_5dvs7")
 text = "Connect"
 script = ExtResource("3_ry2b2")
 
@@ -194,8 +197,8 @@ layout_mode = 2
 [node name="DeathLink" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/DeathLinkContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("6_fj6yn")
 text = "DeathLink"
+flat = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/DeathLinkContainer" index="1"]
 layout_mode = 2
@@ -206,7 +209,7 @@ text = "Lives:"
 
 [node name="Lives" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/Grid/DeathLinkContainer/HBoxContainer" index="1"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(169.5, 23)
+custom_minimum_size = Vector2(159, 19)
 layout_mode = 2
 placeholder_text = "0"
 script = ExtResource("2_i8w2d")
@@ -215,8 +218,7 @@ type = 1
 [node name="ErrorLabel" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/Grid" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.843137, 0, 0, 1)
-label_settings = ExtResource("6_1yrws")
+theme_type_variation = &"ErrLabel"
 
 [node name="Sudoku" type="MarginContainer" parent="Tabs" index="5"]
 unique_name_in_owner = true
@@ -226,11 +228,7 @@ focus_mode = 2
 mouse_filter = 0
 script = ExtResource("5_rhuh7")
 
-[node name="BG" type="ColorRect" parent="Tabs/Sudoku" index="0"]
-layout_mode = 2
-color = Color(0.174028, 0.174028, 0.174028, 1)
-
-[node name="HSplitContainer" type="HSplitContainer" parent="Tabs/Sudoku" index="1"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Tabs/Sudoku" index="0"]
 layout_mode = 2
 theme_override_constants/minimum_grab_thickness = 20
 theme_override_constants/autohide = 0
@@ -254,14 +252,13 @@ layout_mode = 2
 [node name="CountLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
-label_settings = ExtResource("9_16nn7")
 
 [node name="MainLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
+theme_override_font_sizes/font_size = 25
 text = "No Active Game"
-label_settings = SubResource("LabelSettings_oaxtv")
 
 [node name="ControlInfo" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="2" instance=ExtResource("13_7ct3a")]
 unique_name_in_owner = true
@@ -798,38 +795,36 @@ layout_mode = 2
 [node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="0"]
 layout_mode = 2
 text = "Entry:"
-label_settings = ExtResource("9_16nn7")
 
 [node name="RadioAnswer" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_mrvem")
 text = "Answer"
+flat = true
 
 [node name="RadioCenter" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_mrvem")
 text = "Center"
+flat = true
 
 [node name="RadioCorner" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="3"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_mrvem")
 text = "Corner"
+flat = true
 
 [node name="ClearInvalid" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="4"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "    Clear 'Invalid' color    "
 
 [node name="GridContainer" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="1"]
@@ -850,7 +845,6 @@ columns = 3
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "1"
 script = ExtResource("15_83fxp")
 
@@ -858,7 +852,6 @@ script = ExtResource("15_83fxp")
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "2"
 script = ExtResource("15_83fxp")
 
@@ -866,7 +859,6 @@ script = ExtResource("15_83fxp")
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "3"
 script = ExtResource("15_83fxp")
 
@@ -874,7 +866,6 @@ script = ExtResource("15_83fxp")
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "4"
 script = ExtResource("15_83fxp")
 
@@ -882,7 +873,6 @@ script = ExtResource("15_83fxp")
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "5"
 script = ExtResource("15_83fxp")
 
@@ -890,7 +880,6 @@ script = ExtResource("15_83fxp")
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "6"
 script = ExtResource("15_83fxp")
 
@@ -898,7 +887,6 @@ script = ExtResource("15_83fxp")
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "7"
 script = ExtResource("15_83fxp")
 
@@ -906,7 +894,6 @@ script = ExtResource("15_83fxp")
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "8"
 script = ExtResource("15_83fxp")
 
@@ -914,7 +901,6 @@ script = ExtResource("15_83fxp")
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "9"
 script = ExtResource("15_83fxp")
 
@@ -925,7 +911,6 @@ layout_mode = 2
 custom_minimum_size = Vector2(180, 60)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "Delete"
 
 [node name="InfoButton" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="3" instance=ExtResource("13_7ct3a")]
@@ -949,7 +934,6 @@ layout_mode = 2
 [node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/HBoxContainer" index="0"]
 layout_mode = 2
 text = "Difficulty:"
-label_settings = ExtResource("9_16nn7")
 
 [node name="InfoButton" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
 layout_mode = 2
@@ -965,33 +949,33 @@ Hard: 26, 80%%        Killer*: 26, 60%%
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_7l32q")
 text = "Easy"
+flat = true
 
 [node name="RadioMedium" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_7l32q")
 text = "Medium"
+flat = true
 
 [node name="RadioHard" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="3"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_7l32q")
 text = "Hard"
+flat = true
 
 [node name="RadioKiller" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="4"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-theme = ExtResource("6_fj6yn")
 button_group = SubResource("ButtonGroup_7l32q")
 text = "Killer"
+flat = true
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="1"]
 layout_mode = 2
@@ -1002,14 +986,12 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "Generating puzzle..."
-label_settings = ExtResource("9_16nn7")
 
 [node name="StartButton" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2" index="1"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 60)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "Start"
 
 [node name="ForfeitButton" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2" index="2"]
@@ -1017,7 +999,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 60)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "Forfeit"
 
 [node name="CheckButton" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2" index="3"]
@@ -1025,7 +1006,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 60)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = ExtResource("6_72vag")
 text = "Check"
 
 [connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShiftCenter" to="." method="set_shift_center"]
@@ -1060,5 +1040,3 @@ text = "Check"
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/CheckButton" to="Tabs/Sudoku" method="submit_solution"]
 
 [editable path="Tabs/Hints/Console"]
-[editable path="Tabs/Settings/Margin/Tabs/TrackerPack/Row/Col1/TrackVerbose"]
-[editable path="Tabs/Settings/Margin/Tabs/TrackerPack/Row/Col1/TrackHideFinishedMap"]

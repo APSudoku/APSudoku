@@ -32,6 +32,10 @@ PuzzleGenManager="*res://puzzles/puzzle_gen_manager.gd"
 
 window/size/extend_to_title=true
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg")
+
 [filesystem]
 
 import/blender/enabled=false
@@ -40,14 +44,6 @@ import/blender/enabled=false
 
 theme/custom="res://godot_ap/ui/themes/dark_theme.tres"
 theme/custom_font="res://godot_ap/ui/themes/basic_font.tres"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg")
-
-[filesystem]
-
-import/blender/enabled=false
 
 [input]
 
