@@ -52,19 +52,288 @@ visible = false
 [node name="Settings" parent="Tabs" index="4"]
 visible = true
 
-[node name="Tabs" parent="Tabs/Settings/Margin" index="0"]
-current_tab = 2
-
-[node name="Theme" parent="Tabs/Settings/Margin/Tabs" index="1"]
-visible = false
-
 [node name="DarkTheme" parent="Tabs/Settings/Margin/Tabs/Theme/Row/Col1" index="0"]
 button_group = SubResource("ButtonGroup_oyu55")
 
 [node name="LightTheme" parent="Tabs/Settings/Margin/Tabs/Theme/Row/Col1" index="1"]
 button_group = SubResource("ButtonGroup_oyu55")
 
+[node name="VSeparator" type="VSeparator" parent="Tabs/Settings/Margin/Tabs/Theme/Row" index="1"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs/Theme/Row" index="2"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer" index="0"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer" index="0"]
+layout_mode = 2
+text = "Sudoku Colors:"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer" index="1"]
+layout_mode = 2
+theme_override_constants/h_separation = 4
+columns = 2
+
+[node name="Label" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="0"]
+layout_mode = 2
+text = "Grid Background"
+horizontal_alignment = 2
+
+[node name="GRID_BG" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="2"]
+layout_mode = 2
+text = "Cell Background"
+horizontal_alignment = 2
+
+[node name="CELL_BG" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="4"]
+layout_mode = 2
+text = "Cell Given Text"
+horizontal_alignment = 2
+
+[node name="CELL_GIVEN_TEXT" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="6"]
+layout_mode = 2
+text = "Cell Answer Text"
+horizontal_alignment = 2
+
+[node name="CELL_ANSWER_TEXT" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="8"]
+layout_mode = 2
+text = "CenterMark Text"
+horizontal_alignment = 2
+
+[node name="CELL_CENTER_MARK_TEXT" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="9"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="10"]
+layout_mode = 2
+text = "CornerMark Text"
+horizontal_alignment = 2
+
+[node name="CELL_CORNER_MARK_TEXT" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="11"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label7" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="12"]
+layout_mode = 2
+text = "Cell Invalid Text"
+horizontal_alignment = 2
+
+[node name="CELL_INVALID_TEXT" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="13"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label8" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="14"]
+layout_mode = 2
+text = "Cell Selection"
+horizontal_alignment = 2
+
+[node name="CELL_SELECT" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="15"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label9" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="16"]
+layout_mode = 2
+text = "Cell Focus"
+horizontal_alignment = 2
+
+[node name="CELL_FOCUS" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="17"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label10" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="18"]
+layout_mode = 2
+text = "Killer Cage Border"
+horizontal_alignment = 2
+
+[node name="KILLER_BORDER" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="19"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label11" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="20"]
+layout_mode = 2
+text = "Killer Cage Sum"
+horizontal_alignment = 2
+
+[node name="KILLER_SUM" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="21"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2" index="0"]
+layout_mode = 2
+text = "Shapes Mode Colors:"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2" index="1"]
+layout_mode = 2
+columns = 4
+
+[node name="Label" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="0"]
+layout_mode = 2
+text = "Shape 1"
+horizontal_alignment = 2
+
+[node name="SHAPE_1" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="2"]
+layout_mode = 2
+text = "Shape 2"
+horizontal_alignment = 2
+
+[node name="SHAPE_2" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="4"]
+layout_mode = 2
+text = "Shape 3"
+horizontal_alignment = 2
+
+[node name="SHAPE_3" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="5"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="6"]
+layout_mode = 2
+text = "Shape 4"
+horizontal_alignment = 2
+
+[node name="SHAPE_4" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="8"]
+layout_mode = 2
+text = "Shape 5"
+horizontal_alignment = 2
+
+[node name="SHAPE_5" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="9"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="10"]
+layout_mode = 2
+text = "Shape 6"
+horizontal_alignment = 2
+
+[node name="SHAPE_6" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="11"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label7" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="12"]
+layout_mode = 2
+text = "Shape 7"
+horizontal_alignment = 2
+
+[node name="SHAPE_7" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="13"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label8" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="14"]
+layout_mode = 2
+text = "Shape 8"
+horizontal_alignment = 2
+
+[node name="SHAPE_8" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="15"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label9" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="16"]
+layout_mode = 2
+text = "Shape 9"
+horizontal_alignment = 2
+
+[node name="SHAPE_9" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="17"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="GridContainer2" type="GridContainer" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2" index="2"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/h_separation = 4
+columns = 2
+
+[node name="Label10" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer2" index="0"]
+layout_mode = 2
+text = "Shape Invalid Background"
+horizontal_alignment = 2
+
+[node name="SHAPE_INVALID_BG" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer2" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label11" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer2" index="2"]
+layout_mode = 2
+text = "Shape Background"
+horizontal_alignment = 2
+
+[node name="SHAPE_BG" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer2" index="3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label12" type="Label" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer2" index="4"]
+layout_mode = 2
+text = "Shape Given Background"
+horizontal_alignment = 2
+
+[node name="SHAPE_GIVEN_BG" type="ColorPickerButton" parent="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer2" index="5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
 [node name="Sudoku" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="3"]
+visible = false
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs/Sudoku" index="0"]

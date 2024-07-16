@@ -36,11 +36,11 @@ class PuzzleData:
 			threads[q].start(thread_proc, prio)
 	func thread_proc() -> void:
 		gen_semaphore.wait()
-		while PuzzleGenManager.check_running():
+		while PuzzleGenManager and PuzzleGenManager.check_running():
 			add_puzzle(PuzzleGrid.new(diff))
 			gen_semaphore.wait()
 	func add_puzzle(puz: PuzzleGrid) -> void:
-		if not PuzzleGenManager.check_running(): return
+		if not (PuzzleGenManager and PuzzleGenManager.check_running()): return
 		mutex.lock()
 		puzzles.append(puz)
 		#print(PuzzleGrid.Difficulty.find_key(diff), ": ", puzzles.size())

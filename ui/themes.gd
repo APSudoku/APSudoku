@@ -1,7 +1,5 @@
 @tool class_name SudokuTheme extends Resource
 
-@export var LABEL_INVALID_TEXT := Color.INDIAN_RED
-
 @export var CELL_BG := Color.WHITE
 @export var CELL_GIVEN_TEXT := Color.BLACK
 @export var CELL_ANSWER_TEXT := Color.from_string("1E6BE5", Color.DODGER_BLUE)
@@ -40,3 +38,24 @@ func get_shape_color(val: int) -> Color:
 		8: return SHAPE_8
 		9: return SHAPE_9
 		_: return Color.WHITE
+
+func _get_members() -> Array[String]:
+	var arr: Array[String] = []
+	for prop in self.get_property_list():
+		if prop.get("hint_string") == "Color":
+			var name = prop.get("name")
+			if name is String:
+				arr.append(name)
+	return arr
+	
+func _to_dict() -> Dictionary:
+	var dict := {}
+	for name in _get_members():
+		dict[name] = get(name)
+	return dict
+
+func _from_dict(dict: Dictionary) -> void:
+	for name in _get_members():
+		var val = dict.get(name)
+		if val is Color:
+			set(name, val)

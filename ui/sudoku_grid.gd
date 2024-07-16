@@ -80,7 +80,18 @@ func _ready():
 		cells[q].grid_focus.connect(grid_focus)
 		cells[q].select_alike.connect(select_alike)
 	
-	if not sudoku_theme: sudoku_theme = SudokuTheme.new()
+	if not sudoku_theme:
+		sudoku_theme = SudokuTheme.new()
+	
+	var theme_dict := sudoku_theme._to_dict()
+	for key in theme_dict.keys():
+		var picker: ColorPickerButton = get_node_or_null("%%%s"%key) as ColorPickerButton
+		assert(picker, "SudokuTheme color %s not found as unique-named ColorPickerButton!" % key)
+		picker.color = theme_dict.get(key, picker.color)
+		picker.color_changed.connect(func(color: Color):
+			sudoku_theme.set(key, color)
+			%Sudoku.grid_redraw())
+	
 	clear()
 	
 	config.config_changed.connect(update_config)

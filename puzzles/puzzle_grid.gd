@@ -125,7 +125,7 @@ class GenGrid:
 		# banned[cell index] -> Array[int] of banned values for that index
 		var killer := false
 		for ind in 81:
-			if not PuzzleGenManager.check_running(): return null
+			if not (PuzzleGenManager and PuzzleGenManager.check_running()): return null
 			if cells[ind].val:
 				cells[ind].options.clear()
 				continue # Skip filled cells
