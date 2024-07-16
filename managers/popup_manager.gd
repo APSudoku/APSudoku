@@ -4,8 +4,19 @@ extends Node
 var last_return: bool = false
 
 class SudokuPopup extends AcceptDialog:
+	var _cancel_button: Button
 	func pop_open() -> bool:
 		return await PopupManager.pop_popup(self)
+	func allow_cancel(val: bool) -> void:
+		if val:
+			if not _cancel_button:
+				_cancel_button = add_cancel_button("Cancel")
+		else:
+			if _cancel_button:
+				remove_button(_cancel_button)
+				_cancel_button = null
+	func get_cancel_button() -> Button:
+		return _cancel_button
 
 signal popup_closed
 func popup_dlg(text: String, title := "", cancel := true) -> bool:
@@ -22,8 +33,10 @@ func create_popup(text: String, title := "", cancel := true) -> SudokuPopup:
 	popup.popup_window = false
 	popup.visible = true
 	popup.process_mode = Node.PROCESS_MODE_ALWAYS
+	popup.allow_cancel(cancel)
 	if cancel:
-		popup.add_cancel_button("Cancel")
+		popup.get_cancel_button().custom_minimum_size.x = 100
+	popup.get_ok_button().custom_minimum_size.x = 100
 	add_child(popup)
 	popup.popup_centered()
 	get_tree().paused = true

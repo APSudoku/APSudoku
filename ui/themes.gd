@@ -1,5 +1,7 @@
 @tool class_name SudokuTheme extends Resource
 
+signal on_update
+
 @export var CELL_BG := Color.WHITE
 @export var CELL_GIVEN_TEXT := Color.BLACK
 @export var CELL_ANSWER_TEXT := Color.from_string("1E6BE5", Color.DODGER_BLUE)
@@ -59,3 +61,12 @@ func _from_dict(dict: Dictionary) -> void:
 		var val = dict.get(name)
 		if val is Color:
 			set(name, val)
+
+func update_color(key: String, color: Color) -> void:
+	set(key, color)
+	on_update.emit()
+
+func update_from_copy(other: SudokuTheme) -> void:
+	for name in _get_members():
+		set(name, other.get(name))
+	on_update.emit()

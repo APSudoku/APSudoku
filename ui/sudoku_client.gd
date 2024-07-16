@@ -195,3 +195,61 @@ func set_shapes_mode(val: bool) -> void:
 	else:
 		%RadioCenter.disabled = false
 		%RadioCenter.queue_redraw()
+
+func init_theme() -> void:
+	if not DirAccess.dir_exists_absolute("user://themes/"):
+		DirAccess.make_dir_recursive_absolute("user://themes/")
+	assert(%Sudoku.sudoku_theme)
+	var path: String = %Sudoku.config.theme_path
+	if FileAccess.file_exists(path):
+		%Sudoku.sudoku_theme.update_from_copy(ResourceLoader.load(path, "SudokuTheme", ResourceLoader.CACHE_MODE_REPLACE))
+	else:
+		ResourceSaver.save(%Sudoku.sudoku_theme, path)
+
+
+func save_theme(path := "") -> void:
+	if path.is_empty(): path = %Sudoku.config.theme_path
+	var err := ResourceSaver.save(%Sudoku.sudoku_theme, path)
+	if err:
+		AP.log("Error saving theme file '%s': '%s'" % [path,error_string(err)])
+func save_theme_as() -> void:
+	var dir_path := ProjectSettings.globalize_path(%Sudoku.config.theme_path).replace("\\","/")
+	var pos := dir_path.rfind("/")
+	var cur_dir: String = dir_path if pos < 0 else dir_path.substr(0,pos+1)
+	DisplayServer.file_dialog_show("Save Theme As", cur_dir, "", false,
+		DisplayServer.FILE_DIALOG_MODE_SAVE_FILE, ["*.res ; Godot Binary Resource File",
+			"*.tres ; Godot Text Resource File"],
+		func(ok: bool, paths: PackedStringArray, filt: int):
+			if not ok: return
+			var ext: String = [".res",".tres"][filt-1]
+			var fpath: String = paths[0]
+			if not fpath.ends_with(ext): fpath += ext
+			save_theme(fpath))
+func load_theme(path := "") -> void:
+	if path.is_empty():
+		var dir_path := ProjectSettings.globalize_path(%Sudoku.config.theme_path).replace("\\","/")
+		var pos := dir_path.rfind("/")
+		var cur_dir: String = dir_path if pos < 0 else dir_path.substr(0,pos+1)
+		DisplayServer.file_dialog_show("Load Theme", cur_dir, "", false,
+			DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, ["*.res ; Godot Binary Resource File",
+			"*.tres ; Godot Text Resource File"],
+			func(ok: bool, paths: PackedStringArray, filt: int):
+				if not ok: return
+				var ext: String = [".res",".tres"][filt-1]
+				var fpath: String = paths[0]
+				if not fpath.ends_with(ext): fpath += ext
+				load_theme(fpath))
+		return
+	var new_theme = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_REPLACE)
+	if new_theme:
+		if new_theme is SudokuTheme:
+			%Sudoku.config.theme_path = path
+			%Sudoku.sudoku_theme.update_from_copy(new_theme)
+		else:
+			InfoButton.pop_info("Load Failed!", "File '%s' contains wrong resource type; expected 'SudokuTheme'" % path)
+	else:
+		InfoButton.pop_info("Load Failed!", "Failed to load file '%s' - invalid resource" % path)
+
+func reset_theme():
+	if await PopupManager.popup_dlg("Are you sure you want to reset the current theme to default?", "Reset Theme", true):
+		%Sudoku.sudoku_theme.update_from_copy(SudokuTheme.new())

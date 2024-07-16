@@ -18,6 +18,12 @@ var slot: String = "" :
 			slot = val
 			save_cfg()
 			config_changed.emit()
+var theme_path: String = "user://themes/theme.sudokutheme.tres" :
+	set(val):
+		if val != theme_path:
+			theme_path = val
+			save_cfg()
+			config_changed.emit()
 var shift_center := false :
 	set(val):
 		if val != shift_center:
@@ -55,6 +61,8 @@ func _load_cfg(file: FileAccess) -> void:
 	shift_center = byte & (1 << 0)
 	show_invalid = byte & (1 << 1)
 	shapes_mode = byte & (1 << 2)
+	
+	theme_path = file.get_pascal_string()
 func _save_cfg(file: FileAccess) -> void:
 	super(file)
 	file.store_pascal_string(ip)
@@ -65,3 +73,5 @@ func _save_cfg(file: FileAccess) -> void:
 	if show_invalid: byte |= (1 << 1)
 	if shapes_mode: byte |= (1 << 2)
 	file.store_8(byte)
+	
+	file.store_pascal_string(theme_path)

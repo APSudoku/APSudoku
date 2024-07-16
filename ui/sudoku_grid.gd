@@ -31,6 +31,12 @@ var cages: Array[PuzzleCage] = []
 
 var _invalid := false
 
+func load_theme(new_theme: SudokuTheme) -> void:
+	assert(new_theme)
+	if not is_node_ready(): await ready
+	assert(sudoku_theme)
+	sudoku_theme.update_from_copy(new_theme)
+
 func _ready():
 	var box_index := 0
 	for box in %Regions.get_children():
@@ -83,13 +89,17 @@ func _ready():
 	if not sudoku_theme:
 		sudoku_theme = SudokuTheme.new()
 	
+	load_theme(sudoku_theme)
 	var theme_dict := sudoku_theme._to_dict()
 	for key in theme_dict.keys():
 		var picker: ColorPickerButton = get_node_or_null("%%%s"%key) as ColorPickerButton
 		assert(picker, "SudokuTheme color %s not found as unique-named ColorPickerButton!" % key)
-		picker.color = theme_dict.get(key, picker.color)
+		picker.color = sudoku_theme.get(key)
+		sudoku_theme.on_update.connect(func():
+			print("Setting %s to %s" % [picker.name,sudoku_theme.get(key)])
+			picker.color = sudoku_theme.get(key))
 		picker.color_changed.connect(func(color: Color):
-			sudoku_theme.set(key, color)
+			sudoku_theme.update_color(key, color)
 			%Sudoku.grid_redraw())
 	
 	clear()
