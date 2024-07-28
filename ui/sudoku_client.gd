@@ -30,6 +30,7 @@ func _ready():
 	settings_subtabs.current_tab = 0
 	Archipelago.load_console(self, false)
 	
+	Archipelago.roominfo.connect(on_roominfo)
 	Archipelago.connect_step.connect(%ConnTextLabel.set_text)
 	Archipelago.connected.connect(on_connect)
 	Archipelago.disconnected.connect(on_disconnect)
@@ -85,6 +86,10 @@ func display_hint(hints: Array[NetworkHint], loc: int) -> void:
 			await PopupManager.popup_dlg(s, "Correct!", false)
 			return
 
+func on_roominfo(_conn: ConnectionInfo, _json: Dictionary) -> void:
+	if %Sudoku.config.debug_connect_settings:
+		for game in %Sudoku.config.skipped_data_packages:
+			Archipelago.datapack_pending.erase(game)
 func on_connect(conn: ConnectionInfo, _json: Dictionary) -> void:
 	conn.roomupdate.connect(refresh_hint_count.unbind(1))
 	conn.on_hint_update.connect(refresh_hint_count.unbind(1))

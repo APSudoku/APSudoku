@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://c3eb4ejxtp2nl"]
+[gd_scene load_steps=24 format=3 uid="uid://c3eb4ejxtp2nl"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ah7d3ep4de" path="res://godot_ap/ui/common_client.tscn" id="1_yxr36"]
 [ext_resource type="Script" path="res://ui/sudoku_client.gd" id="2_drtqi"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://cgojnpx75y4im" path="res://graphics/cbox_uncheck.png" id="9_30ved"]
 [ext_resource type="Texture2D" uid="uid://c5hwl8l8c6qj6" path="res://graphics/cbox_uncheck_dis.png" id="10_35877"]
 [ext_resource type="PackedScene" uid="uid://7sxs07p5mo4o" path="res://ui/infobutton.tscn" id="13_7ct3a"]
+[ext_resource type="Script" path="res://ui/debug_settings.gd" id="13_yousr"]
 [ext_resource type="Script" path="res://ui/actual_grid.gd" id="14_3xquc"]
 [ext_resource type="Script" path="res://ui/button_toggle_disabled.gd" id="15_83fxp"]
 
@@ -404,28 +405,31 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection" index="0"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer" index="0"]
 layout_mode = 2
 
-[node name="InfoGrid" type="GridContainer" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="InfoGrid" type="GridContainer" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 0
 columns = 2
 
-[node name="LabelIP" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid" index="0"]
+[node name="LabelIP" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="0"]
 layout_mode = 2
 tooltip_text = "The IP address running the Archipelago server."
 mouse_filter = 1
 text = "IP:"
 horizontal_alignment = 2
 
-[node name="IP" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid" index="1"]
+[node name="IP" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="1"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(159, 19)
 layout_mode = 2
@@ -435,14 +439,14 @@ focus_next = NodePath("../Port")
 placeholder_text = "archipelago.gg"
 script = ExtResource("2_i8w2d")
 
-[node name="LabelPort" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid" index="2"]
+[node name="LabelPort" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="2"]
 layout_mode = 2
 tooltip_text = "The port running the Archipelago server."
 mouse_filter = 1
 text = "Port:"
 horizontal_alignment = 2
 
-[node name="Port" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid" index="3"]
+[node name="Port" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="3"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(159, 19)
 layout_mode = 2
@@ -452,14 +456,14 @@ focus_next = NodePath("../Slot")
 placeholder_text = "38281"
 script = ExtResource("2_i8w2d")
 
-[node name="LabelSlot" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid" index="4"]
+[node name="LabelSlot" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="4"]
 layout_mode = 2
 tooltip_text = "The 'Slot' name you wish to connect to."
 mouse_filter = 1
 text = "Slot:"
 horizontal_alignment = 2
 
-[node name="Slot" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid" index="5"]
+[node name="Slot" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="5"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(159, 19)
 layout_mode = 2
@@ -468,14 +472,14 @@ focus_neighbor_bottom = NodePath("../Password")
 focus_next = NodePath("../Password")
 script = ExtResource("2_i8w2d")
 
-[node name="LabelPassword" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid" index="6"]
+[node name="LabelPassword" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="6"]
 layout_mode = 2
 tooltip_text = "The (Optional) password of the room."
 mouse_filter = 1
 text = "Password:"
 horizontal_alignment = 2
 
-[node name="Password" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid" index="7"]
+[node name="Password" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="7"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(159, 19)
 layout_mode = 2
@@ -484,33 +488,33 @@ focus_neighbor_bottom = NodePath("../ConnectButton")
 focus_next = NodePath("../ConnectButton")
 script = ExtResource("2_i8w2d")
 
-[node name="Nil" type="Control" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid" index="8"]
+[node name="Nil" type="Control" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="8"]
 layout_mode = 2
 
-[node name="ConnectButton" type="Button" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid" index="9"]
+[node name="ConnectButton" type="Button" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="9"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_next = NodePath("../IP")
 text = "Connect"
 script = ExtResource("3_ry2b2")
 
-[node name="DeathLinkContainer" type="VBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer" index="1"]
+[node name="DeathLinkContainer" type="VBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer" index="1"]
 layout_mode = 2
 
-[node name="DeathLink" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/DeathLinkContainer" index="0"]
+[node name="DeathLink" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "DeathLink"
 flat = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/DeathLinkContainer" index="1"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer" index="1"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer" index="0"]
 layout_mode = 2
 text = "Lives:"
 
-[node name="Lives" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer" index="1"]
+[node name="Lives" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer" index="1"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(159, 19)
 layout_mode = 2
@@ -518,14 +522,91 @@ placeholder_text = "0"
 script = ExtResource("2_i8w2d")
 type = 1
 
-[node name="ConnTextLabel" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer" index="1"]
+[node name="ConnTextLabel" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ErrorLabel" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer" index="2"]
+[node name="ErrorLabel" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"ErrLabel"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="DebugSettingsToggle" type="CheckButton" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2" index="0"]
+layout_mode = 2
+button_pressed = true
+text = "Debug Settings"
+alignment = 2
+
+[node name="ConnectDebugSettings" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2" index="1" node_paths=PackedStringArray("toggle_switch", "skip_data_packages", "remove_btn", "remove_all_btn", "add_field", "add_btn")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(325, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 16
+script = ExtResource("13_yousr")
+toggle_switch = NodePath("../DebugSettingsToggle")
+skip_data_packages = NodePath("VBoxContainer/SkipDataPackages")
+remove_btn = NodePath("VBoxContainer/HBoxContainer3/Remove")
+remove_all_btn = NodePath("VBoxContainer/HBoxContainer3/RemoveAll")
+add_field = NodePath("VBoxContainer/HBoxContainer2/SkipDataAddField")
+add_btn = NodePath("VBoxContainer/HBoxContainer2/SkipDataAddBtn")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings" index="0"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer/HBoxContainer" index="0"]
+layout_mode = 2
+text = "Skip Data Packages:"
+
+[node name="InfoButton" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
+layout_mode = 2
+size_flags_horizontal = 10
+info = "Game names listed here will not have their DataPackages downloaded. This will result in buggy and/or no names for items/locations related to these games; only use this in case of emergency (ex. the datapackage is failing to download completely anyway)"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="SkipDataAddField" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer/HBoxContainer2" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Game Name"
+
+[node name="SkipDataAddBtn" type="Button" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer/HBoxContainer2" index="1"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "+"
+
+[node name="SkipDataPackages" type="ItemList" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" index="2"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+select_mode = 1
+allow_reselect = true
+allow_rmb_select = true
+auto_height = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" index="3"]
+layout_mode = 2
+
+[node name="Remove" type="Button" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer/HBoxContainer3" index="0"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Remove"
+
+[node name="RemoveAll" type="Button" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer/HBoxContainer3" index="1"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Remove All"
 
 [node name="Sudoku" type="MarginContainer" parent="Tabs" index="5"]
 unique_name_in_owner = true
@@ -1322,12 +1403,13 @@ text = "Check"
 [connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShiftCenter" to="." method="set_shift_center"]
 [connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShowInvalid" to="." method="set_show_invalid"]
 [connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShapesMode" to="." method="set_shapes_mode"]
-[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid/IP" to="." method="try_connect" unbinds=1]
-[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid/Port" to="." method="try_connect" unbinds=1]
-[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid/Slot" to="." method="try_connect" unbinds=1]
-[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid/Password" to="." method="try_connect" unbinds=1]
-[connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/InfoGrid/ConnectButton" to="." method="on_connect_button"]
-[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer/Lives" to="." method="try_connect" unbinds=1]
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/IP" to="." method="try_connect" unbinds=1]
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Port" to="." method="try_connect" unbinds=1]
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Slot" to="." method="try_connect" unbinds=1]
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Password" to="." method="try_connect" unbinds=1]
+[connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/ConnectButton" to="." method="on_connect_button"]
+[connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer/Lives" to="." method="try_connect" unbinds=1]
+[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/DebugSettingsToggle" to="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" method="set_visible"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioAnswer" to="." method="set_entry_mode_no_button" binds= [0]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCenter" to="." method="set_entry_mode_no_button" binds= [1]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCorner" to="." method="set_entry_mode_no_button" binds= [2]]

@@ -42,6 +42,13 @@ var shapes_mode := false :
 			shapes_mode = val
 			save_cfg()
 			config_changed.emit()
+var debug_connect_settings := false :
+	set(val):
+		if val != debug_connect_settings:
+			debug_connect_settings = val
+			save_cfg()
+			config_changed.emit()
+var skipped_data_packages: PackedStringArray = []
 
 func update_credentials(creds: APCredentials) -> void:
 	_pause_saving = true
@@ -61,8 +68,11 @@ func _load_cfg(file: FileAccess) -> void:
 	shift_center = byte & (1 << 0)
 	show_invalid = byte & (1 << 1)
 	shapes_mode = byte & (1 << 2)
-	
+	debug_connect_settings = byte & (1 << 3)
 	theme_path = file.get_pascal_string()
+	
+	skipped_data_packages = file.get_var()
+	
 func _save_cfg(file: FileAccess) -> void:
 	super(file)
 	file.store_pascal_string(ip)
@@ -72,6 +82,9 @@ func _save_cfg(file: FileAccess) -> void:
 	if shift_center: byte |= (1 << 0)
 	if show_invalid: byte |= (1 << 1)
 	if shapes_mode: byte |= (1 << 2)
+	if debug_connect_settings: byte |= (1 << 3)
 	file.store_8(byte)
 	
 	file.store_pascal_string(theme_path)
+	
+	file.store_var(skipped_data_packages)
