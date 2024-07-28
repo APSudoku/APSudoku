@@ -30,6 +30,7 @@ func _ready():
 	settings_subtabs.current_tab = 0
 	Archipelago.load_console(self, false)
 	
+	Archipelago.connect_step.connect(%ConnTextLabel.set_text)
 	Archipelago.connected.connect(on_connect)
 	Archipelago.disconnected.connect(on_disconnect)
 	Archipelago.connectionrefused.connect(on_connect_reject)
@@ -88,6 +89,7 @@ func on_connect(conn: ConnectionInfo, _json: Dictionary) -> void:
 	conn.roomupdate.connect(refresh_hint_count.unbind(1))
 	conn.on_hint_update.connect(refresh_hint_count.unbind(1))
 	conn.deathlink.connect(%Sudoku.deathlink_recv)
+	%ConnectButton.disabled = false
 	%ConnectButton.text = "Disconnect"
 	%ConnectButton.tooltip_text = "Disconnect from the Archipelago server. This will forfeit any active puzzles."
 	%ErrorLabel.text = ""
@@ -100,6 +102,8 @@ func on_connect(conn: ConnectionInfo, _json: Dictionary) -> void:
 	conn.all_scout_cached.connect(refresh_hint_count, CONNECT_ONE_SHOT)
 	conn.force_scout_all()
 func on_disconnect() -> void:
+	%ConnTextLabel.text = ""
+	%ConnectButton.disabled = false
 	%ConnectButton.text = "Connect"
 	%ConnectButton.tooltip_text = "Connect to the Archipelago server. This will forfeit any active puzzles."
 	%CountLabel.text = ""
@@ -114,6 +118,11 @@ func on_connect_reject(_conn: ConnectionInfo, json: Dictionary) -> void:
 
 func try_connect() -> void:
 	if Archipelago.is_ap_connected(): return
+	%ConnectButton.disabled = false
+	%ConnectButton.text = "Cancel"
+	%ConnectButton.tooltip_text = "Stop trying to connect to the Archipelago server."
+	%ConnTextLabel.text = ""
+	%ErrorLabel.text = ""
 	if sudoku_grid.active_puzzle:
 		if not await PopupManager.popup_dlg("Connecting while a puzzle is active requires forfeiting the puzzle. Are you sure?", "Forfeit?"):
 			return
@@ -129,10 +138,16 @@ func try_disconnect() -> void:
 		sudoku_grid.clear()
 	Archipelago.ap_disconnect()
 func on_connect_button() -> void:
-	if Archipelago.is_not_connected():
-		try_connect()
-	else:
-		try_disconnect()
+	match %ConnectButton.text:
+		"Connect":
+			try_connect()
+		"Disconnect":
+			%ConnectButton.disabled = true
+			try_disconnect()
+		"Cancel":
+			%ConnectButton.disabled = true
+			%ErrorLabel.text = %ConnTextLabel.text
+			Archipelago.ap_disconnect()
 
 
 func load_credentials(creds: APCredentials) -> void:
