@@ -26,3 +26,9 @@ AP_HIDE_NONLOCAL_ITEMSENDS = false
 
 [node name="ConfigManager" type="Node" parent="."]
 script = ExtResource("3_njwk2")
+
+[node name="HangTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[connection signal="timeout" from="HangTimer" to="." method="force_disconnect"]
