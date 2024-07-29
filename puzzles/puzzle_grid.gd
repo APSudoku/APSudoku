@@ -8,11 +8,12 @@ var solutions: Array[int] = []
 var givens: Array[bool] = []
 var cages: Array[PuzzleCage] = []
 
-func _init(diff: Difficulty):
+func _init(diff: Difficulty, priority: bool = false):
 	solutions.resize(81)
 	givens.resize(81)
 	difficulty = diff
 	var grid := GenGrid.new(diff)
+	grid._priority_gen = priority
 	if not (grid.generate() and PuzzleGenManager.running):
 		return
 	var q := 0
@@ -92,6 +93,7 @@ class GenGrid:
 		var built_cages := 0
 		var checked: Array[int] = []
 	
+	var _priority_gen: bool = false
 	var diff: Difficulty
 	var cells: Array[GenCell] = []
 	var cages: Array[PuzzleCage] = []
@@ -116,6 +118,7 @@ class GenGrid:
 		for c in copy.cells:
 			if not c.given:
 				c.val = 0
+		throttle()
 		return copy.solve(true)
 	
 	class GenOptions:
@@ -319,6 +322,7 @@ class GenGrid:
 				step.checked.append(step.ind)
 				if not is_unique(): # Fail, retry
 					cells[step.ind].given = true
+					throttle()
 					continue
 				givens.erase(step.ind)
 				history.append(GridGivenHistory.new())
@@ -369,3 +373,16 @@ class GenGrid:
 		assert(cages.reduce(func(ac, cage): return ac + cage.cells.size(), 0) == 81
 			and cages.reduce(func(ac, cage): return ac + cage.sum, 0) == 45*9)
 		return true
+	
+	func throttle() -> void:
+		assert(OS.get_thread_caller_id() != 1) # Not main thread
+		var delay: int
+		match diff:
+			Difficulty.EASY, Difficulty.MEDIUM:
+				delay = 0 if _priority_gen else 100
+			Difficulty.HARD:
+				delay = 0 if _priority_gen else 500
+			Difficulty.KILLER:
+				delay = 50 if _priority_gen else 500
+		if delay:
+			OS.delay_msec(delay) # Reduce CPU usage

@@ -377,26 +377,53 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer" index="0"]
+[node name="Grid" type="GridContainer" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer" index="0"]
 layout_mode = 2
+columns = 2
 
-[node name="ShiftCenter" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer" index="0"]
+[node name="InfoShiftCenter" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/Grid" index="0" instance=ExtResource("13_7ct3a")]
+layout_mode = 2
+title = "Shift=Center,Ctrl=Corner"
+info = "Swaps the behavior of `Shift` and `Control`, such that `Shift` places center-markings and `Control` places corner-markings."
+
+[node name="ShiftCenter" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/Grid" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = SubResource("Theme_ej5yg")
 text = "Shift=Center,Ctrl=Corner"
 
-[node name="ShowInvalid" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer" index="1"]
+[node name="InfoShowInvalid" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/Grid" index="2" instance=ExtResource("13_7ct3a")]
+layout_mode = 2
+title = "Show Invalid On Check"
+info = "When clicking \"Check\" with an incorrect solution, highlight digits involved in the errors the checker found."
+
+[node name="ShowInvalid" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/Grid" index="3"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = SubResource("Theme_ej5yg")
 text = "Show Invalid On Check"
 
-[node name="ShapesMode" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer" index="2"]
+[node name="InfoShapesMode" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/Grid" index="4" instance=ExtResource("13_7ct3a")]
+layout_mode = 2
+title = "Shapes Mode"
+info = "Swaps out numbers for shapes. Incompatible with `Killer` difficulty."
+
+[node name="ShapesMode" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/Grid" index="5"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = SubResource("Theme_ej5yg")
 text = "Shapes Mode"
+
+[node name="InfoThrottleGeneration" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/Grid" index="6" instance=ExtResource("13_7ct3a")]
+layout_mode = 2
+title = "Throttle Puzzle Generation"
+info = "Slow down the generation of puzzles in the background, to reduce CPU usage."
+
+[node name="ThrottleGeneration" type="CheckBox" parent="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/Grid" index="7"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = SubResource("Theme_ej5yg")
+text = "Throttle Puzzle Generation"
 
 [node name="Connection" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="4"]
 layout_mode = 2
@@ -1400,9 +1427,10 @@ text = "Check"
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3/SaveThemeAsBtn" to="." method="save_theme_as"]
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3/LoadThemeBtn" to="." method="load_theme"]
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3/DefaultThemeBtn" to="." method="reset_theme"]
-[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShiftCenter" to="." method="set_shift_center"]
-[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShowInvalid" to="." method="set_show_invalid"]
-[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/VBoxContainer/ShapesMode" to="." method="set_shapes_mode"]
+[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/Grid/ShiftCenter" to="." method="set_shift_center"]
+[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/Grid/ShowInvalid" to="." method="set_show_invalid"]
+[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/Grid/ShapesMode" to="." method="set_shapes_mode"]
+[connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Sudoku/MarginContainer/Grid/ThrottleGeneration" to="." method="set_throttle_gen"]
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/IP" to="." method="try_connect" unbinds=1]
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Port" to="." method="try_connect" unbinds=1]
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Slot" to="." method="try_connect" unbinds=1]

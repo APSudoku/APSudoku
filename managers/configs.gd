@@ -48,6 +48,12 @@ var debug_connect_settings := false :
 			debug_connect_settings = val
 			save_cfg()
 			config_changed.emit()
+var throttle_bg_generation := false :
+	set(val):
+		if val != throttle_bg_generation:
+			throttle_bg_generation = val
+			save_cfg()
+			config_changed.emit()
 var skipped_data_packages: PackedStringArray = []
 
 func update_credentials(creds: APCredentials) -> void:
@@ -69,9 +75,10 @@ func _load_cfg(file: FileAccess) -> void:
 	show_invalid = byte & (1 << 1)
 	shapes_mode = byte & (1 << 2)
 	debug_connect_settings = byte & (1 << 3)
-	theme_path = file.get_pascal_string()
-	
-	skipped_data_packages = file.get_var()
+	throttle_bg_generation = byte & (1 << 4)
+	theme_path = file.get_pascal_string() if file.get_position() < file.get_length() else "user://themes/theme.sudokutheme.tres"
+
+	skipped_data_packages = file.get_var() if file.get_position() < file.get_length() else []
 	
 func _save_cfg(file: FileAccess) -> void:
 	super(file)
@@ -83,6 +90,7 @@ func _save_cfg(file: FileAccess) -> void:
 	if show_invalid: byte |= (1 << 1)
 	if shapes_mode: byte |= (1 << 2)
 	if debug_connect_settings: byte |= (1 << 3)
+	if throttle_bg_generation: byte |= (1 << 4)
 	file.store_8(byte)
 	
 	file.store_pascal_string(theme_path)

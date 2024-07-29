@@ -1,7 +1,7 @@
 extends Node
 #Autoload 'PuzzleGenManager'
 
-const PUZZLES_TO_KEEP := 10
+const PUZZLES_TO_KEEP := 5
 
 var run_mutex := Mutex.new()
 var running: bool = true
@@ -16,6 +16,7 @@ class PuzzleData:
 	var threads: Array[Thread] = []
 	var gen_semaphore := Semaphore.new()
 	var mutex := Mutex.new()
+	var open_prio_thread := false
 	signal puzzle_added
 	
 	func _init(d: PuzzleGrid.Difficulty, count := 1):
@@ -26,7 +27,6 @@ class PuzzleData:
 	func setup_puzzle_limit() -> void:
 		for q in PuzzleGenManager.PUZZLES_TO_KEEP:
 			gen_semaphore.post() # Ask for that many puzzles
-			await PuzzleGenManager.get_tree().create_timer(5).timeout # Delay so all difficulties build up evenly at the start
 	func start() -> void:
 		var prio := Thread.PRIORITY_LOW
 		match diff:
@@ -37,13 +37,23 @@ class PuzzleData:
 	func thread_proc() -> void:
 		gen_semaphore.wait()
 		while PuzzleGenManager and PuzzleGenManager.check_running():
-			add_puzzle(PuzzleGrid.new(diff))
+			mutex.lock()
+			var prio: bool = puzzles.size() < 1
+			if not Archipelago.config.throttle_bg_generation:
+				prio = true
+			elif open_prio_thread: prio = false
+			elif prio: open_prio_thread = true
+			mutex.unlock()
+			add_puzzle(PuzzleGrid.new(diff, prio))
+			mutex.lock()
+			if prio and open_prio_thread:
+				open_prio_thread = false
+			mutex.unlock()
 			gen_semaphore.wait()
 	func add_puzzle(puz: PuzzleGrid) -> void:
 		if not (PuzzleGenManager and PuzzleGenManager.check_running()): return
 		mutex.lock()
 		puzzles.append(puz)
-		#print(PuzzleGrid.Difficulty.find_key(diff), ": ", puzzles.size())
 		mutex.unlock()
 		_on_add_puzzle.call_deferred()
 	func _on_add_puzzle() -> void:

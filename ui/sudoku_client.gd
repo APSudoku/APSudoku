@@ -42,6 +42,7 @@ func _ready():
 	%ShiftCenter.set_pressed_no_signal(%Sudoku.config.shift_center)
 	%ShowInvalid.set_pressed_no_signal(%Sudoku.config.show_invalid)
 	%ShapesMode.set_pressed_no_signal(%Sudoku.config.shapes_mode)
+	%ThrottleGeneration.set_pressed_no_signal(%Sudoku.config.throttle_bg_generation)
 
 var _prog_locs: Array[NetworkItem] = []
 var _non_prog_locs: Array[NetworkItem] = []
@@ -215,6 +216,9 @@ func set_shapes_mode(val: bool) -> void:
 	else:
 		%RadioCenter.disabled = false
 		%RadioCenter.queue_redraw()
+
+func set_throttle_gen(val: bool) -> void:
+	%Sudoku.config.throttle_bg_generation = val
 
 func init_theme() -> void:
 	if not DirAccess.dir_exists_absolute("user://themes/"):
