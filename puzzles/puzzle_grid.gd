@@ -45,7 +45,7 @@ class GenGrid:
 	class GenCell:
 		var parent_grid: GenGrid
 		var index: int = -1
-		
+
 		var sol: int = 0
 		var val: int = 0
 		var given: bool = false
@@ -92,7 +92,7 @@ class GenGrid:
 		var ind := 0
 		var built_cages := 0
 		var checked: Array[int] = []
-	
+
 	var _priority_gen: bool = false
 	var diff: Difficulty
 	var cells: Array[GenCell] = []
@@ -112,7 +112,7 @@ class GenGrid:
 		for q in 81:
 			other.cells[q] = cells[q].duplicate(other)
 		return other
-	
+
 	func is_unique() -> bool:
 		var copy := duplicate()
 		for c in copy.cells:
@@ -120,7 +120,7 @@ class GenGrid:
 				c.val = 0
 		throttle()
 		return copy.solve(true)
-	
+
 	class GenOptions:
 		var cells: Array[int]
 		var entropy: int
@@ -137,7 +137,7 @@ class GenGrid:
 			# Remove options that failed trial-and-error
 			for val in banned.get(ind, []):
 				cells[ind].options.erase(val)
-			
+
 			# Build a list of 'neighbors', the cells that 'see' this cell
 			var col: int = ind%9;
 			var row: int = floor(ind/9.0);
@@ -150,7 +150,7 @@ class GenGrid:
 			if cells[ind].cage:
 				for c in cells[ind].cage.cells:
 					neighbors[c] = true
-			
+
 			# values placed in neighbor cells cannot be duplicated
 			for q in neighbors.keys():
 				cells[ind].options.erase(cells[q].val)
@@ -269,7 +269,7 @@ class GenGrid:
 				killer_mode = true
 		if givens_for_cages < target_givens:
 			givens_for_cages = target_givens
-		
+
 		var killer_singles: Array[int] = []
 		if not target_givens: # 0-target, only possible with variant rules
 			for c in cells:
@@ -373,7 +373,7 @@ class GenGrid:
 		assert(cages.reduce(func(ac, cage): return ac + cage.cells.size(), 0) == 81
 			and cages.reduce(func(ac, cage): return ac + cage.sum, 0) == 45*9)
 		return true
-	
+
 	func throttle() -> void:
 		assert(OS.get_thread_caller_id() != 1) # Not main thread
 		var delay: int

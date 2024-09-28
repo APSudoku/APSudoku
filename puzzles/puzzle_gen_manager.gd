@@ -18,7 +18,7 @@ class PuzzleData:
 	var mutex := Mutex.new()
 	var open_prio_thread := false
 	signal puzzle_added
-	
+
 	func _init(d: PuzzleGrid.Difficulty, count := 1):
 		diff = d
 		for q in count:
