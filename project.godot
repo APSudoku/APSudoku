@@ -14,7 +14,7 @@ config/name="APSudoku"
 config/description="Sudoku HintGame for Archipelago
 See https://github.com/APSudoku/APSudoku
 Using https://github.com/EmilyV99/GodotAP"
-config/version="2.0.0.4"
+config/version="2.0.0.5"
 run/main_scene="res://ui/sudoku_client.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://graphics/icon/icon.png"
