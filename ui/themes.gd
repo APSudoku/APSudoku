@@ -49,7 +49,7 @@ func _get_members() -> Array[String]:
 			if name is String:
 				arr.append(name)
 	return arr
-	
+
 func _to_dict() -> Dictionary:
 	var dict := {}
 	for name in _get_members():

@@ -85,7 +85,7 @@ class GenGrid:
 			return parent_grid.cells[index+1]
 	class GridFillHistory:
 		var ind := 0
-		var checked: Dictionary ## of Array[int]
+		var checked: Dictionary[int, Array] ## Array[int]
 		func _to_string():
 			return "%d,%s" % [ind,checked]
 	class GridGivenHistory:
@@ -124,7 +124,7 @@ class GenGrid:
 	class GenOptions:
 		var cells: Array[int]
 		var entropy: int
-	func trim_opts(banned: Dictionary) -> GenOptions:
+	func trim_opts(banned: Dictionary[int, Array]) -> GenOptions:
 		# banned[cell index] -> Array[int] of banned values for that index
 		var killer := false
 		for ind in 81:
