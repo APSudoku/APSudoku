@@ -1,8 +1,23 @@
 @tool extends ConsoleWindowContainer
 
-@onready var settings_subtabs: Control = $Tabs/Settings/Margin/Tabs
-@onready var fields: Array[Control] = [%IP, %Port, %Slot, %Password, %Lives, %DeathLink]
-@onready var sudoku_grid: SudokuGrid = $Tabs/Sudoku
+@export var settings_subtabs: Control
+@export var fields: Array[Control]
+@export var sudoku_grid: SudokuGrid
+@export_group("AdminPanel")
+@export var admin_panel: MarginContainer
+@export var admin_pwd_box: LineEdit
+@export var admin_login_panel: Container
+@export var admin_control_panel: AdminControlPanel
+@export var admin_login_error: Label
+
+var admin_validated: bool = false :
+	set(val):
+		admin_validated = val
+		admin_control_panel.visible = val
+		if val:
+			admin_login_panel.visible = false
+		else:
+			admin_login_panel.visible = Archipelago.status == Archipelago.APStatus.PLAYING
 
 var _real_entry_mode: SudokuGrid.EntryMode = SudokuGrid.EntryMode.ANSWER
 var _entry_mode: SudokuGrid.EntryMode = SudokuGrid.EntryMode.ANSWER
@@ -20,25 +35,26 @@ func _ready():
 	tabs.move_child(tabs.get_node("Sudoku"), 0)
 	tabs.current_tab = 0 if OS.is_debug_build() else tabs.get_tab_idx_from_control($Tabs/Settings)
 	set_entry_mode(SudokuGrid.EntryMode.ANSWER)
-	
+
 	sudoku_grid.modifier_entry_mode.connect(set_fake_entry_mode)
 	sudoku_grid.cycle_entry_mode.connect(cycle_entry)
 	sudoku_grid.grant_hint.connect(grant_hint)
-	
+
 	settings_subtabs.move_child(settings_subtabs.get_node("Connection"), 0)
 	settings_subtabs.move_child(settings_subtabs.get_node("Sudoku"), 1)
 	settings_subtabs.current_tab = 0
 	Archipelago.load_console(self, false)
-	
+
 	Archipelago.roominfo.connect(on_roominfo)
 	Archipelago.connect_step.connect(%ConnTextLabel.set_text)
 	Archipelago.connected.connect(on_connect)
 	Archipelago.disconnected.connect(on_disconnect)
 	Archipelago.connectionrefused.connect(on_connect_reject)
+	Archipelago.printjson.connect(on_printjson)
 	on_disconnect()
 	Archipelago.creds.updated.connect(load_credentials)
 	load_credentials(Archipelago.creds)
-	
+
 	%ShiftCenter.set_pressed_no_signal(%Sudoku.config.shift_center)
 	%ShowInvalid.set_pressed_no_signal(%Sudoku.config.show_invalid)
 	%ShapesMode.set_pressed_no_signal(%Sudoku.config.shapes_mode)
@@ -47,9 +63,13 @@ func _ready():
 var _prog_locs: Array[NetworkItem] = []
 var _non_prog_locs: Array[NetworkItem] = []
 func refresh_hint_count() -> void:
+	if Archipelago.is_not_connected():
+		%CountLabel.text = ""
+		sudoku_grid.hinted_out = ""
+		return
 	_prog_locs.clear()
 	_non_prog_locs.clear()
-	
+
 	var locs := Archipelago.conn._scout_cache.keys()
 	for hint in Archipelago.conn.hints:
 		locs.erase(hint.item.loc_id)
@@ -63,23 +83,67 @@ func refresh_hint_count() -> void:
 		if itm.is_prog():
 			_prog_locs.append(itm)
 		else: _non_prog_locs.append(itm)
-	var count := locs.size()
-	%CountLabel.text = "%d unhinted" % count if count else "Hinted Out!"
-
-func grant_hint(prog_percent: int) -> void:
-	if _prog_locs.is_empty():
-		prog_percent = 0
-		if _non_prog_locs.is_empty():
-			await PopupManager.popup_dlg("No hints left to earn, though!", "Correct!", false)
-			return
-	elif _non_prog_locs.is_empty(): prog_percent = 100
-	var itm: NetworkItem
-	if randi_range(0,100) < prog_percent:
-		itm = _prog_locs.pick_random()
+	if admin_control_panel.active_settings.get("enabled", true):
+		var use_prog := false
+		var use_nonprog := false
+		for w in setting_weights.values():
+			if w[0] > 0:
+				use_prog = true
+			if w[1] > 0:
+				use_nonprog = true
+		var count := 0
+		if use_prog: count += _prog_locs.size()
+		if use_nonprog: count += _non_prog_locs.size()
+		var weights: Array[int] = _cur_weights()
+		if weights[0] > 0 != use_prog or weights[1] > 0 != use_nonprog:
+			var cur_count := 0
+			if weights[0] > 0: cur_count += _prog_locs.size()
+			if weights[1] > 0: cur_count += _non_prog_locs.size()
+			if count and not cur_count:
+				%CountLabel.text = "Change Difficulty!"
+				sudoku_grid.hinted_out = "No more hints available at this difficulty due to host settings!"
+			elif count:
+				%CountLabel.text = "%d [%d] unhinted" % [cur_count, count]
+				sudoku_grid.hinted_out = ""
+			else:
+				%CountLabel.text = "Hinted Out!"
+				sudoku_grid.hinted_out = "No more hints available for this slot!"
+		elif count:
+			%CountLabel.text = "%d unhinted" % count
+			sudoku_grid.hinted_out = ""
+		else:
+			%CountLabel.text = "Hinted Out!"
+			sudoku_grid.hinted_out = ""
 	else:
+		%CountLabel.text = ""
+		sudoku_grid.hinted_out = "APSudoku has been disabled by the host. No hints will be earned."
+
+func grant_hint(diff: PuzzleGrid.Difficulty) -> void:
+	var diff_name := PuzzleGrid.diff_to_str(diff)
+	var weights: Array[int]
+	weights.assign(setting_weights[diff_name])
+
+	if _prog_locs.is_empty():
+		weights[0] = 0
+	if _non_prog_locs.is_empty():
+		weights[1] = 0;
+	if weights[0] == 0 and weights[1] == 0:
+		await PopupManager.popup_dlg("No hints left to earn, though!", "Correct!", false)
+		return
+	var max_weight: int = weights.reduce(func(acc, val):
+		return acc + val, 0)
+	var picked: int = randi_range(0, max_weight-1)
+	var itm: NetworkItem
+	if picked < weights[0]:
+		itm = _prog_locs.pick_random()
+	elif picked < weights[0] + weights[1]:
 		itm = _non_prog_locs.pick_random()
+	else:
+		assert(weights[2] > 0)
+		await PopupManager.popup_dlg("Unlucky, no hint this time!", "Correct!", false)
+		return
 	Archipelago.conn.scout(itm.loc_id, 1, Callable())
-	Archipelago.conn.on_hint_update.connect(display_hint.bind(itm.loc_id), CONNECT_ONE_SHOT)
+	Archipelago.conn.on_hint_update.connect(display_hint.bind(itm.loc_id), CONNECT_REFERENCE_COUNTED)
 func display_hint(hints: Array[NetworkHint], loc: int) -> void:
 	for hint in hints:
 		if hint.item.loc_id == loc:
@@ -91,7 +155,12 @@ func on_roominfo(_conn: ConnectionInfo, _json: Dictionary) -> void:
 	if %Sudoku.config.debug_connect_settings:
 		for game in %Sudoku.config.skipped_data_packages:
 			Archipelago.datapack_pending.erase(game)
-func on_connect(conn: ConnectionInfo, _json: Dictionary) -> void:
+func on_connect(conn: ConnectionInfo, json: Dictionary) -> void:
+	admin_validated = false
+	admin_login_panel.visible = true
+	admin_login_error.text = ""
+	admin_control_panel.on_connect(conn, json)
+
 	conn.roomupdate.connect(refresh_hint_count.unbind(1))
 	conn.on_hint_update.connect(refresh_hint_count.unbind(1))
 	conn.deathlink.connect(%Sudoku.deathlink_recv)
@@ -108,6 +177,12 @@ func on_connect(conn: ConnectionInfo, _json: Dictionary) -> void:
 	conn.all_scout_cached.connect(refresh_hint_count, CONNECT_ONE_SHOT)
 	conn.force_scout_all()
 func on_disconnect() -> void:
+	admin_validated = false
+	admin_login_panel.visible = false
+	admin_login_error.text = ""
+
+	update_setting_label()
+
 	%ConnTextLabel.text = ""
 	%ConnectButton.disabled = false
 	%ConnectButton.text = "Connect"
@@ -277,3 +352,53 @@ func load_theme(path := "") -> void:
 func reset_theme():
 	if await PopupManager.popup_dlg("Are you sure you want to reset the current theme to default?", "Reset Theme", true):
 		%Sudoku.sudoku_theme.update_from_copy(SudokuTheme.new())
+
+func on_printjson(json: Dictionary, text: String) -> void:
+	if "CommandResult" not in json.get("type", ""):
+		return
+	if text == "Sorry, Remote administration is disabled":
+		admin_login_error.text = "ERROR: Remote Administration is Disabled"
+	elif text == "Password incorrect.":
+		admin_login_error.text = "ERROR: Wrong Password!"
+	elif text == "Login successful. You can now issue server side commands.":
+		admin_login_error.text = ""
+		admin_validated = true
+
+func check_admin() -> void:
+	Archipelago.send_command("Say", {"text": "!admin login %s" % admin_pwd_box.text})
+
+
+var is_enabled: bool = true
+var setting_weights: Dictionary[String, Array]
+func on_update_settings(settings: Dictionary) -> void:
+	is_enabled = settings.get("enabled", true)
+	setting_weights.merge(settings.get("weights", {}), true)
+	update_setting_label()
+	refresh_hint_count()
+
+func update_setting_label() -> void:
+	if Archipelago.status != Archipelago.APStatus.PLAYING:
+		%SettingsText.text = "Information on room-specific settings appears here after connecting."
+		return
+	if not is_enabled:
+		%SettingsText.text = "The host has disabled APSudoku entirely. No hints may be earned."
+		return
+	var weights: Array[int] = _cur_weights()
+	%SettingsText.text = "Weights:\nProgression: %d\nNon-Prog: %d\nNo Hint: %d" % weights
+
+func _cur_weights() -> Array[int]:
+	var weights: Array[int] = []
+
+	match sudoku_grid.difficulty:
+		PuzzleGrid.Difficulty.EASY:
+			weights = [10, 90, 0]
+		PuzzleGrid.Difficulty.MEDIUM:
+			weights = [40, 60, 0]
+		PuzzleGrid.Difficulty.HARD:
+			weights = [80, 20, 0]
+		PuzzleGrid.Difficulty.KILLER:
+			weights = [60, 40, 0]
+	weights.assign(setting_weights.get(PuzzleGrid.diff_to_str(sudoku_grid.difficulty), weights))
+	while weights.size() < 3:
+		weights.append(0)
+	return weights

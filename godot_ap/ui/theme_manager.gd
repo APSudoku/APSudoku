@@ -10,4 +10,3 @@ func _ready():
 func set_program_theme(path: String) -> void:
 	ProjectSettings.set_setting("gui/theme/custom", path)
 	get_tree().root.theme = load(path)
-

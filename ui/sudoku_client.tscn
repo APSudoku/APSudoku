@@ -1,14 +1,14 @@
-[gd_scene load_steps=24 format=3 uid="uid://c3eb4ejxtp2nl"]
+[gd_scene load_steps=29 format=3 uid="uid://c3eb4ejxtp2nl"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ah7d3ep4de" path="res://godot_ap/ui/common_client.tscn" id="1_yxr36"]
-[ext_resource type="Script" path="res://ui/sudoku_client.gd" id="2_drtqi"]
-[ext_resource type="Script" path="res://ui/text_edit.gd" id="2_i8w2d"]
+[ext_resource type="Script" uid="uid://1rwbhpu5vxk4" path="res://ui/sudoku_client.gd" id="2_drtqi"]
+[ext_resource type="Script" uid="uid://qytvf11in6qy" path="res://ui/text_edit.gd" id="2_i8w2d"]
 [ext_resource type="Texture2D" uid="uid://gx66b3mmi6dg" path="res://graphics/cbox_check.png" id="3_o3j5h"]
-[ext_resource type="Script" path="res://ui/connect_button.gd" id="3_ry2b2"]
+[ext_resource type="Script" uid="uid://bdw7vm0qfxwx2" path="res://ui/connect_button.gd" id="3_ry2b2"]
 [ext_resource type="Texture2D" uid="uid://ccf7tgt6qm1qp" path="res://graphics/cbox_check_dis.png" id="4_ni7xp"]
 [ext_resource type="Texture2D" uid="uid://dgm6q0xhqkgja" path="res://graphics/radio_check.png" id="5_k0r4h"]
 [ext_resource type="PackedScene" uid="uid://bdweotrsewo6q" path="res://puzzles/cell.tscn" id="5_p356p"]
-[ext_resource type="Script" path="res://ui/sudoku_grid.gd" id="5_rhuh7"]
+[ext_resource type="Script" uid="uid://c85nbt203khpe" path="res://ui/sudoku_grid.gd" id="5_rhuh7"]
 [ext_resource type="Texture2D" uid="uid://drb1lo6t5ahfo" path="res://graphics/radio_check_dis.png" id="6_em03n"]
 [ext_resource type="Texture2D" uid="uid://d1dke3omp76j2" path="res://graphics/radio_uncheck.png" id="7_abb2d"]
 [ext_resource type="Texture2D" uid="uid://c5febtmw1vnx3" path="res://graphics/grabber.png" id="7_leeka"]
@@ -16,9 +16,13 @@
 [ext_resource type="Texture2D" uid="uid://cgojnpx75y4im" path="res://graphics/cbox_uncheck.png" id="9_30ved"]
 [ext_resource type="Texture2D" uid="uid://c5hwl8l8c6qj6" path="res://graphics/cbox_uncheck_dis.png" id="10_35877"]
 [ext_resource type="PackedScene" uid="uid://7sxs07p5mo4o" path="res://ui/infobutton.tscn" id="13_7ct3a"]
-[ext_resource type="Script" path="res://ui/debug_settings.gd" id="13_yousr"]
-[ext_resource type="Script" path="res://ui/actual_grid.gd" id="14_3xquc"]
-[ext_resource type="Script" path="res://ui/button_toggle_disabled.gd" id="15_83fxp"]
+[ext_resource type="Script" uid="uid://cj06n2qh8ec5b" path="res://ui/debug_settings.gd" id="13_yousr"]
+[ext_resource type="Script" uid="uid://bem83ythwco6j" path="res://ui/actual_grid.gd" id="14_3xquc"]
+[ext_resource type="Script" uid="uid://d21n6ox3lmmwv" path="res://ui/button_toggle_disabled.gd" id="15_83fxp"]
+[ext_resource type="SystemFont" uid="uid://73rjoc23d4ub" path="res://godot_ap/ui/console_font.tres" id="20_61nds"]
+[ext_resource type="Script" uid="uid://cety6nqnci3n6" path="res://godot_ap/ui/updown_lineedit.gd" id="21_arbtu"]
+[ext_resource type="Script" uid="uid://bvyjl05157b1k" path="res://ui/admin_control_panel.gd" id="22_arbtu"]
+[ext_resource type="PackedScene" uid="uid://b8dujcc1olxkl" path="res://ui/admin_panel_difficulty_settings.tscn" id="23_ctivq"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_oyu55"]
 
@@ -36,22 +40,38 @@ CheckBox/icons/unchecked_disabled = ExtResource("10_35877")
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_mrvem"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ctivq"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+draw_center = false
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+
 [sub_resource type="ButtonGroup" id="ButtonGroup_7l32q"]
 
-[node name="SudokuClient" instance=ExtResource("1_yxr36")]
+[node name="SudokuClient" node_paths=PackedStringArray("settings_subtabs", "fields", "sudoku_grid", "admin_panel", "admin_pwd_box", "admin_login_panel", "admin_control_panel", "admin_login_error") instance=ExtResource("1_yxr36")]
 script = ExtResource("2_drtqi")
+settings_subtabs = NodePath("Tabs/Settings/Margin/Tabs")
+fields = [NodePath("Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/IP"), NodePath("Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Port"), NodePath("Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Slot"), NodePath("Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Password"), NodePath("Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer/Lives"), NodePath("Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/DeathLink")]
+sudoku_grid = NodePath("Tabs/Sudoku")
+admin_panel = NodePath("Tabs/AdminPanel")
+admin_pwd_box = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/HBoxContainer/Pwd_Box")
+admin_login_panel = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen")
+admin_control_panel = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel")
+admin_login_error = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/AdminError")
 
 [node name="Tabs" parent="." index="0"]
-current_tab = 3
+current_tab = 4
 
 [node name="Console" parent="Tabs" index="1"]
 visible = false
 
 [node name="ConnectBox" parent="Tabs/Console" index="1"]
 visible = false
-
-[node name="Settings" parent="Tabs" index="4"]
-visible = true
 
 [node name="Tabs" parent="Tabs/Settings/Margin" index="0"]
 current_tab = 3
@@ -369,6 +389,7 @@ text = "Reset"
 [node name="Sudoku" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="3"]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs/Sudoku" index="0"]
 layout_mode = 2
@@ -431,6 +452,7 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
+metadata/_tab_index = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection" index="0"]
 layout_mode = 2
@@ -637,11 +659,11 @@ text = "Remove All"
 
 [node name="Sudoku" type="MarginContainer" parent="Tabs" index="5"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 focus_mode = 2
 mouse_filter = 0
 script = ExtResource("5_rhuh7")
+metadata/_tab_index = 4
 
 [node name="HSplitContainer" type="HSplitContainer" parent="Tabs/Sudoku" index="0"]
 layout_mode = 2
@@ -661,23 +683,25 @@ theme_override_constants/margin_bottom = 20
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer" index="0"]
+[node name="MarginContainer2" type="MarginContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer" index="0"]
 layout_mode = 2
 
-[node name="CountLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
+[node name="CountLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer2" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 0
 
-[node name="MainLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="1"]
+[node name="MainLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer2" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 theme_override_font_sizes/font_size = 25
 text = "No Active Game"
 
-[node name="ControlInfo" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="2" instance=ExtResource("13_7ct3a")]
+[node name="ControlInfo" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer2" index="2" instance=ExtResource("13_7ct3a")]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 8
 title = "Controls"
 info = "LClick: Select (Hold / Shift / Ctrl: Multi)
 Double-LClick: Select Matching (Shift / Ctrl: Multi)
@@ -1206,9 +1230,11 @@ layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="0"]
 layout_mode = 2
+size_flags_horizontal = 0
 
 [node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="0"]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Entry:"
 
 [node name="RadioAnswer" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="1"]
@@ -1235,14 +1261,14 @@ button_group = SubResource("ButtonGroup_mrvem")
 text = "Corner"
 flat = true
 
-[node name="ClearInvalid" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="4"]
+[node name="ClearInvalid" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 text = "    Clear 'Invalid' color    "
 
-[node name="GridContainer" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="1"]
+[node name="GridContainer" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="2"]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/h_separation = 2
@@ -1338,13 +1364,50 @@ RClick: Toggle button (useful for marking finished values)
 [node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 10
+theme_override_constants/separation = 20
 
-[node name="DiffContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="0"]
+[node name="SettingsContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="0"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer/HBoxContainer" index="0"]
+layout_mode = 2
+text = "Settings:"
+
+[node name="InfoButton" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
+layout_mode = 2
+title = "Server Settings"
+info = "These settings are based on the currrent difficulty selected, and settings set on the server.
+
+The host of a multiworld can use the \"AdminPanel\" (using the admin password) to change these settings for everyone in the multiworld."
+
+[node name="PanelContainer" type="PanelContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ctivq")
+
+[node name="SettingsText" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer/PanelContainer" index="0"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 3
+
+[node name="DiffContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 8
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="0"]
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 16
 
 [node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/HBoxContainer" index="0"]
 layout_mode = 2
@@ -1354,13 +1417,16 @@ text = "Difficulty:"
 layout_mode = 2
 title = "How to Play / Difficulty Info"
 info = "Fill every Row, Column, and outlined Region (3x3 box) with the digits 1-9, exactly once each.
-For each difficulty, information is listed in the format:
-`Name: # Givens digits, chance of reward being progression hint`
-Easy: 46, 10%%        Normal: 35, 40%%
-Hard: 26, 80%%        Killer*: 26, 60%%
-* In 'Killer' mode, outlined Cages must sum to the indicated total."
 
-[node name="RadioEasy" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="1"]
+In 'Killer' mode, outlined Cages must sum to the indicated total.
+
+Different difficulties can have different odds of giving you a \"progression\" hint, \"non-progression\" hint, or no hint at all. Hosts can change these odds in the AdminPanel tab, using the multiworld's admin password."
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="RadioEasy" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1368,7 +1434,7 @@ button_group = SubResource("ButtonGroup_7l32q")
 text = "Easy"
 flat = true
 
-[node name="RadioMedium" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="2"]
+[node name="RadioMedium" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1376,7 +1442,7 @@ button_group = SubResource("ButtonGroup_7l32q")
 text = "Medium"
 flat = true
 
-[node name="RadioHard" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="3"]
+[node name="RadioHard" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1384,7 +1450,7 @@ button_group = SubResource("ButtonGroup_7l32q")
 text = "Hard"
 flat = true
 
-[node name="RadioKiller" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="4"]
+[node name="RadioKiller" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer" index="3"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1392,9 +1458,9 @@ button_group = SubResource("ButtonGroup_7l32q")
 text = "Killer"
 flat = true
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="1"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="2"]
 layout_mode = 2
-size_flags_vertical = 10
+size_flags_vertical = 8
 
 [node name="GeneratingLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2" index="0"]
 unique_name_in_owner = true
@@ -1423,6 +1489,124 @@ layout_mode = 2
 focus_mode = 0
 text = "Check"
 
+[node name="AdminPanel" type="MarginContainer" parent="Tabs" index="6"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
+metadata/_tab_index = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="Tabs/AdminPanel" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/AdminPanel/MarginContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 36
+text = "APSudoku Admin Control Panel"
+
+[node name="MarginContainer" type="MarginContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="AdminLoginScreen" type="VBoxContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer" index="0"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen" index="0"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/HBoxContainer" index="0"]
+layout_mode = 2
+text = "Admin Password:"
+
+[node name="Pwd_Box" type="LineEdit" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/HBoxContainer" index="1"]
+custom_minimum_size = Vector2(200, 33)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("20_61nds")
+theme_override_font_sizes/font_size = 20
+placeholder_text = "-Admin Pwd-"
+expand_to_text_length = true
+script = ExtResource("21_arbtu")
+
+[node name="Button" type="Button" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen" index="1"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Login"
+
+[node name="AdminError" type="Label" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen" index="2"]
+layout_mode = 2
+size_flags_horizontal = 4
+horizontal_alignment = 1
+
+[node name="AdminControlPanel" type="VBoxContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer" index="1"]
+layout_mode = 2
+theme_override_constants/separation = 16
+script = ExtResource("22_arbtu")
+metadata/_custom_type_script = "uid://bvyjl05157b1k"
+
+[node name="ToggleSudoku" type="CheckButton" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" index="0"]
+layout_mode = 2
+size_flags_horizontal = 4
+button_pressed = true
+text = "Allow APSudoku"
+
+[node name="Difficulties" type="GridContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" index="1"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+columns = 2
+
+[node name="Easy" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties" index="0" instance=ExtResource("23_ctivq")]
+layout_mode = 2
+diffname = "Easy"
+
+[node name="Normal" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties" index="1" instance=ExtResource("23_ctivq")]
+layout_mode = 2
+diffname = "Normal"
+
+[node name="Hard" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties" index="2" instance=ExtResource("23_ctivq")]
+layout_mode = 2
+diffname = "Hard"
+
+[node name="Killer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties" index="3" instance=ExtResource("23_ctivq")]
+layout_mode = 2
+diffname = "Killer"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" index="2"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 20
+
+[node name="ApplyButton" type="Button" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/HBoxContainer" index="0"]
+layout_mode = 2
+text = "APPLY CHANGES"
+
+[node name="RevertButton" type="Button" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/HBoxContainer" index="1"]
+layout_mode = 2
+text = "REFRESH / REVERT CHANGES"
+
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3/SaveThemeBtn" to="." method="save_theme"]
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3/SaveThemeAsBtn" to="." method="save_theme_as"]
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3/LoadThemeBtn" to="." method="load_theme"]
@@ -1438,10 +1622,12 @@ text = "Check"
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/ConnectButton" to="." method="on_connect_button"]
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer/Lives" to="." method="try_connect" unbinds=1]
 [connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/DebugSettingsToggle" to="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" method="set_visible"]
+[connection signal="difficulty_changed" from="Tabs/Sudoku" to="." method="refresh_hint_count" unbinds=1]
+[connection signal="difficulty_changed" from="Tabs/Sudoku" to="." method="update_setting_label" unbinds=1]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioAnswer" to="." method="set_entry_mode_no_button" binds= [0]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCenter" to="." method="set_entry_mode_no_button" binds= [1]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCorner" to="." method="set_entry_mode_no_button" binds= [2]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/ClearInvalid" to="Tabs/Sudoku" method="clear_invalid"]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/ClearInvalid" to="Tabs/Sudoku" method="clear_invalid"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry1" to="Tabs/Sudoku" method="type_number" binds= [1]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry2" to="Tabs/Sudoku" method="type_number" binds= [2]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry3" to="Tabs/Sudoku" method="type_number" binds= [3]]
@@ -1452,12 +1638,27 @@ text = "Check"
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry8" to="Tabs/Sudoku" method="type_number" binds= [8]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry9" to="Tabs/Sudoku" method="type_number" binds= [9]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/DeleteButton" to="Tabs/Sudoku" method="clear_selected"]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/RadioEasy" to="Tabs/Sudoku" method="set_difficulty" binds= [0]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/RadioMedium" to="Tabs/Sudoku" method="set_difficulty" binds= [1]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/RadioHard" to="Tabs/Sudoku" method="set_difficulty" binds= [2]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/RadioKiller" to="Tabs/Sudoku" method="set_difficulty" binds= [3]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer/RadioEasy" to="Tabs/Sudoku" method="set_difficulty" binds= [0]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer/RadioMedium" to="Tabs/Sudoku" method="set_difficulty" binds= [1]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer/RadioHard" to="Tabs/Sudoku" method="set_difficulty" binds= [2]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer/RadioKiller" to="Tabs/Sudoku" method="set_difficulty" binds= [3]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/StartButton" to="Tabs/Sudoku" method="start_puzzle"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/ForfeitButton" to="Tabs/Sudoku" method="forfeit_puzzle"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/CheckButton" to="Tabs/Sudoku" method="submit_solution"]
+[connection signal="text_submitted" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/HBoxContainer/Pwd_Box" to="Tabs/Console/ConnectBox/Row/Box/Margins/VBox/Content" method="try_connection" unbinds=1]
+[connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/Button" to="." method="check_admin"]
+[connection signal="enabled_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/ToggleSudoku" method="set_pressed"]
+[connection signal="settings_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="." method="on_update_settings"]
+[connection signal="weights_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Easy" method="update_weights"]
+[connection signal="weights_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Normal" method="update_weights"]
+[connection signal="weights_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Hard" method="update_weights"]
+[connection signal="weights_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Killer" method="update_weights"]
+[connection signal="toggled" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/ToggleSudoku" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="set_sudoku_enabled"]
+[connection signal="update_values" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Easy" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="set_values"]
+[connection signal="update_values" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Normal" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="set_values"]
+[connection signal="update_values" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Hard" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="set_values"]
+[connection signal="update_values" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Killer" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="set_values"]
+[connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/HBoxContainer/ApplyButton" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="apply_settings"]
+[connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/HBoxContainer/RevertButton" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="revert_settings"]
 
 [editable path="Tabs/Hints/Console"]

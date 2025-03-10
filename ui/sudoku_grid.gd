@@ -4,7 +4,8 @@ const CHEAT_MODE := false
 
 signal modifier_entry_mode(val: EntryMode)
 signal cycle_entry_mode
-signal grant_hint(prog_percent: int)
+signal grant_hint(diff: PuzzleGrid.Difficulty)
+signal difficulty_changed(new_diff: PuzzleGrid.Difficulty)
 
 var config: SudokuConfigManager :
 	get: return Archipelago.config
@@ -17,6 +18,7 @@ var show_invalid := false
 var mode: EntryMode = EntryMode.ANSWER
 var mod_mode: int = -1
 var difficulty: PuzzleGrid.Difficulty
+var hinted_out: String = ""
 enum EntryMode {
 	ANSWER, CENTER, CORNER
 }
@@ -59,7 +61,7 @@ func _ready():
 		for c in r:
 			cells.append(c)
 	if Engine.is_editor_hint(): return
-	
+
 	for r in regions:
 		for c in r:
 			c.add_neighbors(r)
@@ -85,10 +87,10 @@ func _ready():
 		cells[q].recheck_focus.connect(recheck_focus)
 		cells[q].grid_focus.connect(grid_focus)
 		cells[q].select_alike.connect(select_alike)
-	
+
 	if not sudoku_theme:
 		sudoku_theme = SudokuTheme.new()
-	
+
 	load_theme(sudoku_theme)
 	var theme_dict := sudoku_theme._to_dict()
 	for key in theme_dict.keys():
@@ -101,9 +103,9 @@ func _ready():
 		picker.color_changed.connect(func(color: Color):
 			sudoku_theme.update_color(key, color)
 			%Sudoku.grid_redraw())
-	
+
 	clear()
-	
+
 	config.config_changed.connect(update_config)
 	set_difficulty(PuzzleGrid.Difficulty.MEDIUM)
 
@@ -140,17 +142,7 @@ func submit_solution() -> bool:
 		return false
 	if check_solve():
 		if Archipelago.is_ap_connected():
-			var prog_percent: int
-			match difficulty:
-				PuzzleGrid.Difficulty.EASY:
-					prog_percent = 10
-				PuzzleGrid.Difficulty.MEDIUM:
-					prog_percent = 40
-				PuzzleGrid.Difficulty.HARD:
-					prog_percent = 80
-				PuzzleGrid.Difficulty.KILLER:
-					prog_percent = 60
-			grant_hint.emit(prog_percent)
+			grant_hint.emit(difficulty)
 		else: await PopupManager.popup_dlg("Not connected, so no hint granted.", "Correct!", false)
 		clear_active()
 		return true
@@ -158,7 +150,7 @@ func submit_solution() -> bool:
 	if Archipelago.is_deathlink():
 		if _lost_puzzle(false):
 			s += "\nYou ran out of lives! (DeathLink sent)"
-	
+
 	set_invalid()
 	await PopupManager.popup_dlg(s, "Wrong!", false)
 	return false
@@ -209,7 +201,7 @@ func grid_input(event) -> void:
 		elif mod_mode > -1:
 			mod_mode = -1
 			modifier_entry_mode.emit(mod_mode)
-	
+
 	if event is InputEventKey:
 		if event.pressed and not event.echo:
 			var v := 0
@@ -297,7 +289,11 @@ func start_puzzle() -> void:
 	if active_puzzle: return
 	if Archipelago.is_not_connected():
 		_invalid = true
-		var popup := PopupManager.create_popup("No hints can be earned while not connected. Start anyway?", "No Connection", true)
+		var popup := await PopupManager.create_popup("No hints can be earned while not connected.\nStart anyway?", "No Connection", true)
+		if not await popup.pop_open():
+			return
+	elif not hinted_out.is_empty():
+		var popup := await PopupManager.create_popup("%s\nStart anyway?" % hinted_out, "No Hints", true)
 		if not await popup.pop_open():
 			return
 	%StartButton.disabled = true
@@ -347,6 +343,7 @@ func _notification(what):
 func set_difficulty(diff: int):
 	[%RadioEasy,%RadioMedium,%RadioHard,%RadioKiller][diff].button_pressed = true
 	difficulty = diff as PuzzleGrid.Difficulty
+	difficulty_changed.emit(difficulty)
 
 func _lost_puzzle(force_clear := true) -> bool:
 	if deaths_towards_amnesty == death_amnesty:
@@ -367,7 +364,7 @@ func forfeit_puzzle() -> bool:
 	var s := "Are you sure you wish to forfeit the current puzzle?"
 	if Archipelago.is_ap_connected() and Archipelago.is_deathlink():
 		s += "\nForfeiting counts as a death towards DeathLink!"
-	var popup := PopupManager.create_popup(s, "Forfeit?", true)
+	var popup := await PopupManager.create_popup(s, "Forfeit?", true)
 	var lbl := popup.get_label()
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	if await popup.pop_open():

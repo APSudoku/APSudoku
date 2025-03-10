@@ -8,7 +8,7 @@ func _ready():
 	pressed.connect(show_info)
 
 static func pop_info(dlg_title: String, dlg_info: String) -> void:
-	var popup := PopupManager.create_popup(dlg_info, dlg_title, false)
+	var popup := await PopupManager.create_popup(dlg_info, dlg_title, false)
 	popup.max_size = PopupManager.get_window().size * 0.8
 	var lbl := popup.get_label()
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
