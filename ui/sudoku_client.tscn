@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://c3eb4ejxtp2nl"]
+[gd_scene load_steps=28 format=3 uid="uid://c3eb4ejxtp2nl"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ah7d3ep4de" path="res://godot_ap/ui/common_client.tscn" id="1_yxr36"]
 [ext_resource type="Script" uid="uid://1rwbhpu5vxk4" path="res://ui/sudoku_client.gd" id="2_drtqi"]
@@ -21,6 +21,8 @@
 [ext_resource type="Script" uid="uid://d21n6ox3lmmwv" path="res://ui/button_toggle_disabled.gd" id="15_83fxp"]
 [ext_resource type="SystemFont" uid="uid://73rjoc23d4ub" path="res://godot_ap/ui/console_font.tres" id="20_61nds"]
 [ext_resource type="Script" uid="uid://cety6nqnci3n6" path="res://godot_ap/ui/updown_lineedit.gd" id="21_arbtu"]
+[ext_resource type="Script" uid="uid://bvyjl05157b1k" path="res://ui/admin_control_panel.gd" id="22_arbtu"]
+[ext_resource type="PackedScene" uid="uid://b8dujcc1olxkl" path="res://ui/admin_panel_difficulty_settings.tscn" id="23_ctivq"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_oyu55"]
 
@@ -1348,13 +1350,40 @@ RClick: Toggle button (useful for marking finished values)
 [node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 10
+theme_override_constants/separation = 20
 
-[node name="DiffContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="0"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer" index="0"]
+layout_mode = 2
+text = "Settings:"
+
+[node name="InfoButton" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
+layout_mode = 2
+title = "Server Settings"
+info = "These settings are based on the currrent difficulty selected, and settings set on the server.
+
+The host of a multiworld can use the \"AdminPanel\" (using the admin password) to change these settings for everyone in the multiworld."
+
+[node name="SettingsText" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 3
+
+[node name="DiffContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="0"]
 layout_mode = 2
+theme_override_constants/separation = 16
 
 [node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/HBoxContainer" index="0"]
 layout_mode = 2
@@ -1402,7 +1431,7 @@ button_group = SubResource("ButtonGroup_7l32q")
 text = "Killer"
 flat = true
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="1"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="2"]
 layout_mode = 2
 size_flags_vertical = 10
 
@@ -1467,6 +1496,7 @@ theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
 [node name="AdminLoginScreen" type="VBoxContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer" index="0"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 8
@@ -1500,12 +1530,54 @@ layout_mode = 2
 size_flags_horizontal = 4
 horizontal_alignment = 1
 
-[node name="AdminControlPanel" type="GridContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer" index="1"]
+[node name="AdminControlPanel" type="VBoxContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer" index="1"]
 layout_mode = 2
+theme_override_constants/separation = 16
+script = ExtResource("22_arbtu")
+metadata/_custom_type_script = "uid://bvyjl05157b1k"
 
-[node name="Label" type="Label" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" index="0"]
+[node name="ToggleSudoku" type="CheckButton" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" index="0"]
 layout_mode = 2
-text = "ADMIN ACCESS WOO"
+size_flags_horizontal = 4
+button_pressed = true
+text = "Allow APSudoku"
+
+[node name="Difficulties" type="GridContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" index="1"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+columns = 2
+
+[node name="Easy" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties" index="0" instance=ExtResource("23_ctivq")]
+layout_mode = 2
+diffname = "Easy"
+
+[node name="Normal" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties" index="1" instance=ExtResource("23_ctivq")]
+layout_mode = 2
+diffname = "Normal"
+
+[node name="Hard" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties" index="2" instance=ExtResource("23_ctivq")]
+layout_mode = 2
+diffname = "Hard"
+
+[node name="Killer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties" index="3" instance=ExtResource("23_ctivq")]
+layout_mode = 2
+diffname = "Killer"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" index="2"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 20
+
+[node name="ApplyButton" type="Button" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/HBoxContainer" index="0"]
+layout_mode = 2
+text = "APPLY CHANGES"
+
+[node name="RevertButton" type="Button" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/HBoxContainer" index="1"]
+layout_mode = 2
+text = "REFRESH / REVERT CHANGES"
 
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3/SaveThemeBtn" to="." method="save_theme"]
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3/SaveThemeAsBtn" to="." method="save_theme_as"]
@@ -1522,6 +1594,7 @@ text = "ADMIN ACCESS WOO"
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/ConnectButton" to="." method="on_connect_button"]
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer/Lives" to="." method="try_connect" unbinds=1]
 [connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/DebugSettingsToggle" to="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" method="set_visible"]
+[connection signal="difficulty_changed" from="Tabs/Sudoku" to="." method="update_setting_label" unbinds=1]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioAnswer" to="." method="set_entry_mode_no_button" binds= [0]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCenter" to="." method="set_entry_mode_no_button" binds= [1]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCorner" to="." method="set_entry_mode_no_button" binds= [2]]
@@ -1545,5 +1618,18 @@ text = "ADMIN ACCESS WOO"
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/CheckButton" to="Tabs/Sudoku" method="submit_solution"]
 [connection signal="text_submitted" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/HBoxContainer/Pwd_Box" to="Tabs/Console/ConnectBox/Row/Box/Margins/VBox/Content" method="try_connection" unbinds=1]
 [connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/Button" to="." method="check_admin"]
+[connection signal="enabled_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/ToggleSudoku" method="set_pressed"]
+[connection signal="settings_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="." method="on_update_settings"]
+[connection signal="weights_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Easy" method="update_weights"]
+[connection signal="weights_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Normal" method="update_weights"]
+[connection signal="weights_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Hard" method="update_weights"]
+[connection signal="weights_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Killer" method="update_weights"]
+[connection signal="toggled" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/ToggleSudoku" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="set_sudoku_enabled"]
+[connection signal="update_values" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Easy" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="set_values"]
+[connection signal="update_values" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Normal" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="set_values"]
+[connection signal="update_values" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Hard" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="set_values"]
+[connection signal="update_values" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Killer" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="set_values"]
+[connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/HBoxContainer/ApplyButton" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="apply_settings"]
+[connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/HBoxContainer/RevertButton" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="revert_settings"]
 
 [editable path="Tabs/Hints/Console"]

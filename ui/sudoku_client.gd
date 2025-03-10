@@ -7,7 +7,7 @@
 @export var admin_panel: MarginContainer
 @export var admin_pwd_box: LineEdit
 @export var admin_login_panel: Container
-@export var admin_control_panel: Container
+@export var admin_control_panel: AdminControlPanel
 @export var admin_login_error: Label
 
 var admin_validated: bool = false :
@@ -79,21 +79,45 @@ func refresh_hint_count() -> void:
 		if itm.is_prog():
 			_prog_locs.append(itm)
 		else: _non_prog_locs.append(itm)
-	var count := locs.size()
-	%CountLabel.text = "%d unhinted" % count if count else "Hinted Out!"
-
-func grant_hint(prog_percent: int) -> void:
-	if _prog_locs.is_empty():
-		prog_percent = 0
-		if _non_prog_locs.is_empty():
-			await PopupManager.popup_dlg("No hints left to earn, though!", "Correct!", false)
-			return
-	elif _non_prog_locs.is_empty(): prog_percent = 100
-	var itm: NetworkItem
-	if randi_range(0,100) < prog_percent:
-		itm = _prog_locs.pick_random()
+	if admin_control_panel.active_settings.get("enabled", true):
+		var count := locs.size()
+		%CountLabel.text = "%d unhinted" % count if count else "Hinted Out!"
 	else:
+		%CountLabel.text = ""
+
+func grant_hint(diff: PuzzleGrid.Difficulty) -> void:
+	var diff_name := ""
+	match diff:
+		PuzzleGrid.Difficulty.EASY:
+			diff_name = "Easy"
+		PuzzleGrid.Difficulty.MEDIUM:
+			diff_name = "Normal"
+		PuzzleGrid.Difficulty.HARD:
+			diff_name = "Hard"
+		PuzzleGrid.Difficulty.KILLER:
+			diff_name = "Killer"
+	var weights: Array[int]
+	weights.assign(setting_weights[diff_name])
+
+	if _prog_locs.is_empty():
+		weights[0] = 0
+	if _non_prog_locs.is_empty():
+		weights[1] = 0;
+	if weights[0] == 0 and weights[1] == 0:
+		await PopupManager.popup_dlg("No hints left to earn, though!", "Correct!", false)
+		return
+	var max_weight: int = weights.reduce(func(acc, val):
+		return acc + val, 0)
+	var picked: int = randi_range(0, max_weight)
+	var itm: NetworkItem
+	if picked < weights[0]:
+		itm = _prog_locs.pick_random()
+	elif picked < weights[0] + weights[1]:
 		itm = _non_prog_locs.pick_random()
+	else:
+		assert(weights[2] > 0)
+		await PopupManager.popup_dlg("Unlucky, no hint this time!", "Correct!", false)
+		return
 	Archipelago.conn.scout(itm.loc_id, 1, Callable())
 	Archipelago.conn.on_hint_update.connect(display_hint.bind(itm.loc_id), CONNECT_ONE_SHOT)
 func display_hint(hints: Array[NetworkHint], loc: int) -> void:
@@ -107,10 +131,11 @@ func on_roominfo(_conn: ConnectionInfo, _json: Dictionary) -> void:
 	if %Sudoku.config.debug_connect_settings:
 		for game in %Sudoku.config.skipped_data_packages:
 			Archipelago.datapack_pending.erase(game)
-func on_connect(conn: ConnectionInfo, _json: Dictionary) -> void:
+func on_connect(conn: ConnectionInfo, json: Dictionary) -> void:
 	admin_validated = false
 	admin_login_panel.visible = true
 	admin_login_error.text = ""
+	admin_control_panel.on_connect(conn, json)
 
 	conn.roomupdate.connect(refresh_hint_count.unbind(1))
 	conn.on_hint_update.connect(refresh_hint_count.unbind(1))
@@ -131,6 +156,8 @@ func on_disconnect() -> void:
 	admin_validated = false
 	admin_login_panel.visible = false
 	admin_login_error.text = ""
+
+	update_setting_label()
 
 	%ConnTextLabel.text = ""
 	%ConnectButton.disabled = false
@@ -315,3 +342,32 @@ func on_printjson(json: Dictionary, text: String) -> void:
 
 func check_admin() -> void:
 	Archipelago.send_command("Say", {"text": "!admin login %s" % admin_pwd_box.text})
+
+
+var is_enabled: bool = true
+var setting_weights: Dictionary[String, Array]
+func on_update_settings(settings: Dictionary) -> void:
+	is_enabled = settings.get("enabled", true)
+	setting_weights.merge(settings.get("weights", {}), true)
+	update_setting_label()
+
+func update_setting_label() -> void:
+	if Archipelago.status != Archipelago.APStatus.PLAYING:
+		%SettingsText.text = "Information on room-specific settings appears here after connecting."
+		return
+	if not is_enabled:
+		%SettingsText.text = "The host has disabled APSudoku entirely. No hints may be earned."
+		return
+	var weights: Array[int]
+	match sudoku_grid.difficulty:
+		PuzzleGrid.Difficulty.EASY:
+			weights.assign(setting_weights.get("Easy", [10, 90, 0]))
+		PuzzleGrid.Difficulty.MEDIUM:
+			weights.assign(setting_weights.get("Normal", [40, 60, 0]))
+		PuzzleGrid.Difficulty.HARD:
+			weights.assign(setting_weights.get("Hard", [80, 20, 0]))
+		PuzzleGrid.Difficulty.KILLER:
+			weights.assign(setting_weights.get("Killer", [60, 40, 0]))
+	while weights.size() < 3:
+		weights.append(0)
+	%SettingsText.text = "Weights:\nProgression: %d\nNon-Prog: %d\nNo Hint: %d" % weights

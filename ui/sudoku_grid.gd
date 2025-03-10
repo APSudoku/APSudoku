@@ -4,7 +4,8 @@ const CHEAT_MODE := false
 
 signal modifier_entry_mode(val: EntryMode)
 signal cycle_entry_mode
-signal grant_hint(prog_percent: int)
+signal grant_hint(diff: PuzzleGrid.Difficulty)
+signal difficulty_changed(new_diff: PuzzleGrid.Difficulty)
 
 var config: SudokuConfigManager :
 	get: return Archipelago.config
@@ -140,17 +141,7 @@ func submit_solution() -> bool:
 		return false
 	if check_solve():
 		if Archipelago.is_ap_connected():
-			var prog_percent: int
-			match difficulty:
-				PuzzleGrid.Difficulty.EASY:
-					prog_percent = 10
-				PuzzleGrid.Difficulty.MEDIUM:
-					prog_percent = 40
-				PuzzleGrid.Difficulty.HARD:
-					prog_percent = 80
-				PuzzleGrid.Difficulty.KILLER:
-					prog_percent = 60
-			grant_hint.emit(prog_percent)
+			grant_hint.emit(difficulty)
 		else: await PopupManager.popup_dlg("Not connected, so no hint granted.", "Correct!", false)
 		clear_active()
 		return true
@@ -347,6 +338,7 @@ func _notification(what):
 func set_difficulty(diff: int):
 	[%RadioEasy,%RadioMedium,%RadioHard,%RadioKiller][diff].button_pressed = true
 	difficulty = diff as PuzzleGrid.Difficulty
+	difficulty_changed.emit(difficulty)
 
 func _lost_puzzle(force_clear := true) -> bool:
 	if deaths_towards_amnesty == death_amnesty:
