@@ -1,8 +1,23 @@
 @tool extends ConsoleWindowContainer
 
-@onready var settings_subtabs: Control = $Tabs/Settings/Margin/Tabs
-@onready var fields: Array[Control] = [%IP, %Port, %Slot, %Password, %Lives, %DeathLink]
-@onready var sudoku_grid: SudokuGrid = $Tabs/Sudoku
+@export var settings_subtabs: Control
+@export var fields: Array[Control]
+@export var sudoku_grid: SudokuGrid
+@export_group("AdminPanel")
+@export var admin_panel: MarginContainer
+@export var admin_pwd_box: LineEdit
+@export var admin_login_panel: Container
+@export var admin_control_panel: Container
+@export var admin_login_error: Label
+
+var admin_validated: bool = false :
+	set(val):
+		admin_validated = val
+		admin_control_panel.visible = val
+		if val:
+			admin_login_panel.visible = false
+		else:
+			admin_login_panel.visible = Archipelago.status == Archipelago.APStatus.PLAYING
 
 var _real_entry_mode: SudokuGrid.EntryMode = SudokuGrid.EntryMode.ANSWER
 var _entry_mode: SudokuGrid.EntryMode = SudokuGrid.EntryMode.ANSWER
@@ -20,25 +35,26 @@ func _ready():
 	tabs.move_child(tabs.get_node("Sudoku"), 0)
 	tabs.current_tab = 0 if OS.is_debug_build() else tabs.get_tab_idx_from_control($Tabs/Settings)
 	set_entry_mode(SudokuGrid.EntryMode.ANSWER)
-	
+
 	sudoku_grid.modifier_entry_mode.connect(set_fake_entry_mode)
 	sudoku_grid.cycle_entry_mode.connect(cycle_entry)
 	sudoku_grid.grant_hint.connect(grant_hint)
-	
+
 	settings_subtabs.move_child(settings_subtabs.get_node("Connection"), 0)
 	settings_subtabs.move_child(settings_subtabs.get_node("Sudoku"), 1)
 	settings_subtabs.current_tab = 0
 	Archipelago.load_console(self, false)
-	
+
 	Archipelago.roominfo.connect(on_roominfo)
 	Archipelago.connect_step.connect(%ConnTextLabel.set_text)
 	Archipelago.connected.connect(on_connect)
 	Archipelago.disconnected.connect(on_disconnect)
 	Archipelago.connectionrefused.connect(on_connect_reject)
+	Archipelago.printjson.connect(on_printjson)
 	on_disconnect()
 	Archipelago.creds.updated.connect(load_credentials)
 	load_credentials(Archipelago.creds)
-	
+
 	%ShiftCenter.set_pressed_no_signal(%Sudoku.config.shift_center)
 	%ShowInvalid.set_pressed_no_signal(%Sudoku.config.show_invalid)
 	%ShapesMode.set_pressed_no_signal(%Sudoku.config.shapes_mode)
@@ -49,7 +65,7 @@ var _non_prog_locs: Array[NetworkItem] = []
 func refresh_hint_count() -> void:
 	_prog_locs.clear()
 	_non_prog_locs.clear()
-	
+
 	var locs := Archipelago.conn._scout_cache.keys()
 	for hint in Archipelago.conn.hints:
 		locs.erase(hint.item.loc_id)
@@ -92,6 +108,10 @@ func on_roominfo(_conn: ConnectionInfo, _json: Dictionary) -> void:
 		for game in %Sudoku.config.skipped_data_packages:
 			Archipelago.datapack_pending.erase(game)
 func on_connect(conn: ConnectionInfo, _json: Dictionary) -> void:
+	admin_validated = false
+	admin_login_panel.visible = true
+	admin_login_error.text = ""
+
 	conn.roomupdate.connect(refresh_hint_count.unbind(1))
 	conn.on_hint_update.connect(refresh_hint_count.unbind(1))
 	conn.deathlink.connect(%Sudoku.deathlink_recv)
@@ -108,6 +128,10 @@ func on_connect(conn: ConnectionInfo, _json: Dictionary) -> void:
 	conn.all_scout_cached.connect(refresh_hint_count, CONNECT_ONE_SHOT)
 	conn.force_scout_all()
 func on_disconnect() -> void:
+	admin_validated = false
+	admin_login_panel.visible = false
+	admin_login_error.text = ""
+
 	%ConnTextLabel.text = ""
 	%ConnectButton.disabled = false
 	%ConnectButton.text = "Connect"
@@ -277,3 +301,17 @@ func load_theme(path := "") -> void:
 func reset_theme():
 	if await PopupManager.popup_dlg("Are you sure you want to reset the current theme to default?", "Reset Theme", true):
 		%Sudoku.sudoku_theme.update_from_copy(SudokuTheme.new())
+
+func on_printjson(json: Dictionary, text: String) -> void:
+	if "CommandResult" not in json.get("type", ""):
+		return
+	if text == "Sorry, Remote administration is disabled":
+		admin_login_error.text = "ERROR: Remote Administration is Disabled"
+	elif text == "Password incorrect.":
+		admin_login_error.text = "ERROR: Wrong Password!"
+	elif text == "Login successful. You can now issue server side commands.":
+		admin_login_error.text = ""
+		admin_validated = true
+
+func check_admin() -> void:
+	Archipelago.send_command("Say", {"text": "!admin login %s" % admin_pwd_box.text})

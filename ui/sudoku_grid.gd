@@ -59,7 +59,7 @@ func _ready():
 		for c in r:
 			cells.append(c)
 	if Engine.is_editor_hint(): return
-	
+
 	for r in regions:
 		for c in r:
 			c.add_neighbors(r)
@@ -85,10 +85,10 @@ func _ready():
 		cells[q].recheck_focus.connect(recheck_focus)
 		cells[q].grid_focus.connect(grid_focus)
 		cells[q].select_alike.connect(select_alike)
-	
+
 	if not sudoku_theme:
 		sudoku_theme = SudokuTheme.new()
-	
+
 	load_theme(sudoku_theme)
 	var theme_dict := sudoku_theme._to_dict()
 	for key in theme_dict.keys():
@@ -101,9 +101,9 @@ func _ready():
 		picker.color_changed.connect(func(color: Color):
 			sudoku_theme.update_color(key, color)
 			%Sudoku.grid_redraw())
-	
+
 	clear()
-	
+
 	config.config_changed.connect(update_config)
 	set_difficulty(PuzzleGrid.Difficulty.MEDIUM)
 
@@ -158,7 +158,7 @@ func submit_solution() -> bool:
 	if Archipelago.is_deathlink():
 		if _lost_puzzle(false):
 			s += "\nYou ran out of lives! (DeathLink sent)"
-	
+
 	set_invalid()
 	await PopupManager.popup_dlg(s, "Wrong!", false)
 	return false
@@ -209,7 +209,7 @@ func grid_input(event) -> void:
 		elif mod_mode > -1:
 			mod_mode = -1
 			modifier_entry_mode.emit(mod_mode)
-	
+
 	if event is InputEventKey:
 		if event.pressed and not event.echo:
 			var v := 0

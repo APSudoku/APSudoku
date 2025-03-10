@@ -1,14 +1,14 @@
-[gd_scene load_steps=24 format=3 uid="uid://c3eb4ejxtp2nl"]
+[gd_scene load_steps=26 format=3 uid="uid://c3eb4ejxtp2nl"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ah7d3ep4de" path="res://godot_ap/ui/common_client.tscn" id="1_yxr36"]
-[ext_resource type="Script" path="res://ui/sudoku_client.gd" id="2_drtqi"]
-[ext_resource type="Script" path="res://ui/text_edit.gd" id="2_i8w2d"]
+[ext_resource type="Script" uid="uid://1rwbhpu5vxk4" path="res://ui/sudoku_client.gd" id="2_drtqi"]
+[ext_resource type="Script" uid="uid://qytvf11in6qy" path="res://ui/text_edit.gd" id="2_i8w2d"]
 [ext_resource type="Texture2D" uid="uid://gx66b3mmi6dg" path="res://graphics/cbox_check.png" id="3_o3j5h"]
-[ext_resource type="Script" path="res://ui/connect_button.gd" id="3_ry2b2"]
+[ext_resource type="Script" uid="uid://bdw7vm0qfxwx2" path="res://ui/connect_button.gd" id="3_ry2b2"]
 [ext_resource type="Texture2D" uid="uid://ccf7tgt6qm1qp" path="res://graphics/cbox_check_dis.png" id="4_ni7xp"]
 [ext_resource type="Texture2D" uid="uid://dgm6q0xhqkgja" path="res://graphics/radio_check.png" id="5_k0r4h"]
 [ext_resource type="PackedScene" uid="uid://bdweotrsewo6q" path="res://puzzles/cell.tscn" id="5_p356p"]
-[ext_resource type="Script" path="res://ui/sudoku_grid.gd" id="5_rhuh7"]
+[ext_resource type="Script" uid="uid://c85nbt203khpe" path="res://ui/sudoku_grid.gd" id="5_rhuh7"]
 [ext_resource type="Texture2D" uid="uid://drb1lo6t5ahfo" path="res://graphics/radio_check_dis.png" id="6_em03n"]
 [ext_resource type="Texture2D" uid="uid://d1dke3omp76j2" path="res://graphics/radio_uncheck.png" id="7_abb2d"]
 [ext_resource type="Texture2D" uid="uid://c5febtmw1vnx3" path="res://graphics/grabber.png" id="7_leeka"]
@@ -16,9 +16,11 @@
 [ext_resource type="Texture2D" uid="uid://cgojnpx75y4im" path="res://graphics/cbox_uncheck.png" id="9_30ved"]
 [ext_resource type="Texture2D" uid="uid://c5hwl8l8c6qj6" path="res://graphics/cbox_uncheck_dis.png" id="10_35877"]
 [ext_resource type="PackedScene" uid="uid://7sxs07p5mo4o" path="res://ui/infobutton.tscn" id="13_7ct3a"]
-[ext_resource type="Script" path="res://ui/debug_settings.gd" id="13_yousr"]
-[ext_resource type="Script" path="res://ui/actual_grid.gd" id="14_3xquc"]
-[ext_resource type="Script" path="res://ui/button_toggle_disabled.gd" id="15_83fxp"]
+[ext_resource type="Script" uid="uid://cj06n2qh8ec5b" path="res://ui/debug_settings.gd" id="13_yousr"]
+[ext_resource type="Script" uid="uid://bem83ythwco6j" path="res://ui/actual_grid.gd" id="14_3xquc"]
+[ext_resource type="Script" uid="uid://d21n6ox3lmmwv" path="res://ui/button_toggle_disabled.gd" id="15_83fxp"]
+[ext_resource type="SystemFont" uid="uid://73rjoc23d4ub" path="res://godot_ap/ui/console_font.tres" id="20_61nds"]
+[ext_resource type="Script" uid="uid://cety6nqnci3n6" path="res://godot_ap/ui/updown_lineedit.gd" id="21_arbtu"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_oyu55"]
 
@@ -38,20 +40,25 @@ CheckBox/icons/unchecked_disabled = ExtResource("10_35877")
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_7l32q"]
 
-[node name="SudokuClient" instance=ExtResource("1_yxr36")]
+[node name="SudokuClient" node_paths=PackedStringArray("settings_subtabs", "fields", "sudoku_grid", "admin_panel", "admin_pwd_box", "admin_login_panel", "admin_control_panel", "admin_login_error") instance=ExtResource("1_yxr36")]
 script = ExtResource("2_drtqi")
+settings_subtabs = NodePath("Tabs/Settings/Margin/Tabs")
+fields = [NodePath("Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/IP"), NodePath("Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Port"), NodePath("Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Slot"), NodePath("Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Password"), NodePath("Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer/Lives"), NodePath("Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/DeathLink")]
+sudoku_grid = NodePath("Tabs/Sudoku")
+admin_panel = NodePath("Tabs/AdminPanel")
+admin_pwd_box = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/HBoxContainer/Pwd_Box")
+admin_login_panel = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen")
+admin_control_panel = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel")
+admin_login_error = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/AdminError")
 
 [node name="Tabs" parent="." index="0"]
-current_tab = 3
+current_tab = 5
 
 [node name="Console" parent="Tabs" index="1"]
 visible = false
 
 [node name="ConnectBox" parent="Tabs/Console" index="1"]
 visible = false
-
-[node name="Settings" parent="Tabs" index="4"]
-visible = true
 
 [node name="Tabs" parent="Tabs/Settings/Margin" index="0"]
 current_tab = 3
@@ -369,6 +376,7 @@ text = "Reset"
 [node name="Sudoku" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="3"]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs/Sudoku" index="0"]
 layout_mode = 2
@@ -431,6 +439,7 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
+metadata/_tab_index = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection" index="0"]
 layout_mode = 2
@@ -642,6 +651,7 @@ layout_mode = 2
 focus_mode = 2
 mouse_filter = 0
 script = ExtResource("5_rhuh7")
+metadata/_tab_index = 4
 
 [node name="HSplitContainer" type="HSplitContainer" parent="Tabs/Sudoku" index="0"]
 layout_mode = 2
@@ -1423,6 +1433,80 @@ layout_mode = 2
 focus_mode = 0
 text = "Check"
 
+[node name="AdminPanel" type="MarginContainer" parent="Tabs" index="6"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
+metadata/_tab_index = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="Tabs/AdminPanel" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/AdminPanel/MarginContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 36
+text = "APSudoku Admin Control Panel"
+
+[node name="MarginContainer" type="MarginContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="AdminLoginScreen" type="VBoxContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen" index="0"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/HBoxContainer" index="0"]
+layout_mode = 2
+text = "Admin Password:"
+
+[node name="Pwd_Box" type="LineEdit" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/HBoxContainer" index="1"]
+custom_minimum_size = Vector2(200, 33)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("20_61nds")
+theme_override_font_sizes/font_size = 20
+placeholder_text = "-Admin Pwd-"
+expand_to_text_length = true
+script = ExtResource("21_arbtu")
+
+[node name="Button" type="Button" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen" index="1"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Login"
+
+[node name="AdminError" type="Label" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen" index="2"]
+layout_mode = 2
+size_flags_horizontal = 4
+horizontal_alignment = 1
+
+[node name="AdminControlPanel" type="GridContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer" index="1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" index="0"]
+layout_mode = 2
+text = "ADMIN ACCESS WOO"
+
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3/SaveThemeBtn" to="." method="save_theme"]
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3/SaveThemeAsBtn" to="." method="save_theme_as"]
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3/LoadThemeBtn" to="." method="load_theme"]
@@ -1459,5 +1543,7 @@ text = "Check"
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/StartButton" to="Tabs/Sudoku" method="start_puzzle"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/ForfeitButton" to="Tabs/Sudoku" method="forfeit_puzzle"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/CheckButton" to="Tabs/Sudoku" method="submit_solution"]
+[connection signal="text_submitted" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/HBoxContainer/Pwd_Box" to="Tabs/Console/ConnectBox/Row/Box/Margins/VBox/Content" method="try_connection" unbinds=1]
+[connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/Button" to="." method="check_admin"]
 
 [editable path="Tabs/Hints/Console"]
