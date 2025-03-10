@@ -44,7 +44,7 @@ func get_shape_color(val: int) -> Color:
 func _get_members() -> Array[String]:
 	var arr: Array[String] = []
 	for prop in self.get_property_list():
-		if prop.get("hint_string") == "Color":
+		if prop.get("type") == TYPE_COLOR:
 			var name = prop.get("name")
 			if name is String:
 				arr.append(name)

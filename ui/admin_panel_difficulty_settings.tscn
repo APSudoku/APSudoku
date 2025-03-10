@@ -21,6 +21,7 @@ spinboxes = [NodePath("PanelContainer/GridContainer/ProgVal"), NodePath("PanelCo
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
 size_flags_horizontal = 4
+text = " Reward Weights"
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2

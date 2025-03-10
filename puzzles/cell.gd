@@ -74,7 +74,7 @@ func _draw_numbers() -> void:
 		font_size -= 1
 		while font_size and font.get_string_size(s, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size).x + MARGIN*2 >= size.x:
 			font_size -= 1
-		
+
 		var pos := Vector2(0,(size.y-font.get_string_size(s, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size).y)/2 + font.get_ascent(font_size))
 		draw_string(font, pos, s, HORIZONTAL_ALIGNMENT_CENTER, size.x, font_size, text_color)
 	else:
@@ -96,7 +96,7 @@ func _draw_numbers() -> void:
 			font_size -= 1
 			while font_size and font.get_string_size("9", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x + MARGIN*2 >= size.x / 3:
 				font_size -= 1
-			
+
 			var text_color: Color = %Sudoku.sudoku_theme.CELL_CORNER_MARK_TEXT
 			var row: Array[int] = [0,0,2,2,0,2,1,1,1]
 			var col: Array[int] = [0,2,0,2,1,1,0,2,1]
@@ -105,12 +105,12 @@ func _draw_numbers() -> void:
 			for q in corner_marks.size():
 				if not corner_marks[q]: continue
 				var s := str(q+1)
-				
+
 				var pos := Vector2(col[ind] * sz.x/3,(row[ind] * sz.y/3)+font.get_ascent(font_size))
-				
+
 				if ind == 8:
 					pos -= Vector2(4,4)
-				
+
 				draw_string(font, pos, s, HORIZONTAL_ALIGNMENT_CENTER, size.x/3, font_size, text_color)
 				ind += 1
 		if has_center:
@@ -127,7 +127,7 @@ func _draw_numbers() -> void:
 			font_size -= 1
 			while font_size and font.get_string_size(s, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size).x + MARGIN*2 >= size.x:
 				font_size -= 1
-			
+
 			var pos := Vector2(0,(size.y-font.get_string_size(s, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size).y)/2 + font.get_ascent(font_size))
 			draw_string(font, pos, s, HORIZONTAL_ALIGNMENT_CENTER, size.x, font_size, text_color)
 const _BORDER_WID := 6

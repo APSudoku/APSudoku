@@ -98,7 +98,6 @@ func _ready():
 		assert(picker, "SudokuTheme color %s not found as unique-named ColorPickerButton!" % key)
 		picker.color = sudoku_theme.get(key)
 		sudoku_theme.on_update.connect(func():
-			print("Setting %s to %s" % [picker.name,sudoku_theme.get(key)])
 			picker.color = sudoku_theme.get(key))
 		picker.color_changed.connect(func(color: Color):
 			sudoku_theme.update_color(key, color)
@@ -257,6 +256,7 @@ func recheck_focus() -> void:
 func grid_redraw() -> void:
 	queue_redraw()
 	for c in cells:
+		c.color = sudoku_theme.CELL_BG
 		c.queue_redraw()
 func clear_selected():
 	for c in cells:

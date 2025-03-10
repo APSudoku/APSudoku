@@ -334,7 +334,7 @@ func load_theme(path := "") -> void:
 			"*.tres ; Godot Text Resource File"],
 			func(ok: bool, paths: PackedStringArray, filt: int):
 				if not ok: return
-				var ext: String = [".res",".tres"][filt-1]
+				var ext: String = [".res",".tres"][filt]
 				var fpath: String = paths[0]
 				if not fpath.ends_with(ext): fpath += ext
 				load_theme(fpath))
