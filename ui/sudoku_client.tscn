@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://c3eb4ejxtp2nl"]
+[gd_scene load_steps=29 format=3 uid="uid://c3eb4ejxtp2nl"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ah7d3ep4de" path="res://godot_ap/ui/common_client.tscn" id="1_yxr36"]
 [ext_resource type="Script" uid="uid://1rwbhpu5vxk4" path="res://ui/sudoku_client.gd" id="2_drtqi"]
@@ -40,6 +40,17 @@ CheckBox/icons/unchecked_disabled = ExtResource("10_35877")
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_mrvem"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ctivq"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+draw_center = false
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+
 [sub_resource type="ButtonGroup" id="ButtonGroup_7l32q"]
 
 [node name="SudokuClient" node_paths=PackedStringArray("settings_subtabs", "fields", "sudoku_grid", "admin_panel", "admin_pwd_box", "admin_login_panel", "admin_control_panel", "admin_login_error") instance=ExtResource("1_yxr36")]
@@ -54,7 +65,7 @@ admin_control_panel = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/Ma
 admin_login_error = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/AdminError")
 
 [node name="Tabs" parent="." index="0"]
-current_tab = 5
+current_tab = 4
 
 [node name="Console" parent="Tabs" index="1"]
 visible = false
@@ -648,7 +659,6 @@ text = "Remove All"
 
 [node name="Sudoku" type="MarginContainer" parent="Tabs" index="5"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 focus_mode = 2
 mouse_filter = 0
@@ -673,23 +683,25 @@ theme_override_constants/margin_bottom = 20
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer" index="0"]
+[node name="MarginContainer2" type="MarginContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer" index="0"]
 layout_mode = 2
 
-[node name="CountLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
+[node name="CountLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer2" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 0
 
-[node name="MainLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="1"]
+[node name="MainLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer2" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 theme_override_font_sizes/font_size = 25
 text = "No Active Game"
 
-[node name="ControlInfo" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer" index="2" instance=ExtResource("13_7ct3a")]
+[node name="ControlInfo" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer2" index="2" instance=ExtResource("13_7ct3a")]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 8
 title = "Controls"
 info = "LClick: Select (Hold / Shift / Ctrl: Multi)
 Double-LClick: Select Matching (Shift / Ctrl: Multi)
@@ -1218,9 +1230,11 @@ layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="0"]
 layout_mode = 2
+size_flags_horizontal = 0
 
 [node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="0"]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Entry:"
 
 [node name="RadioAnswer" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="1"]
@@ -1247,14 +1261,14 @@ button_group = SubResource("ButtonGroup_mrvem")
 text = "Corner"
 flat = true
 
-[node name="ClearInvalid" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="4"]
+[node name="ClearInvalid" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 text = "    Clear 'Invalid' color    "
 
-[node name="GridContainer" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="1"]
+[node name="GridContainer" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="2"]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/h_separation = 2
@@ -1352,37 +1366,47 @@ layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/separation = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="0"]
+[node name="SettingsContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="0"]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer" index="0"]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer/HBoxContainer" index="0"]
 layout_mode = 2
 text = "Settings:"
 
-[node name="InfoButton" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
+[node name="InfoButton" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
 layout_mode = 2
 title = "Server Settings"
 info = "These settings are based on the currrent difficulty selected, and settings set on the server.
 
 The host of a multiworld can use the \"AdminPanel\" (using the admin password) to change these settings for everyone in the multiworld."
 
-[node name="SettingsText" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer" index="1"]
+[node name="PanelContainer" type="PanelContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ctivq")
+
+[node name="SettingsText" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer/PanelContainer" index="0"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_font_sizes/font_size = 16
 autowrap_mode = 3
 
 [node name="DiffContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 8
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="0"]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_constants/separation = 16
 
 [node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/HBoxContainer" index="0"]
@@ -1393,13 +1417,16 @@ text = "Difficulty:"
 layout_mode = 2
 title = "How to Play / Difficulty Info"
 info = "Fill every Row, Column, and outlined Region (3x3 box) with the digits 1-9, exactly once each.
-For each difficulty, information is listed in the format:
-`Name: # Givens digits, chance of reward being progression hint`
-Easy: 46, 10%%        Normal: 35, 40%%
-Hard: 26, 80%%        Killer*: 26, 60%%
-* In 'Killer' mode, outlined Cages must sum to the indicated total."
 
-[node name="RadioEasy" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="1"]
+In 'Killer' mode, outlined Cages must sum to the indicated total.
+
+Different difficulties can have different odds of giving you a \"progression\" hint, \"non-progression\" hint, or no hint at all. Hosts can change these odds in the AdminPanel tab, using the multiworld's admin password."
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="RadioEasy" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1407,7 +1434,7 @@ button_group = SubResource("ButtonGroup_7l32q")
 text = "Easy"
 flat = true
 
-[node name="RadioMedium" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="2"]
+[node name="RadioMedium" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1415,7 +1442,7 @@ button_group = SubResource("ButtonGroup_7l32q")
 text = "Medium"
 flat = true
 
-[node name="RadioHard" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="3"]
+[node name="RadioHard" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1423,7 +1450,7 @@ button_group = SubResource("ButtonGroup_7l32q")
 text = "Hard"
 flat = true
 
-[node name="RadioKiller" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="4"]
+[node name="RadioKiller" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer" index="3"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1433,7 +1460,7 @@ flat = true
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="2"]
 layout_mode = 2
-size_flags_vertical = 10
+size_flags_vertical = 8
 
 [node name="GeneratingLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2" index="0"]
 unique_name_in_owner = true
@@ -1464,6 +1491,7 @@ text = "Check"
 
 [node name="AdminPanel" type="MarginContainer" parent="Tabs" index="6"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 focus_mode = 2
 mouse_filter = 0
@@ -1594,11 +1622,12 @@ text = "REFRESH / REVERT CHANGES"
 [connection signal="pressed" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/ConnectButton" to="." method="on_connect_button"]
 [connection signal="text_submitted" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer/Lives" to="." method="try_connect" unbinds=1]
 [connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/DebugSettingsToggle" to="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" method="set_visible"]
+[connection signal="difficulty_changed" from="Tabs/Sudoku" to="." method="refresh_hint_count" unbinds=1]
 [connection signal="difficulty_changed" from="Tabs/Sudoku" to="." method="update_setting_label" unbinds=1]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioAnswer" to="." method="set_entry_mode_no_button" binds= [0]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCenter" to="." method="set_entry_mode_no_button" binds= [1]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCorner" to="." method="set_entry_mode_no_button" binds= [2]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/ClearInvalid" to="Tabs/Sudoku" method="clear_invalid"]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/ClearInvalid" to="Tabs/Sudoku" method="clear_invalid"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry1" to="Tabs/Sudoku" method="type_number" binds= [1]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry2" to="Tabs/Sudoku" method="type_number" binds= [2]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry3" to="Tabs/Sudoku" method="type_number" binds= [3]]
@@ -1609,10 +1638,10 @@ text = "REFRESH / REVERT CHANGES"
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry8" to="Tabs/Sudoku" method="type_number" binds= [8]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry9" to="Tabs/Sudoku" method="type_number" binds= [9]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/DeleteButton" to="Tabs/Sudoku" method="clear_selected"]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/RadioEasy" to="Tabs/Sudoku" method="set_difficulty" binds= [0]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/RadioMedium" to="Tabs/Sudoku" method="set_difficulty" binds= [1]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/RadioHard" to="Tabs/Sudoku" method="set_difficulty" binds= [2]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/RadioKiller" to="Tabs/Sudoku" method="set_difficulty" binds= [3]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer/RadioEasy" to="Tabs/Sudoku" method="set_difficulty" binds= [0]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer/RadioMedium" to="Tabs/Sudoku" method="set_difficulty" binds= [1]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer/RadioHard" to="Tabs/Sudoku" method="set_difficulty" binds= [2]]
+[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer/RadioKiller" to="Tabs/Sudoku" method="set_difficulty" binds= [3]]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/StartButton" to="Tabs/Sudoku" method="start_puzzle"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/ForfeitButton" to="Tabs/Sudoku" method="forfeit_puzzle"]
 [connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/CheckButton" to="Tabs/Sudoku" method="submit_solution"]

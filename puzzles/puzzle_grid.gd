@@ -2,6 +2,13 @@ class_name PuzzleGrid extends Resource
 enum Difficulty {
 	EASY, MEDIUM, HARD, KILLER
 }
+static func diff_to_str(val: Difficulty) -> String:
+	match val:
+		Difficulty.EASY: return "Easy"
+		Difficulty.MEDIUM: return "Normal"
+		Difficulty.HARD: return "Hard"
+		Difficulty.KILLER: return "Killer"
+	return ""
 
 var difficulty: Difficulty
 var solutions: Array[int] = []

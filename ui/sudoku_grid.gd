@@ -18,6 +18,7 @@ var show_invalid := false
 var mode: EntryMode = EntryMode.ANSWER
 var mod_mode: int = -1
 var difficulty: PuzzleGrid.Difficulty
+var hinted_out: String = ""
 enum EntryMode {
 	ANSWER, CENTER, CORNER
 }
@@ -288,7 +289,11 @@ func start_puzzle() -> void:
 	if active_puzzle: return
 	if Archipelago.is_not_connected():
 		_invalid = true
-		var popup := PopupManager.create_popup("No hints can be earned while not connected. Start anyway?", "No Connection", true)
+		var popup := await PopupManager.create_popup("No hints can be earned while not connected.\nStart anyway?", "No Connection", true)
+		if not await popup.pop_open():
+			return
+	elif not hinted_out.is_empty():
+		var popup := await PopupManager.create_popup("%s\nStart anyway?" % hinted_out, "No Hints", true)
 		if not await popup.pop_open():
 			return
 	%StartButton.disabled = true
@@ -359,7 +364,7 @@ func forfeit_puzzle() -> bool:
 	var s := "Are you sure you wish to forfeit the current puzzle?"
 	if Archipelago.is_ap_connected() and Archipelago.is_deathlink():
 		s += "\nForfeiting counts as a death towards DeathLink!"
-	var popup := PopupManager.create_popup(s, "Forfeit?", true)
+	var popup := await PopupManager.create_popup(s, "Forfeit?", true)
 	var lbl := popup.get_label()
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	if await popup.pop_open():

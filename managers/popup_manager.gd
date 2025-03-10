@@ -18,10 +18,15 @@ class SudokuPopup extends AcceptDialog:
 	func get_cancel_button() -> Button:
 		return _cancel_button
 
+var popup_exists := false
 signal popup_closed
 func popup_dlg(text: String, title := "", cancel := true) -> bool:
-	return await pop_popup(create_popup(text, title, cancel))
+	return await pop_popup(await create_popup(text, title, cancel))
 func create_popup(text: String, title := "", cancel := true) -> SudokuPopup:
+	if popup_exists:
+		await popup_closed
+		await get_tree().create_timer(0.25).timeout
+	popup_exists = true
 	if title.is_empty():
 		title = "Confirm?" if cancel else "Info"
 	var popup = SudokuPopup.new()
@@ -43,13 +48,15 @@ func create_popup(text: String, title := "", cancel := true) -> SudokuPopup:
 	popup.confirmed.connect(func():
 		get_tree().paused = false
 		popup.queue_free()
+		popup_exists = false
 		last_return = true
 		popup_closed.emit())
 	popup.canceled.connect(func():
 		get_tree().paused = false
 		popup.queue_free()
+		popup_exists = false
 		last_return = false
-		popup_closed.emit())
+		popup_closed.emit.call_deferred())
 	return popup
 func pop_popup(popup: SudokuPopup) -> bool:
 	popup.popup_centered()

@@ -63,6 +63,10 @@ func _ready():
 var _prog_locs: Array[NetworkItem] = []
 var _non_prog_locs: Array[NetworkItem] = []
 func refresh_hint_count() -> void:
+	if Archipelago.is_not_connected():
+		%CountLabel.text = ""
+		sudoku_grid.hinted_out = ""
+		return
 	_prog_locs.clear()
 	_non_prog_locs.clear()
 
@@ -80,22 +84,42 @@ func refresh_hint_count() -> void:
 			_prog_locs.append(itm)
 		else: _non_prog_locs.append(itm)
 	if admin_control_panel.active_settings.get("enabled", true):
-		var count := locs.size()
-		%CountLabel.text = "%d unhinted" % count if count else "Hinted Out!"
+		var use_prog := false
+		var use_nonprog := false
+		for w in setting_weights.values():
+			if w[0] > 0:
+				use_prog = true
+			if w[1] > 0:
+				use_nonprog = true
+		var count := 0
+		if use_prog: count += _prog_locs.size()
+		if use_nonprog: count += _non_prog_locs.size()
+		var weights: Array[int] = _cur_weights()
+		if weights[0] > 0 != use_prog or weights[1] > 0 != use_nonprog:
+			var cur_count := 0
+			if weights[0] > 0: cur_count += _prog_locs.size()
+			if weights[1] > 0: cur_count += _non_prog_locs.size()
+			if count and not cur_count:
+				%CountLabel.text = "Change Difficulty!"
+				sudoku_grid.hinted_out = "No more hints available at this difficulty due to host settings!"
+			elif count:
+				%CountLabel.text = "%d [%d] unhinted" % [cur_count, count]
+				sudoku_grid.hinted_out = ""
+			else:
+				%CountLabel.text = "Hinted Out!"
+				sudoku_grid.hinted_out = "No more hints available for this slot!"
+		elif count:
+			%CountLabel.text = "%d unhinted" % count
+			sudoku_grid.hinted_out = ""
+		else:
+			%CountLabel.text = "Hinted Out!"
+			sudoku_grid.hinted_out = ""
 	else:
 		%CountLabel.text = ""
+		sudoku_grid.hinted_out = "APSudoku has been disabled by the host. No hints will be earned."
 
 func grant_hint(diff: PuzzleGrid.Difficulty) -> void:
-	var diff_name := ""
-	match diff:
-		PuzzleGrid.Difficulty.EASY:
-			diff_name = "Easy"
-		PuzzleGrid.Difficulty.MEDIUM:
-			diff_name = "Normal"
-		PuzzleGrid.Difficulty.HARD:
-			diff_name = "Hard"
-		PuzzleGrid.Difficulty.KILLER:
-			diff_name = "Killer"
+	var diff_name := PuzzleGrid.diff_to_str(diff)
 	var weights: Array[int]
 	weights.assign(setting_weights[diff_name])
 
@@ -108,7 +132,7 @@ func grant_hint(diff: PuzzleGrid.Difficulty) -> void:
 		return
 	var max_weight: int = weights.reduce(func(acc, val):
 		return acc + val, 0)
-	var picked: int = randi_range(0, max_weight)
+	var picked: int = randi_range(0, max_weight-1)
 	var itm: NetworkItem
 	if picked < weights[0]:
 		itm = _prog_locs.pick_random()
@@ -119,7 +143,7 @@ func grant_hint(diff: PuzzleGrid.Difficulty) -> void:
 		await PopupManager.popup_dlg("Unlucky, no hint this time!", "Correct!", false)
 		return
 	Archipelago.conn.scout(itm.loc_id, 1, Callable())
-	Archipelago.conn.on_hint_update.connect(display_hint.bind(itm.loc_id), CONNECT_ONE_SHOT)
+	Archipelago.conn.on_hint_update.connect(display_hint.bind(itm.loc_id), CONNECT_REFERENCE_COUNTED)
 func display_hint(hints: Array[NetworkHint], loc: int) -> void:
 	for hint in hints:
 		if hint.item.loc_id == loc:
@@ -350,6 +374,7 @@ func on_update_settings(settings: Dictionary) -> void:
 	is_enabled = settings.get("enabled", true)
 	setting_weights.merge(settings.get("weights", {}), true)
 	update_setting_label()
+	refresh_hint_count()
 
 func update_setting_label() -> void:
 	if Archipelago.status != Archipelago.APStatus.PLAYING:
@@ -358,16 +383,22 @@ func update_setting_label() -> void:
 	if not is_enabled:
 		%SettingsText.text = "The host has disabled APSudoku entirely. No hints may be earned."
 		return
-	var weights: Array[int]
+	var weights: Array[int] = _cur_weights()
+	%SettingsText.text = "Weights:\nProgression: %d\nNon-Prog: %d\nNo Hint: %d" % weights
+
+func _cur_weights() -> Array[int]:
+	var weights: Array[int] = []
+
 	match sudoku_grid.difficulty:
 		PuzzleGrid.Difficulty.EASY:
-			weights.assign(setting_weights.get("Easy", [10, 90, 0]))
+			weights = [10, 90, 0]
 		PuzzleGrid.Difficulty.MEDIUM:
-			weights.assign(setting_weights.get("Normal", [40, 60, 0]))
+			weights = [40, 60, 0]
 		PuzzleGrid.Difficulty.HARD:
-			weights.assign(setting_weights.get("Hard", [80, 20, 0]))
+			weights = [80, 20, 0]
 		PuzzleGrid.Difficulty.KILLER:
-			weights.assign(setting_weights.get("Killer", [60, 40, 0]))
+			weights = [60, 40, 0]
+	weights.assign(setting_weights.get(PuzzleGrid.diff_to_str(sudoku_grid.difficulty), weights))
 	while weights.size() < 3:
 		weights.append(0)
-	%SettingsText.text = "Weights:\nProgression: %d\nNon-Prog: %d\nNo Hint: %d" % weights
+	return weights
