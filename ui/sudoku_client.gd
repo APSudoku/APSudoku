@@ -143,7 +143,7 @@ func grant_hint(diff: PuzzleGrid.Difficulty) -> void:
 		await PopupManager.popup_dlg("Unlucky, no hint this time!", "Correct!", false)
 		return
 	Archipelago.conn.scout(itm.loc_id, 1, Callable())
-	Archipelago.conn.on_hint_update.connect(display_hint.bind(itm.loc_id), CONNECT_REFERENCE_COUNTED)
+	Archipelago.conn.on_hint_update.connect(display_hint.bind(itm.loc_id), CONNECT_ONE_SHOT | CONNECT_REFERENCE_COUNTED)
 func display_hint(hints: Array[NetworkHint], loc: int) -> void:
 	for hint in hints:
 		if hint.item.loc_id == loc:
