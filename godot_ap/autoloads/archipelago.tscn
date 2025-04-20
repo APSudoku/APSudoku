@@ -23,6 +23,7 @@ AP_CLIENT_VERSION = SubResource("Resource_6dbvk")
 AP_VERSION = SubResource("Resource_m1v20")
 AP_ITEM_HANDLING = 0
 AP_HIDE_NONLOCAL_ITEMSENDS = false
+AP_CONSOLE_CONNECTION_AUTO = false
 
 [node name="ConfigManager" type="Node" parent="."]
 script = ExtResource("3_njwk2")

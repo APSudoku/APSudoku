@@ -1,5 +1,6 @@
 class_name SudokuConfigManager extends APConfigManager
 
+const SUDOKU_CONFIG_VERSION := 0
 var ip: String = "" :
 	set(val):
 		if val != ip:
@@ -64,8 +65,10 @@ func update_credentials(creds: APCredentials) -> void:
 	_pause_saving = false
 	save_cfg()
 
-func _load_cfg(file: FileAccess) -> void:
-	super(file)
+func _load_cfg(file: FileAccess) -> bool:
+	if not super(file):
+		return false
+	var _vers := file.get_32()
 	ip = file.get_pascal_string()
 	port = file.get_pascal_string()
 	slot = file.get_pascal_string()
@@ -76,12 +79,13 @@ func _load_cfg(file: FileAccess) -> void:
 	shapes_mode = byte & (1 << 2)
 	debug_connect_settings = byte & (1 << 3)
 	throttle_bg_generation = byte & (1 << 4)
-	theme_path = file.get_pascal_string() if file.get_position() < file.get_length() else "user://themes/theme.sudokutheme.tres"
+	theme_path = file.get_pascal_string()
+	skipped_data_packages = file.get_var()
+	return true
 
-	skipped_data_packages = file.get_var() if file.get_position() < file.get_length() else []
-	
 func _save_cfg(file: FileAccess) -> void:
 	super(file)
+	file.store_32(SUDOKU_CONFIG_VERSION)
 	file.store_pascal_string(ip)
 	file.store_pascal_string(port)
 	file.store_pascal_string(slot)
@@ -92,7 +96,5 @@ func _save_cfg(file: FileAccess) -> void:
 	if debug_connect_settings: byte |= (1 << 3)
 	if throttle_bg_generation: byte |= (1 << 4)
 	file.store_8(byte)
-	
 	file.store_pascal_string(theme_path)
-	
 	file.store_var(skipped_data_packages)

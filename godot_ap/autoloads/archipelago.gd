@@ -10,6 +10,9 @@ class_name AP extends Node
 @export var AP_HIDE_NONLOCAL_ITEMSENDS := true ## Hide item send messages that don't involve the client.
 @export var AP_AUTO_OPEN_CONSOLE := false ## Automatically opens a default AP text console.
 @export var AP_ALLOW_TRACKERPACKS := true ## Allow loading custom tracker packs.
+@export_subgroup("UI")
+@export var AP_CONSOLE_CONNECTION_OPEN := false ## Automatically open the Connection box when the console opens
+@export var AP_CONSOLE_CONNECTION_AUTO := true ## Automatically open/close the Connection box based on connected status
 
 @export_subgroup("Logging")
 @export var AP_LOG_COMMUNICATION := false ## Enables additional logging.
@@ -502,7 +505,17 @@ func _receive_item(index: int, item: NetworkItem) -> bool:
 		return false # Already recieved, skip
 	var data := conn.get_gamedata_for_player(conn.player_id)
 	var msg := ""
-	if item.dest_player_id == item.src_player_id:
+	if item.loc_id < 0:
+		if output_console and _printout_recieved_items:
+			conn.get_player().output(output_console)
+			output_console.add_text(" got ")
+			item.output(output_console)
+			output_console.add_text(" (")
+			out_location(output_console, item.loc_id, data)
+			output_console.add_line(")")
+		msg = "You found your %s at %s!" % [data.get_item_name(item.id),data.get_loc_name(item.loc_id)]
+		_remove_loc(item.loc_id)
+	elif item.dest_player_id == item.src_player_id:
 		if output_console and _printout_recieved_items:
 			conn.get_player().output(output_console)
 			output_console.add_text(" found their ")
@@ -663,7 +676,7 @@ func load_console(console_scene: Node, as_child := true) -> bool:
 				return node is ConsoleContainer)
 		if not output_console_container:
 			return false
-	if as_child: add_child(console_scene)
+	if as_child: add_child.call_deferred(console_scene)
 	console_scene.ready.connect(func():
 		output_console = output_console_container.console
 		output_console_container.typing_bar.send_text.connect(func(s: String):
@@ -1065,9 +1078,9 @@ func _autofill_track(msg: String) -> Array[String]:
 func _init():
 	init_command_manager(true)
 	_update_tags()
-	if AP_AUTO_OPEN_CONSOLE:
-		open_console()
 func _ready():
+	if AP_AUTO_OPEN_CONSOLE:
+		open_console.call_deferred()
 	create_socket()
 	for node in get_children():
 		if node is APConfigManager:
