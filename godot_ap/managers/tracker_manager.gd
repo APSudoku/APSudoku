@@ -1,5 +1,4 @@
-extends Node
-# Autoload 'TrackerManager'
+class_name TrackerManager extends Node
 
 signal tracking_reloaded
 
@@ -111,6 +110,7 @@ func _ready():
 			Archipelago.on_attach_console.connect(load_tracker_packs, CONNECT_ONE_SHOT)
 
 func load_tracker_packs() -> void:
+	if not Archipelago.AP_ALLOW_TRACKERPACKS: return
 	var dir := DirAccess.open("tracker_packs/")
 	if not dir:
 		dir = DirAccess.open("./")
@@ -155,7 +155,7 @@ func load_tracker_packs() -> void:
 				tpack_verbose_part = Archipelago.output_console.add_text(txt, "", Archipelago.output_console.COLOR_UI_MSG)
 				tpack_newline_part = Archipelago.output_console.add_ensure_newline()
 			AP.log(txt)
-		var pack := TrackerPack_Base.load_from(fname)
+		var pack: TrackerPack_Base = TrackerPack_Base.load_from(fname)
 		if Archipelago.config.verbose_trackerpack:
 			if TrackerPack_Base.load_error == "Unrecognized Extension":
 				if tpack_verbose_part: tpack_verbose_part.hidden = true

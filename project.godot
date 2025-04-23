@@ -23,8 +23,6 @@ config/windows_native_icon="res://graphics/icon/icon.ico"
 [autoload]
 
 Archipelago="*res://godot_ap/autoloads/archipelago.tscn"
-Saves="*res://godot_ap/autoloads/saves.gd"
-TrackerManager="*res://godot_ap/autoloads/tracker_manager.gd"
 PopupManager="*res://managers/popup_manager.gd"
 PuzzleGenManager="*res://puzzles/puzzle_gen_manager.gd"
 
@@ -68,7 +66,7 @@ mouse_lr={
 
 [rendering]
 
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"
 
 [threading]
 
