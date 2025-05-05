@@ -29,7 +29,7 @@ PuzzleGenManager="*res://puzzles/puzzle_gen_manager.gd"
 [display]
 
 window/size/extend_to_title=true
-window/stretch/mode="viewport"
+window/stretch/mode="canvas_items"
 window/stretch/aspect="ignore"
 
 [editor_plugins]
