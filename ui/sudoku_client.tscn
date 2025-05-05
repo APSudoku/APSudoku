@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://c3eb4ejxtp2nl"]
+[gd_scene load_steps=28 format=3 uid="uid://c3eb4ejxtp2nl"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ah7d3ep4de" path="res://godot_ap/ui/common_client.tscn" id="1_yxr36"]
 [ext_resource type="Script" uid="uid://1rwbhpu5vxk4" path="res://ui/sudoku_client.gd" id="2_drtqi"]
@@ -11,7 +11,6 @@
 [ext_resource type="Script" uid="uid://c85nbt203khpe" path="res://ui/sudoku_grid.gd" id="5_rhuh7"]
 [ext_resource type="Texture2D" uid="uid://drb1lo6t5ahfo" path="res://graphics/radio_check_dis.png" id="6_em03n"]
 [ext_resource type="Texture2D" uid="uid://d1dke3omp76j2" path="res://graphics/radio_uncheck.png" id="7_abb2d"]
-[ext_resource type="Texture2D" uid="uid://c5febtmw1vnx3" path="res://graphics/grabber.png" id="7_leeka"]
 [ext_resource type="Texture2D" uid="uid://p0icwdmcvod3" path="res://graphics/radio_uncheck_dis.png" id="8_gnm0k"]
 [ext_resource type="Texture2D" uid="uid://cgojnpx75y4im" path="res://graphics/cbox_uncheck.png" id="9_30ved"]
 [ext_resource type="Texture2D" uid="uid://c5hwl8l8c6qj6" path="res://graphics/cbox_uncheck_dis.png" id="10_35877"]
@@ -477,7 +476,7 @@ horizontal_alignment = 2
 
 [node name="IP" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="1"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(159, 19)
+custom_minimum_size = Vector2(169.5, 29)
 layout_mode = 2
 focus_neighbor_top = NodePath("../ConnectButton")
 focus_neighbor_bottom = NodePath("../Port")
@@ -494,7 +493,7 @@ horizontal_alignment = 2
 
 [node name="Port" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="3"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(159, 19)
+custom_minimum_size = Vector2(169.5, 29)
 layout_mode = 2
 focus_neighbor_top = NodePath("../IP")
 focus_neighbor_bottom = NodePath("../Slot")
@@ -511,7 +510,7 @@ horizontal_alignment = 2
 
 [node name="Slot" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="5"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(159, 19)
+custom_minimum_size = Vector2(169.5, 29)
 layout_mode = 2
 focus_neighbor_top = NodePath("../Port")
 focus_neighbor_bottom = NodePath("../Password")
@@ -527,7 +526,7 @@ horizontal_alignment = 2
 
 [node name="Password" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="7"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(159, 19)
+custom_minimum_size = Vector2(169.5, 29)
 layout_mode = 2
 focus_neighbor_top = NodePath("../Slot")
 focus_neighbor_bottom = NodePath("../ConnectButton")
@@ -562,7 +561,7 @@ text = "Lives:"
 
 [node name="Lives" type="LineEdit" parent="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer" index="1"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(159, 19)
+custom_minimum_size = Vector2(169.5, 29)
 layout_mode = 2
 placeholder_text = "0"
 script = ExtResource("2_i8w2d")
@@ -662,13 +661,10 @@ mouse_filter = 0
 script = ExtResource("5_rhuh7")
 metadata/_tab_index = 4
 
-[node name="HSplitContainer" type="HSplitContainer" parent="Tabs/Sudoku" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku" index="0"]
 layout_mode = 2
-theme_override_constants/minimum_grab_thickness = 20
-theme_override_constants/autohide = 0
-theme_override_icons/grabber = ExtResource("7_leeka")
 
-[node name="MarginContainer" type="MarginContainer" parent="Tabs/Sudoku/HSplitContainer" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="Tabs/Sudoku/HBoxContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 20
@@ -676,26 +672,26 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MarginContainer2" type="MarginContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer" index="0"]
+[node name="MarginContainer2" type="MarginContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer" index="0"]
 layout_mode = 2
 
-[node name="CountLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer2" index="0"]
+[node name="CountLabel" type="Label" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer2" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="MainLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer2" index="1"]
+[node name="MainLabel" type="Label" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer2" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 theme_override_font_sizes/font_size = 25
 text = "No Active Game"
 
-[node name="ControlInfo" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer2" index="2" instance=ExtResource("13_7ct3a")]
+[node name="ControlInfo" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer2" index="2" instance=ExtResource("13_7ct3a")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -709,22 +705,22 @@ Tab: Cycle number entry mode
 Delete/Backspace: Clear cell (Answers then Center then Corner)"
 format_args = Array[String](["Shift: Corner, Ctrl: Center"])
 
-[node name="MarginContainer" type="MarginContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer" index="1"]
+[node name="MarginContainer" type="MarginContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer" index="1"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="BG" type="ColorRect" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer" index="0"]
+[node name="BG" type="ColorRect" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer" index="0"]
 layout_mode = 2
 color = Color(0, 0, 0, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer" index="1"]
+[node name="MarginContainer" type="MarginContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer" index="1"]
 layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="Regions" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer" index="0"]
+[node name="Regions" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 0
@@ -734,7 +730,7 @@ theme_override_constants/v_separation = 4
 columns = 3
 script = ExtResource("14_3xquc")
 
-[node name="Box 1" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="0"]
+[node name="Box 1" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -742,105 +738,52 @@ theme_override_constants/h_separation = 2
 theme_override_constants/v_separation = 2
 columns = 3
 
-[node name="Cell 0" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="0" instance=ExtResource("5_p356p")]
+[node name="Cell 0" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="0" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 1" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="1" instance=ExtResource("5_p356p")]
+[node name="Cell 1" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="1" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 2" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="2" instance=ExtResource("5_p356p")]
+[node name="Cell 2" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="2" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 9" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="3" instance=ExtResource("5_p356p")]
+[node name="Cell 9" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="3" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 10" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="4" instance=ExtResource("5_p356p")]
+[node name="Cell 10" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="4" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 11" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="5" instance=ExtResource("5_p356p")]
+[node name="Cell 11" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="5" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 18" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="6" instance=ExtResource("5_p356p")]
+[node name="Cell 18" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="6" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 19" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="7" instance=ExtResource("5_p356p")]
+[node name="Cell 19" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="7" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 20" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="8" instance=ExtResource("5_p356p")]
+[node name="Cell 20" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 1" index="8" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Box 2" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="1"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/h_separation = 2
-theme_override_constants/v_separation = 2
-columns = 3
-
-[node name="Cell 3" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="0" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 4" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="1" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 5" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="2" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 12" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="3" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 13" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="4" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 14" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="5" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 21" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="6" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 22" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="7" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 23" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="8" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Box 3" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="2"]
+[node name="Box 2" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="1"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -848,105 +791,52 @@ theme_override_constants/h_separation = 2
 theme_override_constants/v_separation = 2
 columns = 3
 
-[node name="Cell 6" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="0" instance=ExtResource("5_p356p")]
+[node name="Cell 3" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="0" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 7" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="1" instance=ExtResource("5_p356p")]
+[node name="Cell 4" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="1" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 8" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="2" instance=ExtResource("5_p356p")]
+[node name="Cell 5" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="2" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 15" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="3" instance=ExtResource("5_p356p")]
+[node name="Cell 12" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="3" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 16" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="4" instance=ExtResource("5_p356p")]
+[node name="Cell 13" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="4" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 17" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="5" instance=ExtResource("5_p356p")]
+[node name="Cell 14" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="5" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 24" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="6" instance=ExtResource("5_p356p")]
+[node name="Cell 21" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="6" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 25" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="7" instance=ExtResource("5_p356p")]
+[node name="Cell 22" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="7" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 26" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="8" instance=ExtResource("5_p356p")]
+[node name="Cell 23" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 2" index="8" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Box 4" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="3"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/h_separation = 2
-theme_override_constants/v_separation = 2
-columns = 3
-
-[node name="Cell 27" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="0" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 28" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="1" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 29" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="2" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 36" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="3" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 37" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="4" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 38" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="5" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 45" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="6" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 46" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="7" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 47" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="8" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Box 5" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="4"]
+[node name="Box 3" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="2"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -954,105 +844,52 @@ theme_override_constants/h_separation = 2
 theme_override_constants/v_separation = 2
 columns = 3
 
-[node name="Cell 30" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="0" instance=ExtResource("5_p356p")]
+[node name="Cell 6" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="0" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 31" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="1" instance=ExtResource("5_p356p")]
+[node name="Cell 7" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="1" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 32" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="2" instance=ExtResource("5_p356p")]
+[node name="Cell 8" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="2" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 39" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="3" instance=ExtResource("5_p356p")]
+[node name="Cell 15" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="3" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 40" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="4" instance=ExtResource("5_p356p")]
+[node name="Cell 16" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="4" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 41" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="5" instance=ExtResource("5_p356p")]
+[node name="Cell 17" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="5" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 48" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="6" instance=ExtResource("5_p356p")]
+[node name="Cell 24" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="6" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 49" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="7" instance=ExtResource("5_p356p")]
+[node name="Cell 25" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="7" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 50" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="8" instance=ExtResource("5_p356p")]
+[node name="Cell 26" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 3" index="8" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Box 6" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="5"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/h_separation = 2
-theme_override_constants/v_separation = 2
-columns = 3
-
-[node name="Cell 33" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="0" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 34" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="1" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 35" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="2" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 42" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="3" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 43" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="4" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 44" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="5" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 51" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="6" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 52" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="7" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 53" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="8" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Box 7" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="6"]
+[node name="Box 4" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="3"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1060,105 +897,52 @@ theme_override_constants/h_separation = 2
 theme_override_constants/v_separation = 2
 columns = 3
 
-[node name="Cell 54" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="0" instance=ExtResource("5_p356p")]
+[node name="Cell 27" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="0" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 55" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="1" instance=ExtResource("5_p356p")]
+[node name="Cell 28" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="1" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 56" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="2" instance=ExtResource("5_p356p")]
+[node name="Cell 29" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="2" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 63" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="3" instance=ExtResource("5_p356p")]
+[node name="Cell 36" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="3" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 64" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="4" instance=ExtResource("5_p356p")]
+[node name="Cell 37" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="4" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 65" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="5" instance=ExtResource("5_p356p")]
+[node name="Cell 38" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="5" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 72" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="6" instance=ExtResource("5_p356p")]
+[node name="Cell 45" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="6" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 73" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="7" instance=ExtResource("5_p356p")]
+[node name="Cell 46" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="7" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 74" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="8" instance=ExtResource("5_p356p")]
+[node name="Cell 47" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 4" index="8" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Box 8" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="7"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/h_separation = 2
-theme_override_constants/v_separation = 2
-columns = 3
-
-[node name="Cell 57" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="0" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 58" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="1" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 59" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="2" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 66" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="3" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 67" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="4" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 68" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="5" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 75" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="6" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 76" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="7" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Cell 77" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="8" instance=ExtResource("5_p356p")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Box 9" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="8"]
+[node name="Box 5" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="4"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1166,52 +950,264 @@ theme_override_constants/h_separation = 2
 theme_override_constants/v_separation = 2
 columns = 3
 
-[node name="Cell 60" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="0" instance=ExtResource("5_p356p")]
+[node name="Cell 30" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="0" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 61" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="1" instance=ExtResource("5_p356p")]
+[node name="Cell 31" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="1" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 62" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="2" instance=ExtResource("5_p356p")]
+[node name="Cell 32" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="2" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 69" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="3" instance=ExtResource("5_p356p")]
+[node name="Cell 39" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="3" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 70" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="4" instance=ExtResource("5_p356p")]
+[node name="Cell 40" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="4" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 71" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="5" instance=ExtResource("5_p356p")]
+[node name="Cell 41" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="5" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 78" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="6" instance=ExtResource("5_p356p")]
+[node name="Cell 48" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="6" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 79" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="7" instance=ExtResource("5_p356p")]
+[node name="Cell 49" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="7" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Cell 80" parent="Tabs/Sudoku/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="8" instance=ExtResource("5_p356p")]
+[node name="Cell 50" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 5" index="8" instance=ExtResource("5_p356p")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="MarginContainer2" type="MarginContainer" parent="Tabs/Sudoku/HSplitContainer" index="1"]
+[node name="Box 6" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="5"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell 33" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="0" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 34" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="1" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 35" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="2" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 42" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="3" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 43" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="4" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 44" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="5" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 51" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="6" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 52" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="7" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 53" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 6" index="8" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Box 7" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="6"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell 54" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="0" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 55" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="1" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 56" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="2" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 63" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="3" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 64" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="4" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 65" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="5" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 72" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="6" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 73" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="7" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 74" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 7" index="8" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Box 8" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="7"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell 57" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="0" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 58" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="1" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 59" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="2" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 66" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="3" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 67" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="4" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 68" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="5" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 75" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="6" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 76" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="7" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 77" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 8" index="8" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Box 9" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions" index="8"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell 60" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="0" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 61" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="1" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 62" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="2" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 69" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="3" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 70" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="4" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 71" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="5" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 78" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="6" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 79" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="7" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cell 80" parent="Tabs/Sudoku/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Regions/Box 9" index="8" instance=ExtResource("5_p356p")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="Tabs/Sudoku/HBoxContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 20
@@ -1219,22 +1215,22 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2" index="0"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer" index="0"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Entry:"
 
-[node name="RadioAnswer" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="1"]
+[node name="RadioAnswer" type="CheckBox" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1242,7 +1238,7 @@ button_group = SubResource("ButtonGroup_mrvem")
 text = "Answer"
 flat = true
 
-[node name="RadioCenter" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="2"]
+[node name="RadioCenter" type="CheckBox" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1250,7 +1246,7 @@ button_group = SubResource("ButtonGroup_mrvem")
 text = "Center"
 flat = true
 
-[node name="RadioCorner" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="3"]
+[node name="RadioCorner" type="CheckBox" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer" index="3"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1258,137 +1254,135 @@ button_group = SubResource("ButtonGroup_mrvem")
 text = "Corner"
 flat = true
 
-[node name="ClearInvalid" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="1"]
+[node name="ClearInvalid" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 text = "    Clear 'Invalid' color    "
 
-[node name="GridContainer" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="2"]
+[node name="GridContainer" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer" index="2"]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/h_separation = 2
 theme_override_constants/v_separation = 2
 columns = 2
 
-[node name="NumPad" type="GridContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="0"]
+[node name="NumPad" type="GridContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 2
 theme_override_constants/v_separation = 2
 columns = 3
 
-[node name="Entry1" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="0"]
+[node name="Entry1" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="0"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
 text = "1"
 script = ExtResource("15_83fxp")
 
-[node name="Entry2" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="1"]
+[node name="Entry2" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="1"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
 text = "2"
 script = ExtResource("15_83fxp")
 
-[node name="Entry3" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="2"]
+[node name="Entry3" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="2"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
 text = "3"
 script = ExtResource("15_83fxp")
 
-[node name="Entry4" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="3"]
+[node name="Entry4" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="3"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
 text = "4"
 script = ExtResource("15_83fxp")
 
-[node name="Entry5" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="4"]
+[node name="Entry5" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="4"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
 text = "5"
 script = ExtResource("15_83fxp")
 
-[node name="Entry6" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="5"]
+[node name="Entry6" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="5"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
 text = "6"
 script = ExtResource("15_83fxp")
 
-[node name="Entry7" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="6"]
+[node name="Entry7" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="6"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
 text = "7"
 script = ExtResource("15_83fxp")
 
-[node name="Entry8" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="7"]
+[node name="Entry8" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="7"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
 text = "8"
 script = ExtResource("15_83fxp")
 
-[node name="Entry9" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="8"]
+[node name="Entry9" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad" index="8"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 focus_mode = 0
 text = "9"
 script = ExtResource("15_83fxp")
 
-[node name="Node" type="Control" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="1"]
+[node name="Node" type="Control" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="1"]
 layout_mode = 2
 
-[node name="DeleteButton" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="2"]
+[node name="DeleteButton" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="2"]
 custom_minimum_size = Vector2(180, 60)
 layout_mode = 2
 focus_mode = 0
 text = "Delete"
 
-[node name="InfoButton" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="3" instance=ExtResource("13_7ct3a")]
+[node name="InfoButton" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer" index="3" instance=ExtResource("13_7ct3a")]
 layout_mode = 2
 title = "Entry Pad"
 info = "LClick: Enter value (all selected cells)
 RClick: Toggle button (useful for marking finished values)
 'Delete' buton: Clear contents (all selected cells)"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer" index="1"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer" index="1"]
 layout_mode = 2
-size_flags_horizontal = 10
-theme_override_constants/separation = 20
+size_flags_horizontal = 8
 
-[node name="SettingsContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="0"]
+[node name="SettingsContainer" type="VBoxContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="0"]
 layout_mode = 2
-size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer/HBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer/HBoxContainer" index="0"]
 layout_mode = 2
 text = "Settings:"
 
-[node name="InfoButton" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
+[node name="InfoButton" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
 layout_mode = 2
 title = "Server Settings"
 info = "These settings are based on the currrent difficulty selected, and settings set on the server.
 
 The host of a multiworld can use the \"AdminPanel\" (using the admin password) to change these settings for everyone in the multiworld."
 
-[node name="PanelContainer" type="PanelContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer" index="1"]
+[node name="PanelContainer" type="PanelContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer" index="1"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_ctivq")
 
-[node name="SettingsText" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer/PanelContainer" index="0"]
+[node name="SettingsText" type="Label" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/SettingsContainer/PanelContainer" index="0"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -1396,21 +1390,26 @@ size_flags_vertical = 3
 theme_override_font_sizes/font_size = 16
 autowrap_mode = 3
 
-[node name="DiffContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="1"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer" index="2"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 20
+
+[node name="DiffContainer" type="VBoxContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 8
+size_flags_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/DiffContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/HBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/DiffContainer/HBoxContainer" index="0"]
 layout_mode = 2
 text = "Difficulty:"
 
-[node name="InfoButton" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
+[node name="InfoButton" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/DiffContainer/HBoxContainer" index="1" instance=ExtResource("13_7ct3a")]
 layout_mode = 2
 title = "How to Play / Difficulty Info"
 info = "Fill every Row, Column, and outlined Region (3x3 box) with the digits 1-9, exactly once each.
@@ -1419,11 +1418,11 @@ In 'Killer' mode, outlined Cages must sum to the indicated total.
 
 Different difficulties can have different odds of giving you a \"progression\" hint, \"non-progression\" hint, or no hint at all. Hosts can change these odds in the AdminPanel tab, using the multiworld's admin password."
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer" index="1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/DiffContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="RadioEasy" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer" index="0"]
+[node name="RadioEasy" type="CheckBox" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/DiffContainer/VBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1431,7 +1430,7 @@ button_group = SubResource("ButtonGroup_7l32q")
 text = "Easy"
 flat = true
 
-[node name="RadioMedium" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer" index="1"]
+[node name="RadioMedium" type="CheckBox" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/DiffContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1439,7 +1438,7 @@ button_group = SubResource("ButtonGroup_7l32q")
 text = "Medium"
 flat = true
 
-[node name="RadioHard" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer" index="2"]
+[node name="RadioHard" type="CheckBox" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/DiffContainer/VBoxContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1447,7 +1446,7 @@ button_group = SubResource("ButtonGroup_7l32q")
 text = "Hard"
 flat = true
 
-[node name="RadioKiller" type="CheckBox" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer" index="3"]
+[node name="RadioKiller" type="CheckBox" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/DiffContainer/VBoxContainer" index="3"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -1455,31 +1454,31 @@ button_group = SubResource("ButtonGroup_7l32q")
 text = "Killer"
 flat = true
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2" index="2"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3" index="1"]
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="GeneratingLabel" type="Label" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2" index="0"]
+[node name="GeneratingLabel" type="Label" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/VBoxContainer2" index="0"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "Generating puzzle..."
 
-[node name="StartButton" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2" index="1"]
+[node name="StartButton" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/VBoxContainer2" index="1"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 60)
 layout_mode = 2
 focus_mode = 0
 text = "Start"
 
-[node name="ForfeitButton" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2" index="2"]
+[node name="ForfeitButton" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/VBoxContainer2" index="2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 60)
 layout_mode = 2
 focus_mode = 0
 text = "Forfeit"
 
-[node name="CheckButton" type="Button" parent="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2" index="3"]
+[node name="CheckButton" type="Button" parent="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/VBoxContainer2" index="3"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 60)
 layout_mode = 2
@@ -1621,27 +1620,27 @@ text = "REFRESH / REVERT CHANGES"
 [connection signal="toggled" from="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/DebugSettingsToggle" to="Tabs/Settings/Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" method="set_visible"]
 [connection signal="difficulty_changed" from="Tabs/Sudoku" to="." method="refresh_hint_count" unbinds=1]
 [connection signal="difficulty_changed" from="Tabs/Sudoku" to="." method="update_setting_label" unbinds=1]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioAnswer" to="." method="set_entry_mode_no_button" binds= [0]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCenter" to="." method="set_entry_mode_no_button" binds= [1]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCorner" to="." method="set_entry_mode_no_button" binds= [2]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/ClearInvalid" to="Tabs/Sudoku" method="clear_invalid"]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry1" to="Tabs/Sudoku" method="type_number" binds= [1]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry2" to="Tabs/Sudoku" method="type_number" binds= [2]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry3" to="Tabs/Sudoku" method="type_number" binds= [3]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry4" to="Tabs/Sudoku" method="type_number" binds= [4]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry5" to="Tabs/Sudoku" method="type_number" binds= [5]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry6" to="Tabs/Sudoku" method="type_number" binds= [6]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry7" to="Tabs/Sudoku" method="type_number" binds= [7]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry8" to="Tabs/Sudoku" method="type_number" binds= [8]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry9" to="Tabs/Sudoku" method="type_number" binds= [9]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/DeleteButton" to="Tabs/Sudoku" method="clear_selected"]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer/RadioEasy" to="Tabs/Sudoku" method="set_difficulty" binds= [0]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer/RadioMedium" to="Tabs/Sudoku" method="set_difficulty" binds= [1]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer/RadioHard" to="Tabs/Sudoku" method="set_difficulty" binds= [2]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/DiffContainer/VBoxContainer/RadioKiller" to="Tabs/Sudoku" method="set_difficulty" binds= [3]]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/StartButton" to="Tabs/Sudoku" method="start_puzzle"]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/ForfeitButton" to="Tabs/Sudoku" method="forfeit_puzzle"]
-[connection signal="pressed" from="Tabs/Sudoku/HSplitContainer/MarginContainer2/HBoxContainer/VBoxContainer2/VBoxContainer2/CheckButton" to="Tabs/Sudoku" method="submit_solution"]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioAnswer" to="." method="set_entry_mode_no_button" binds= [0]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCenter" to="." method="set_entry_mode_no_button" binds= [1]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/VBoxContainer/RadioCorner" to="." method="set_entry_mode_no_button" binds= [2]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/ClearInvalid" to="Tabs/Sudoku" method="clear_invalid"]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry1" to="Tabs/Sudoku" method="type_number" binds= [1]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry2" to="Tabs/Sudoku" method="type_number" binds= [2]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry3" to="Tabs/Sudoku" method="type_number" binds= [3]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry4" to="Tabs/Sudoku" method="type_number" binds= [4]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry5" to="Tabs/Sudoku" method="type_number" binds= [5]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry6" to="Tabs/Sudoku" method="type_number" binds= [6]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry7" to="Tabs/Sudoku" method="type_number" binds= [7]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry8" to="Tabs/Sudoku" method="type_number" binds= [8]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry9" to="Tabs/Sudoku" method="type_number" binds= [9]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/DeleteButton" to="Tabs/Sudoku" method="clear_selected"]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/DiffContainer/VBoxContainer/RadioEasy" to="Tabs/Sudoku" method="set_difficulty" binds= [0]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/DiffContainer/VBoxContainer/RadioMedium" to="Tabs/Sudoku" method="set_difficulty" binds= [1]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/DiffContainer/VBoxContainer/RadioHard" to="Tabs/Sudoku" method="set_difficulty" binds= [2]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/DiffContainer/VBoxContainer/RadioKiller" to="Tabs/Sudoku" method="set_difficulty" binds= [3]]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/VBoxContainer2/StartButton" to="Tabs/Sudoku" method="start_puzzle"]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/VBoxContainer2/ForfeitButton" to="Tabs/Sudoku" method="forfeit_puzzle"]
+[connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/VBoxContainer2/CheckButton" to="Tabs/Sudoku" method="submit_solution"]
 [connection signal="text_submitted" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/HBoxContainer/Pwd_Box" to="Tabs/Console/ConnectBox/Row/Box/Margins/VBox/Content" method="try_connection" unbinds=1]
 [connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/Button" to="." method="check_admin"]
 [connection signal="enabled_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/ToggleSudoku" method="set_pressed"]
