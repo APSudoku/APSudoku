@@ -19,7 +19,7 @@
 [ext_resource type="Script" uid="uid://cj06n2qh8ec5b" path="res://ui/debug_settings.gd" id="13_yousr"]
 [ext_resource type="Script" uid="uid://bem83ythwco6j" path="res://ui/actual_grid.gd" id="14_3xquc"]
 [ext_resource type="Script" uid="uid://d21n6ox3lmmwv" path="res://ui/button_toggle_disabled.gd" id="15_83fxp"]
-[ext_resource type="SystemFont" uid="uid://73rjoc23d4ub" path="res://godot_ap/ui/console_font.tres" id="20_61nds"]
+[ext_resource type="FontVariation" uid="uid://emo3rlwg7g61" path="res://godot_ap/ui/console_font.tres" id="20_61nds"]
 [ext_resource type="Script" uid="uid://cety6nqnci3n6" path="res://godot_ap/ui/updown_lineedit.gd" id="21_arbtu"]
 [ext_resource type="Script" uid="uid://bvyjl05157b1k" path="res://ui/admin_control_panel.gd" id="22_arbtu"]
 [ext_resource type="PackedScene" uid="uid://b8dujcc1olxkl" path="res://ui/admin_panel_difficulty_settings.tscn" id="23_ctivq"]
@@ -68,9 +68,6 @@ admin_login_error = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/Marg
 current_tab = 4
 
 [node name="Console" parent="Tabs" index="1"]
-visible = false
-
-[node name="ConnectBox" parent="Tabs/Console" index="1"]
 visible = false
 
 [node name="Tabs" parent="Tabs/Settings/Margin" index="0"]
@@ -1661,4 +1658,4 @@ text = "REFRESH / REVERT CHANGES"
 [connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/HBoxContainer/ApplyButton" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="apply_settings"]
 [connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/HBoxContainer/RevertButton" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="revert_settings"]
 
-[editable path="Tabs/Hints/Console"]
+[editable path="Tabs/Settings"]

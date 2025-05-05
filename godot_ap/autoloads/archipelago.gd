@@ -1,25 +1,43 @@
 class_name AP extends Node
 
-@export var AP_GAME_NAME := "" ## The game name to connect to. Empty string for TextOnly or HintGame clients.
-@export var AP_GAME_TAGS: Array[String] = [] ## The tags for your game.
-@export var AP_CLIENT_VERSION := Version.val(0,0,0) ## The version of your client. Arbitrary number for you to manage.
-@export var AP_VERSION := Version.val(0,5,0) ## The target AP version. Not arbitrary - used in `Connect` packet.
-@export var AP_ITEM_HANDLING := ItemHandling.ALL ## The ItemHandling to use when connecting.
+## The game name to connect to. Empty string for TextOnly or HintGame clients.
+@export var AP_GAME_NAME := ""
+## The tags for your game.
+@export var AP_GAME_TAGS: Array[String] = []
+## The version of your client. Arbitrary number for you to manage.
+@export var AP_CLIENT_VERSION := Version.val(0,0,0)
+## The target AP version. Not arbitrary - used in `Connect` packet.
+@export var AP_VERSION := Version.val(0,5,0)
+## The ItemHandling to use when connecting.
+@export var AP_ITEM_HANDLING := ItemHandling.ALL
 @export_group("Client Settings")
-@export var AP_PRINT_ITEMS_ON_CONNECT := false ## Prints what items have been previously collected when reconnecting to a slot.
-@export var AP_HIDE_NONLOCAL_ITEMSENDS := true ## Hide item send messages that don't involve the client.
-@export var AP_AUTO_OPEN_CONSOLE := false ## Automatically opens a default AP text console.
-@export var AP_ALLOW_TRACKERPACKS := true ## Allow loading custom tracker packs.
+## Prints what items have been previously collected when reconnecting to a slot.
+@export var AP_PRINT_ITEMS_ON_CONNECT := false
+## Hide item send messages that don't involve the client.
+@export var AP_HIDE_NONLOCAL_ITEMSENDS := true
+## Automatically opens a default AP text console.
+@export var AP_AUTO_OPEN_CONSOLE := false
+## Allow loading custom tracker packs.
+@export var AP_ALLOW_TRACKERPACKS := true
 @export_subgroup("UI")
-@export var AP_CONSOLE_CONNECTION_OPEN := false ## Automatically open the Connection box when the console opens
-@export var AP_CONSOLE_CONNECTION_AUTO := true ## Automatically open/close the Connection box based on connected status
+## Automatically open the Connection box when the console opens
+@export var AP_CONSOLE_CONNECTION_OPEN := false
+## Automatically open/close the Connection box based on connected status
+@export var AP_CONSOLE_CONNECTION_AUTO := true
 
 @export_subgroup("Logging")
-@export var AP_LOG_COMMUNICATION := false ## Enables additional logging.
-@export var AP_LOG_RECIEVED := false ## Enables additional logging.
+## Enables additional logging.
+@export var AP_LOG_COMMUNICATION := false
+## Enables additional logging.
+@export var AP_LOG_RECIEVED := false
 @export_subgroup("Data Packs")
-@export var READABLE_DATAPACK_FILES := true ## If true, datapackage local files will be stringified in a readable mode.
-@export var datapack_cached_fields: Array[String] = ["item_name_to_id","location_name_to_id","checksum"] ## Which fields should be saved from received DataPacks.
+## If true, datapackage local files will be stringified in a readable mode.
+@export var READABLE_DATAPACK_FILES := true
+## Which fields should be saved from received DataPacks.
+@export var datapack_cached_fields: Array[String] = ["item_name_to_id","location_name_to_id","checksum"]
+@export_group("Misc")
+## Size, in MB, of the websocket inbound buffer. Raising may help if large datapackages are causing disconnections.
+@export_range(5, 500, 1, "or_greater", "hide_slider") var websocket_inbuffer_mb: int = 50
 @export_group("")
 
 @onready var hang_clock: Timer = $HangTimer
@@ -40,6 +58,9 @@ signal all_datapacks_loaded ## Signals when all required datapacks have finished
 signal remove_location(loc_id: int)
 signal on_tag_change
 signal on_attach_console
+
+# Debug purposes
+signal _logged_message(msg: String)
 #endregion
 
 
@@ -163,6 +184,8 @@ func ap_connect(room_ip: String, room_port: String, slot_name: String, room_pwd 
 
 ## Disconnect from Archipelago
 func ap_disconnect() -> void:
+	if _connecting_part:
+		_connecting_part = null
 	if status == APStatus.DISCONNECTED or status == APStatus.DISCONNECTING:
 		return
 	status = APStatus.DISCONNECTING
@@ -193,7 +216,7 @@ func force_disconnect() -> void:
 func create_socket() -> void:
 	const BYTE_PER_MB := 1000000
 	_socket = WebSocketPeer.new()
-	_socket.inbound_buffer_size = 5*BYTE_PER_MB
+	_socket.inbound_buffer_size = websocket_inbuffer_mb*BYTE_PER_MB
 #endregion CONNECTION
 
 #region LOGGING TO FILE
@@ -208,11 +231,19 @@ static func close_logger() -> void:
 		logging_file.close()
 		logging_file = null
 ## Logs a message to the GodotAP log
-static func log(s: Variant) -> void:
+func _log(s: String) -> void:
 	if logging_file:
-		logging_file.store_line(str(s))
+		logging_file.store_line(s)
 		if OS.is_debug_build(): logging_file.flush()
-	print("[AP] %s" % str(s))
+	var msg: String = "[AP] %s" % s
+	print(msg)
+	_logged_message.emit(msg)
+static func log(s: Variant) -> void:
+	if Archipelago:
+		Archipelago._log(str(s))
+	else:
+		print("[AP!] %s" % s)
+
 ## Logs a message to the GodotAP log, but only if AP_LOG_COMMUNICATION is true
 func comm_log(pref: String, s: Variant) -> void:
 	if not AP_LOG_COMMUNICATION: return
@@ -223,64 +254,68 @@ static func dblog(s: Variant) -> void:
 	AP.log(s)
 #endregion
 
-func _poll():
-	if status == APStatus.DISCONNECTED:
-		return
-	if status == APStatus.SOCKET_CONNECTING:
-		match _socket.get_ready_state():
-			WebSocketPeer.STATE_OPEN: # Already connected, disconnect that connection
-				ap_disconnect()
-				return
-			WebSocketPeer.STATE_CLOSED: # Start a new connection
-				var err: Error = _socket.connect_to_url(get_url())
-				if err:
-					AP.log("Connection to '%s' failed! Retrying (%d)" % [get_url(),_connect_attempts])
-					_wss = not _wss
-					if _wss: _connect_attempts += 1
-				elif output_console and not _connecting_part:
-					_connecting_part = output_console.add_line("Connecting...","%s:%s %s" % [creds.ip,creds.port,creds.slot],output_console.COLOR_UI_MSG)
-			WebSocketPeer.STATE_CONNECTING: # Continue trying to make new connection
-				_socket.poll()
-				var state := _socket.get_ready_state()
-				if state == WebSocketPeer.STATE_OPEN:
-					AP.log("Connected to '%s'!" % get_url())
-					status = APStatus.CONNECTING
-				elif state != WebSocketPeer.STATE_CONNECTING:
-					if _connect_attempts >= 50:
-						_socket.close()
-						status = APStatus.DISCONNECTING
-						AP.log("Connection to '%s' failed too much! Giving up!" % get_url())
-						if output_console and _connecting_part:
-							_connecting_part.text = "Connection Failed!"
-							_connecting_part.tooltip += "\nFailed connecting too many times. Check your connection details, or '/reconnect' to try again."
-							_connecting_part = null
-					else:
+var _socket_state: WebSocketPeer.State = WebSocketPeer.STATE_CLOSED
+func _poll() -> void:
+	while true:
+		await get_tree().process_frame
+		if status == APStatus.DISCONNECTED:
+			continue
+		if status == APStatus.SOCKET_CONNECTING:
+			match _socket_state:
+				WebSocketPeer.STATE_OPEN: # Already connected, disconnect that connection
+					ap_disconnect()
+					_socket_state = _socket.get_ready_state()
+				WebSocketPeer.STATE_CLOSED: # Start a new connection
+					var err: Error = _socket.connect_to_url(get_url())
+					if err:
 						AP.log("Connection to '%s' failed! Retrying (%d)" % [get_url(),_connect_attempts])
 						_wss = not _wss
 						if _wss: _connect_attempts += 1
-			WebSocketPeer.STATE_CLOSING:
-				return
-		return
-	if _connecting_part:
-		_connecting_part = null
-	_socket.poll()
-	match _socket.get_ready_state():
-		WebSocketPeer.STATE_CLOSED: # Exited; handle reconnection, or concluding intentional disconnection
-			hang_clock.stop()
-			if status == APStatus.DISCONNECTING:
-				status = APStatus.DISCONNECTED
-				disconnected.emit()
-			else:
-				AP.log("Accidental disconnection; reconnecting!")
-				ap_reconnect()
-		WebSocketPeer.STATE_OPEN: # Running; handle communication
-			while _socket.get_available_packet_count():
-				var packet: PackedByteArray = _socket.get_packet()
-				var json = JSON.parse_string(packet.get_string_from_utf8())
-				if not json is Array:
-					json = [json]
-				for dict in json:
-					_handle_command(dict)
+					elif output_console and not _connecting_part:
+						_connecting_part = output_console.add_line("Connecting...","%s:%s %s" % [creds.ip,creds.port,creds.slot],output_console.COLOR_UI_MSG)
+					_socket_state = _socket.get_ready_state()
+				WebSocketPeer.STATE_CONNECTING: # Continue trying to make new connection
+					_socket.poll()
+					_socket_state = _socket.get_ready_state()
+					if _socket_state == WebSocketPeer.STATE_OPEN:
+						AP.log("Connected to '%s'!" % get_url())
+						status = APStatus.CONNECTING
+					elif _socket_state != WebSocketPeer.STATE_CONNECTING:
+						if _connect_attempts >= 50:
+							_socket.close()
+							status = APStatus.DISCONNECTING
+							AP.log("Connection to '%s' failed too much! Giving up!" % get_url())
+							if output_console and _connecting_part:
+								_connecting_part.text = "Connection Failed!"
+								_connecting_part.tooltip += "\nFailed connecting too many times. Check your connection details, or '/reconnect' to try again."
+								_connecting_part = null
+						else:
+							AP.log("Connection to '%s' failed! Retrying (%d)" % [get_url(),_connect_attempts])
+							_wss = not _wss
+							if _wss: _connect_attempts += 1
+				WebSocketPeer.STATE_CLOSING:
+					_socket.poll()
+					_socket_state = _socket.get_ready_state()
+			continue
+		_socket.poll()
+		_socket_state = _socket.get_ready_state()
+		match _socket_state:
+			WebSocketPeer.STATE_CLOSED: # Exited; handle reconnection, or concluding intentional disconnection
+				hang_clock.stop()
+				if status == APStatus.DISCONNECTING:
+					status = APStatus.DISCONNECTED
+					disconnected.emit()
+				else:
+					AP.log("Accidental disconnection; reconnecting!")
+					ap_reconnect()
+			WebSocketPeer.STATE_OPEN: # Running; handle communication
+				while _socket.get_available_packet_count():
+					var packet: PackedByteArray = _socket.get_packet()
+					var json = JSON.parse_string(packet.get_string_from_utf8())
+					if not json is Array:
+						json = [json]
+					for dict in json:
+						_handle_command(dict)
 
 var _printout_recieved_items: bool = false
 ## Sends a command of the specified name, with the given dictionary as the command arguments, to the Archipelago server
@@ -312,7 +347,9 @@ func _handle_command(json: Dictionary) -> void:
 			args["tags"] = AP_GAME_TAGS
 			args["items_handling"] = AP_ITEM_HANDLING
 			roominfo.emit(conn, json)
-			all_datapacks_loaded.connect(send_command.bind("Connect",args), CONNECT_ONE_SHOT)
+			SignalChooser.new().register_multiple(
+				[all_datapacks_loaded, disconnected],
+				[send_command.bind("Connect",args), Util.nil])
 			_send_datapack_request()
 		"ConnectionRefused":
 			var err_str := str(json["errors"])
@@ -340,7 +377,7 @@ func _handle_command(json: Dictionary) -> void:
 					_connecting_part.text = "Connection Mismatch! Wrong slot for this save!"
 					for s in lock_err:
 						_connecting_part.tooltip += "\n%s" % s
-						_connecting_part = null
+					_connecting_part = null
 					ap_disconnect()
 					return
 
@@ -599,8 +636,6 @@ func location_list() -> Array[int]:
 	arr.assign(conn.slot_locations.keys())
 	return arr
 #endregion LOCATIONS
-func _process(_delta):
-	_poll()
 
 ## Try to reconnect to the current connection details, BUT if it detects errors in the details,
 ## it will instead prompt the user to enter the details.
@@ -1080,9 +1115,11 @@ func _autofill_track(msg: String) -> Array[String]:
 func _init():
 	init_command_manager(true)
 	_update_tags()
+	_poll.call_deferred()
 func _ready():
 	if AP_AUTO_OPEN_CONSOLE:
-		open_console.call_deferred()
+		# Delayed to prevent some warnings
+		get_tree().create_timer(2.0).timeout.connect(open_console)
 	create_socket()
 	for node in get_children():
 		if node is APConfigManager:

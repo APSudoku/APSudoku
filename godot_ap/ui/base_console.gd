@@ -8,7 +8,7 @@ class FontFlags:
 	var bold := false
 	var italic := false
 
-@export var font: SystemFont :
+@export var font: FontVariation :
 	set(val):
 		font = val
 		font_bold = null
@@ -37,24 +37,40 @@ class FontFlags:
 		scroll_bar.scrolling.connect(update_scroll)
 		scroll_bar.value_changed.connect(_update_scroll2)
 
-var font_bold: SystemFont :
+var font_bold: FontVariation :
 	get:
 		if font_bold: return font_bold
 		font_bold = font.duplicate()
-		font_bold.font_weight *= 2
+		if "weight" in _get_supported_opentype_variants(font_bold):
+			var ts = TextServerManager.get_primary_interface()
+			var _dict = font_bold.variation_opentype
+			_dict[ts.name_to_tag("weight")] = 700
+			font_bold.variation_opentype = _dict
+		else:
+			font_bold.variation_embolden = 0.7
 		return font_bold
-var font_italic: SystemFont :
+var font_italic: FontVariation :
 	get:
 		if font_italic: return font_italic
 		font_italic = font.duplicate()
-		font_italic.font_italic = true
+		#TODO: add handling of italic opentype variant
+		var slant = 0.3
+		font_italic.variation_transform = Transform2D(Vector2(1.0, slant), Vector2(0.0, 1.0), Vector2(0.0, 0.0))
 		return font_italic
-var font_bold_italic: SystemFont :
+var font_bold_italic: FontVariation :
 	get:
 		if font_bold_italic: return font_bold_italic
 		font_bold_italic = font.duplicate()
-		font_bold_italic.font_italic = true
-		font_bold_italic.font_weight *= 2
+		#TODO: add handling of italic opentype variant
+		var slant = 0.3
+		font_bold_italic.variation_transform = Transform2D(Vector2(1.0, slant), Vector2(0.0, 1.0), Vector2(0.0, 0.0))
+		if "weight" in _get_supported_opentype_variants(font_bold_italic):
+			var ts = TextServerManager.get_primary_interface()
+			var _dict = font_bold.variation_opentype
+			_dict[ts.name_to_tag("weight")] = 700
+			font_bold_italic.variation_opentype = _dict
+		else:
+			font_bold_italic.variation_embolden = 0.7
 		return font_bold_italic
 
 func get_font(flags: FontFlags = null) -> Font:
@@ -77,6 +93,12 @@ func get_font_ascent(flags: FontFlags = null) -> float:
 	return get_font(flags).get_ascent(font_size)
 func get_string_size(text: String, flags: FontFlags = null) -> Vector2:
 	return get_font(flags).get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+func _get_supported_opentype_variants(fnt: FontVariation) -> Array:
+	var arr = fnt.get_supported_variation_list().keys()
+	var ts = TextServerManager.get_primary_interface()
+	for i in range(arr.size()):
+		arr[i] = ts.tag_to_name(arr[i])
+	return arr
 
 @onready var tooltip_bg: Panel = $TooltipBG
 @onready var tooltip_label: Label = $TooltipBG/Tooltip
@@ -605,7 +627,8 @@ class ContainerPart extends IteratorPart:
 					q += repl.size()
 					continue
 			q += 1
-
+	func is_empty() -> bool:
+		return parts.is_empty()
 class FoldablePart extends ContainerPart:
 	var folded: bool :
 		set = fold
@@ -907,6 +930,8 @@ class PagedColumnsPart extends ColumnsPart:
 
 class ArrangedColumnsPart extends ContainerPart:
 	var widths: Array[int] = []
+	var heights: Array[float] = []
+	var valign: VerticalAlignment = VERTICAL_ALIGNMENT_CENTER
 
 	## Adds a part as a 'Column', with an associated width.
 	## Max of 1 part can have a width '-1', which will auto-fill the remaining width
@@ -953,9 +978,32 @@ class ArrangedColumnsPart extends ContainerPart:
 		# Draw
 		var by := data.y
 		var max_x := 0.0
+		if not do_draw: # Calculate heights
+			heights.clear()
+			heights.resize(parts.size())
+			for q in parts.size():
+				if ws[q] <= 0: continue
+				data.y = dy # Start at top
+				data.r = data.l + ws[q] # Set width
+				data.max_shown_x = 0
+				parts[q].calc_hitboxes(c, data)
+				heights[q] = data.y - dy
+				# Increment position
+				data.l += ws[q]
+				data.x = data.l
+				if data.y > by:
+					by = data.y
+		var maxheight: float = 0 if heights.is_empty() else heights.max()
 		for q in parts.size():
 			if ws[q] <= 0: continue
 			data.y = dy # Start at top
+			match valign:
+				VERTICAL_ALIGNMENT_CENTER:
+					data.y += (maxheight - heights[q]) / 2
+				VERTICAL_ALIGNMENT_BOTTOM:
+					data.y += (maxheight - heights[q])
+				VERTICAL_ALIGNMENT_FILL: # unimplemented
+					push_warning("VERTICAL_ALIGNMENT_FILL not implemented, defaulting to VERTICAL_ALIGNMENT_TOP")
 			data.r = data.l + ws[q] # Set width
 			data.max_shown_x = 0
 			if do_draw:
@@ -984,20 +1032,9 @@ class HintPart extends ArrangedColumnsPart	: ## A part representing a hint info
 		if dont_draw():
 			super(c, data)
 			return
-		if parts.is_empty():
-			refresh(c)
 		var vspc = c.get_line_height()/4
 		data.ensure_spacing(c, Vector2(0, vspc))
 		super(c, data)
-		for part in parts:
-			if part is TextPart and not part.hitboxes.is_empty():
-				var top_hb = part.hitboxes.front()
-				top_hb.position.y -= vspc/2
-				top_hb.size.y += vspc/2
-				part.hitboxes[0] = top_hb
-				var bot_hb = part.hitboxes.back()
-				bot_hb.size.y += vspc/2
-				part.hitboxes[-1] = bot_hb
 	func calc_hitboxes(c: BaseConsole, data: ConsoleDrawData) -> void:
 		if dont_draw():
 			super(c, data)
