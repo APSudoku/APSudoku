@@ -70,4 +70,4 @@ renderer/rendering_method="gl_compatibility"
 
 [threading]
 
-worker_pool/max_threads=4
+worker_pool/max_threads=8
