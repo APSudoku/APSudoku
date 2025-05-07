@@ -69,12 +69,6 @@ current_tab = 4
 [node name="Console" parent="Tabs" index="1"]
 visible = false
 
-[node name="Tabs" parent="Tabs/Settings/Margin" index="0"]
-current_tab = 3
-
-[node name="Theme" parent="Tabs/Settings/Margin/Tabs" index="1"]
-visible = false
-
 [node name="DarkTheme" parent="Tabs/Settings/Margin/Tabs/Theme/Row/Col1" index="0"]
 button_group = SubResource("ButtonGroup_oyu55")
 
@@ -382,10 +376,10 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Reset"
 
-[node name="Sudoku" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="3"]
+[node name="Sudoku" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="2"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 2
+metadata/_tab_index = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs/Sudoku" index="0"]
 layout_mode = 2
@@ -442,13 +436,14 @@ layout_mode = 2
 theme = SubResource("Theme_ej5yg")
 text = "Throttle Puzzle Generation"
 
-[node name="Connection" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="4"]
+[node name="Connection" type="MarginContainer" parent="Tabs/Settings/Margin/Tabs" index="3"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
-metadata/_tab_index = 3
+metadata/_tab_index = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Settings/Margin/Tabs/Connection" index="0"]
 layout_mode = 2
@@ -653,13 +648,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Remove All"
 
-[node name="Sudoku" type="MarginContainer" parent="Tabs" index="5"]
+[node name="Sudoku" type="MarginContainer" parent="Tabs" index="4"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 focus_mode = 2
 mouse_filter = 0
 script = ExtResource("5_rhuh7")
-metadata/_tab_index = 4
+metadata/_tab_index = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Sudoku" index="0"]
 layout_mode = 2
@@ -1485,13 +1481,12 @@ layout_mode = 2
 focus_mode = 0
 text = "Check"
 
-[node name="AdminPanel" type="MarginContainer" parent="Tabs" index="6"]
+[node name="AdminPanel" type="MarginContainer" parent="Tabs" index="5"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 focus_mode = 2
 mouse_filter = 0
-metadata/_tab_index = 5
+metadata/_tab_index = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="Tabs/AdminPanel" index="0"]
 layout_mode = 2
