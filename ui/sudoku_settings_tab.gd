@@ -1,5 +1,8 @@
 class_name SudokuSettingsTab extends MarginContainer
 
+signal try_connect
+signal try_disconnect
+
 @export var fields: Array[Control]
 @export var connect_text: Label
 @export var error_text: Label
@@ -36,3 +39,18 @@ func load_settings() -> void:
 
 func set_puzzles_to_keep(val: float) -> void:
 	SudokuGrid.config.puzzles_to_keep = roundi(val)
+
+func attempt_connection() -> void:
+	try_connect.emit()
+
+func on_connect_button() -> void:
+	match connect_button.text:
+		"Connect":
+			try_connect.emit()
+		"Disconnect":
+			connect_button.disabled = true
+			try_disconnect.emit()
+		"Cancel":
+			connect_button.disabled = true
+			error_text.text = "Canceled Connection"
+			Archipelago.ap_disconnect()

@@ -38,6 +38,9 @@ admin_login_panel = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/Marg
 admin_control_panel = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel")
 admin_login_error = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/AdminError")
 
+[node name="ConnectBox" parent="Tabs/Console" index="1"]
+visible = false
+
 [node name="Sudoku" type="MarginContainer" parent="Tabs" index="3" node_paths=PackedStringArray("settings_tab")]
 unique_name_in_owner = true
 visible = false
@@ -1012,6 +1015,8 @@ text = "REFRESH / REVERT CHANGES"
 [connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/VBoxContainer2/StartButton" to="Tabs/Sudoku" method="start_puzzle"]
 [connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/VBoxContainer2/ForfeitButton" to="Tabs/Sudoku" method="forfeit_puzzle"]
 [connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/VBoxContainer2/CheckButton" to="Tabs/Sudoku" method="submit_solution"]
+[connection signal="try_connect" from="Tabs/Settings" to="." method="try_connect"]
+[connection signal="try_disconnect" from="Tabs/Settings" to="." method="try_disconnect"]
 [connection signal="enabled_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/ToggleSudoku" method="set_pressed"]
 [connection signal="weights_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Easy" method="update_weights"]
 [connection signal="weights_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Normal" method="update_weights"]
@@ -1024,3 +1029,5 @@ text = "REFRESH / REVERT CHANGES"
 [connection signal="update_values" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Killer" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="set_values"]
 [connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/HBoxContainer/ApplyButton" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="apply_settings"]
 [connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/HBoxContainer/RevertButton" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" method="revert_settings"]
+
+[editable path="Tabs/Console"]

@@ -208,17 +208,6 @@ func try_disconnect() -> void:
 			return
 		sudoku_grid.clear()
 	Archipelago.ap_disconnect()
-func on_connect_button() -> void:
-	match settings_tab.connect_button.text:
-		"Connect":
-			try_connect()
-		"Disconnect":
-			settings_tab.connect_button.disabled = true
-			try_disconnect()
-		"Cancel":
-			settings_tab.connect_button.disabled = true
-			settings_tab.error_text.text = settings_tab.connect_text.text
-			Archipelago.ap_disconnect()
 
 func select_entry_button(mode: int, from_mod := false) -> void:
 	assert(not (SudokuGrid.config.shapes_mode and mode == SudokuGrid.EntryMode.CENTER))

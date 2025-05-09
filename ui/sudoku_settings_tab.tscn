@@ -645,4 +645,10 @@ size_flags_horizontal = 3
 text = "Remove All"
 
 [connection signal="value_changed" from="Margin/Tabs/Sudoku/MarginContainer/Grid/HBoxContainer/PuzzlesToKeep" to="." method="set_puzzles_to_keep"]
+[connection signal="text_submitted" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/IP" to="." method="attempt_connection" unbinds=1]
+[connection signal="text_submitted" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Port" to="." method="attempt_connection" unbinds=1]
+[connection signal="text_submitted" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Slot" to="." method="attempt_connection" unbinds=1]
+[connection signal="text_submitted" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Password" to="." method="attempt_connection" unbinds=1]
+[connection signal="pressed" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/ConnectButton" to="." method="on_connect_button"]
+[connection signal="text_submitted" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer/Lives" to="." method="attempt_connection" unbinds=1]
 [connection signal="toggled" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/DebugSettingsToggle" to="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" method="set_visible"]
