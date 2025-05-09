@@ -1,6 +1,6 @@
 class_name SudokuConfigManager extends APConfigManager
 
-const SUDOKU_CONFIG_VERSION := 0
+const SUDOKU_CONFIG_VERSION := 1
 var ip: String = "" :
 	set(val):
 		if val != ip:
@@ -56,6 +56,12 @@ var throttle_bg_generation := false :
 			save_cfg()
 			config_changed.emit()
 var skipped_data_packages: PackedStringArray = []
+var puzzles_to_keep := 5 :
+	set(val):
+		if val != puzzles_to_keep:
+			puzzles_to_keep = val
+			save_cfg()
+			config_changed.emit()
 
 func update_credentials(creds: APCredentials) -> void:
 	_pause_saving = true
@@ -81,6 +87,7 @@ func _load_cfg(file: FileAccess) -> bool:
 	throttle_bg_generation = byte & (1 << 4)
 	theme_path = file.get_pascal_string()
 	skipped_data_packages = file.get_var()
+	puzzles_to_keep = 5 if _vers < 1 else file.get_8()
 	return true
 
 func _save_cfg(file: FileAccess) -> void:
@@ -98,3 +105,4 @@ func _save_cfg(file: FileAccess) -> void:
 	file.store_8(byte)
 	file.store_pascal_string(theme_path)
 	file.store_var(skipped_data_packages)
+	file.store_8(puzzles_to_keep)

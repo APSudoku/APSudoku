@@ -43,7 +43,7 @@ connection_tab = NodePath("Margin/Tabs/Connection")
 theme_tab = NodePath("Margin/Tabs/Theme")
 
 [node name="Tabs" parent="Margin" index="0"]
-current_tab = 2
+current_tab = 1
 
 [node name="Theme" parent="Margin/Tabs" index="1"]
 visible = false
@@ -357,7 +357,6 @@ layout_mode = 2
 text = "Reset"
 
 [node name="Sudoku" type="MarginContainer" parent="Margin/Tabs" index="2"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -374,6 +373,7 @@ columns = 2
 
 [node name="InfoShiftCenter" parent="Margin/Tabs/Sudoku/MarginContainer/Grid" index="0" instance=ExtResource("2_t66uw")]
 layout_mode = 2
+theme_type_variation = &"InfoButton"
 title = "Shift=Center,Ctrl=Corner"
 info = "Swaps the behavior of `Shift` and `Control`, such that `Shift` places center-markings and `Control` places corner-markings."
 
@@ -416,7 +416,27 @@ layout_mode = 2
 theme = SubResource("Theme_2ape4")
 text = "Throttle Puzzle Generation"
 
+[node name="InfoPuzzlesToKeep" parent="Margin/Tabs/Sudoku/MarginContainer/Grid" index="8" instance=ExtResource("2_t66uw")]
+layout_mode = 2
+title = "Throttle Puzzle Generation"
+info = "Select the number of puzzles to keep pre-generated in the background.
+WARNING: Requires restart to take effect."
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin/Tabs/Sudoku/MarginContainer/Grid" index="9"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/Tabs/Sudoku/MarginContainer/Grid/HBoxContainer" index="0"]
+layout_mode = 2
+text = "Puzzles To Pre-gen:"
+
+[node name="PuzzlesToKeep" type="SpinBox" parent="Margin/Tabs/Sudoku/MarginContainer/Grid/HBoxContainer" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+max_value = 10.0
+
 [node name="Connection" type="MarginContainer" parent="Margin/Tabs" index="3"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
@@ -624,4 +644,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Remove All"
 
+[connection signal="value_changed" from="Margin/Tabs/Sudoku/MarginContainer/Grid/HBoxContainer/PuzzlesToKeep" to="." method="set_puzzles_to_keep"]
 [connection signal="toggled" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/DebugSettingsToggle" to="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" method="set_visible"]

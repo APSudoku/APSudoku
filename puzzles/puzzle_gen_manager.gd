@@ -1,8 +1,7 @@
 extends Node
 #Autoload 'PuzzleGenManager'
 
-const PUZZLES_TO_KEEP := 5
-
+var puzzles_kept: int = 5
 var run_mutex := Mutex.new()
 var running: bool = true
 func check_running() -> bool:
@@ -25,7 +24,7 @@ class PuzzleData:
 			threads.append(Thread.new())
 		setup_puzzle_limit()
 	func setup_puzzle_limit() -> void:
-		for q in PuzzleGenManager.PUZZLES_TO_KEEP:
+		for q in PuzzleGenManager.puzzles_kept:
 			gen_semaphore.post() # Ask for that many puzzles
 	func start() -> void:
 		var prio := Thread.PRIORITY_LOW
@@ -39,7 +38,7 @@ class PuzzleData:
 		while PuzzleGenManager and PuzzleGenManager.check_running():
 			mutex.lock()
 			var prio: bool = puzzles.size() < 1
-			if not Archipelago.config.throttle_bg_generation:
+			if not SudokuGrid.config.throttle_bg_generation:
 				prio = true
 			elif open_prio_thread: prio = false
 			elif prio: open_prio_thread = true
@@ -73,20 +72,17 @@ func _cleanup_threads() -> void:
 		for t in data.threads:
 			t.wait_to_finish()
 
-func single_threaded() -> bool:
-	return false #OS.has_feature("web")
+func no_pregen() -> bool:
+	return puzzles_kept == 0
 
 func _ready():
-	if single_threaded():
-		return
+	puzzles_kept = SudokuGrid.config.puzzles_to_keep
 	var thread_counts: Array[int] = [1,1,3,3]
 	for d in PuzzleGrid.Difficulty.values():
 		puzzle_datas.append(PuzzleData.new(d, thread_counts[d]))
 		puzzle_datas.back().start()
 
 func get_puzzle(diff: PuzzleGrid.Difficulty) -> PuzzleGrid:
-	if single_threaded():
-		return PuzzleGrid.new(diff)
 	var data := puzzle_datas[diff]
 	data.gen_semaphore.post() # request replacement puzzle
 	data.mutex.lock()
@@ -100,6 +96,4 @@ func get_puzzle(diff: PuzzleGrid.Difficulty) -> PuzzleGrid:
 	return ret
 
 func _exiting_tree():
-	if single_threaded():
-		return
 	_cleanup_threads()
