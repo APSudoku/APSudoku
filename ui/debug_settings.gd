@@ -8,9 +8,9 @@ class_name ConnectDebugSettings extends MarginContainer
 @export var add_btn: Button
 
 func _ready():
-	toggle_switch.set_pressed(%Sudoku.config.debug_connect_settings)
-	toggle_switch.toggled.connect(func(b): %Sudoku.config.debug_connect_settings = b)
-	var arr: PackedStringArray = %Sudoku.config.skipped_data_packages
+	toggle_switch.set_pressed(SudokuGrid.config.debug_connect_settings)
+	toggle_switch.toggled.connect(func(b): SudokuGrid.config.debug_connect_settings = b)
+	var arr: PackedStringArray = SudokuGrid.config.skipped_data_packages
 	for game in arr:
 		skip_data_packages.add_item(game)
 	add_field.text_submitted.connect(on_add_game.unbind(1))
@@ -28,8 +28,8 @@ func rebuild_packages() -> void:
 		arr.append(skip_data_packages.get_item_text(q))
 	remove_btn.disabled = not skip_data_packages.is_anything_selected()
 	remove_all_btn.disabled = arr.is_empty()
-	%Sudoku.config.skipped_data_packages = arr
-	%Sudoku.config.save_cfg()
+	SudokuGrid.config.skipped_data_packages = arr
+	SudokuGrid.config.save_cfg()
 
 func on_add_game() -> void:
 	var game: String = add_field.text

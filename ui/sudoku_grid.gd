@@ -7,10 +7,12 @@ signal cycle_entry_mode
 signal grant_hint(diff: PuzzleGrid.Difficulty)
 signal difficulty_changed(new_diff: PuzzleGrid.Difficulty)
 
-var config: SudokuConfigManager :
+@export var settings_tab: SudokuSettingsTab
+@export var sudoku_theme: SudokuTheme
+
+static var config: SudokuConfigManager :
 	get: return Archipelago.config
 	set(val): Archipelago.config = val
-@export var sudoku_theme: SudokuTheme
 
 var deaths_towards_amnesty := 0
 var death_amnesty := 0
@@ -94,7 +96,7 @@ func _ready():
 	load_theme(sudoku_theme)
 	var theme_dict := sudoku_theme._to_dict()
 	for key in theme_dict.keys():
-		var picker: ColorPickerButton = get_node_or_null("%%%s"%key) as ColorPickerButton
+		var picker: ColorPickerButton = settings_tab.get_node_or_null("%%%s"%key) as ColorPickerButton
 		assert(picker, "SudokuTheme color %s not found as unique-named ColorPickerButton!" % key)
 		picker.color = sudoku_theme.get(key)
 		sudoku_theme.on_update.connect(func():
@@ -115,7 +117,7 @@ func update_config() -> void:
 
 func set_invalid() -> void:
 	if Engine.is_editor_hint(): return
-	if not %Sudoku.config.show_invalid: return
+	if not SudokuGrid.config.show_invalid: return
 	_invalid = false
 	for c in cells:
 		c.draw_invalid = not c.is_valid()

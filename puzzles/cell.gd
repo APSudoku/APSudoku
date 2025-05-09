@@ -132,7 +132,7 @@ func _draw_numbers() -> void:
 			draw_string(font, pos, s, HORIZONTAL_ALIGNMENT_CENTER, size.x, font_size, text_color)
 const _BORDER_WID := 6
 func _draw() -> void:
-	if %Sudoku.config.shapes_mode:
+	if SudokuGrid.config.shapes_mode:
 		_draw_shapes()
 	else: _draw_numbers()
 	_draw_selection()

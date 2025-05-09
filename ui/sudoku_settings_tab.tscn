@@ -1,0 +1,627 @@
+[gd_scene load_steps=17 format=3 uid="uid://cxuu7f0ha10ji"]
+
+[ext_resource type="PackedScene" uid="uid://dp2yir3r1061y" path="res://godot_ap/ui/settings_tab.tscn" id="1_8sos6"]
+[ext_resource type="Script" uid="uid://bkumq0o2ums0k" path="res://ui/sudoku_settings_tab.gd" id="2_dwlso"]
+[ext_resource type="PackedScene" uid="uid://7sxs07p5mo4o" path="res://ui/infobutton.tscn" id="2_t66uw"]
+[ext_resource type="Texture2D" uid="uid://gx66b3mmi6dg" path="res://graphics/cbox_check.png" id="3_dwlso"]
+[ext_resource type="Texture2D" uid="uid://ccf7tgt6qm1qp" path="res://graphics/cbox_check_dis.png" id="4_a5fyi"]
+[ext_resource type="Texture2D" uid="uid://dgm6q0xhqkgja" path="res://graphics/radio_check.png" id="5_dclj7"]
+[ext_resource type="Texture2D" uid="uid://drb1lo6t5ahfo" path="res://graphics/radio_check_dis.png" id="6_udpwq"]
+[ext_resource type="Texture2D" uid="uid://d1dke3omp76j2" path="res://graphics/radio_uncheck.png" id="7_lj1eb"]
+[ext_resource type="Texture2D" uid="uid://p0icwdmcvod3" path="res://graphics/radio_uncheck_dis.png" id="8_nnp5i"]
+[ext_resource type="Texture2D" uid="uid://cgojnpx75y4im" path="res://graphics/cbox_uncheck.png" id="9_r72j3"]
+[ext_resource type="Texture2D" uid="uid://c5hwl8l8c6qj6" path="res://graphics/cbox_uncheck_dis.png" id="10_mjv2u"]
+[ext_resource type="Script" uid="uid://qytvf11in6qy" path="res://ui/text_edit.gd" id="11_qvai2"]
+[ext_resource type="Script" uid="uid://bdw7vm0qfxwx2" path="res://ui/connect_button.gd" id="12_r850e"]
+[ext_resource type="Script" uid="uid://cj06n2qh8ec5b" path="res://ui/debug_settings.gd" id="13_r5tca"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_3xm5j"]
+
+[sub_resource type="Theme" id="Theme_2ape4"]
+CheckBox/constants/check_v_offset = 1
+CheckBox/font_sizes/font_size = 20
+CheckBox/icons/checked = ExtResource("3_dwlso")
+CheckBox/icons/checked_disabled = ExtResource("4_a5fyi")
+CheckBox/icons/radio_checked = ExtResource("5_dclj7")
+CheckBox/icons/radio_checked_disabled = ExtResource("6_udpwq")
+CheckBox/icons/radio_unchecked = ExtResource("7_lj1eb")
+CheckBox/icons/radio_unchecked_disabled = ExtResource("8_nnp5i")
+CheckBox/icons/unchecked = ExtResource("9_r72j3")
+CheckBox/icons/unchecked_disabled = ExtResource("10_mjv2u")
+
+[node name="Settings" node_paths=PackedStringArray("fields", "connect_text", "error_text", "connect_button", "lives", "deathlink", "tabs", "sudoku_tab", "connection_tab", "theme_tab") instance=ExtResource("1_8sos6")]
+script = ExtResource("2_dwlso")
+fields = [NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/IP"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Port"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Slot"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Password"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer/Lives"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/DeathLink")]
+connect_text = NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/ConnTextLabel")
+error_text = NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/ErrorLabel")
+connect_button = NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/ConnectButton")
+lives = NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer/Lives")
+deathlink = NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/DeathLink")
+tabs = NodePath("Margin/Tabs")
+sudoku_tab = NodePath("Margin/Tabs/Sudoku")
+connection_tab = NodePath("Margin/Tabs/Connection")
+theme_tab = NodePath("Margin/Tabs/Theme")
+
+[node name="Tabs" parent="Margin" index="0"]
+current_tab = 2
+
+[node name="Theme" parent="Margin/Tabs" index="1"]
+visible = false
+metadata/_tab_index = 2
+
+[node name="DarkTheme" parent="Margin/Tabs/Theme/Row/Col1" index="0"]
+button_group = SubResource("ButtonGroup_3xm5j")
+
+[node name="LightTheme" parent="Margin/Tabs/Theme/Row/Col1" index="1"]
+button_group = SubResource("ButtonGroup_3xm5j")
+
+[node name="VSeparator" type="VSeparator" parent="Margin/Tabs/Theme/Row" index="1"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Margin/Tabs/Theme/Row" index="2"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin/Tabs/Theme/Row/MarginContainer" index="0"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer" index="0"]
+layout_mode = 2
+text = "Sudoku Colors:"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer" index="1"]
+layout_mode = 2
+theme_override_constants/h_separation = 4
+columns = 2
+
+[node name="Label" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="0"]
+layout_mode = 2
+text = "Grid Background"
+horizontal_alignment = 2
+
+[node name="GRID_BG" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="2"]
+layout_mode = 2
+text = "Cell Background"
+horizontal_alignment = 2
+
+[node name="CELL_BG" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="4"]
+layout_mode = 2
+text = "Cell Given Text"
+horizontal_alignment = 2
+
+[node name="CELL_GIVEN_TEXT" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="6"]
+layout_mode = 2
+text = "Cell Answer Text"
+horizontal_alignment = 2
+
+[node name="CELL_ANSWER_TEXT" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="8"]
+layout_mode = 2
+text = "CenterMark Text"
+horizontal_alignment = 2
+
+[node name="CELL_CENTER_MARK_TEXT" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="9"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="10"]
+layout_mode = 2
+text = "CornerMark Text"
+horizontal_alignment = 2
+
+[node name="CELL_CORNER_MARK_TEXT" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="11"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label7" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="12"]
+layout_mode = 2
+text = "Cell Invalid Text"
+horizontal_alignment = 2
+
+[node name="CELL_INVALID_TEXT" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="13"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label8" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="14"]
+layout_mode = 2
+text = "Cell Selection"
+horizontal_alignment = 2
+
+[node name="CELL_SELECT" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="15"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label9" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="16"]
+layout_mode = 2
+text = "Cell Focus"
+horizontal_alignment = 2
+
+[node name="CELL_FOCUS" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="17"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label10" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="18"]
+layout_mode = 2
+text = "Killer Cage Border"
+horizontal_alignment = 2
+
+[node name="KILLER_BORDER" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="19"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label11" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="20"]
+layout_mode = 2
+text = "Killer Cage Sum"
+horizontal_alignment = 2
+
+[node name="KILLER_SUM" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="21"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2" index="0"]
+layout_mode = 2
+text = "Shapes Mode Colors:"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2" index="1"]
+layout_mode = 2
+columns = 4
+
+[node name="Label" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="0"]
+layout_mode = 2
+text = "Shape 1"
+horizontal_alignment = 2
+
+[node name="SHAPE_1" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="2"]
+layout_mode = 2
+text = "Shape 2"
+horizontal_alignment = 2
+
+[node name="SHAPE_2" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="4"]
+layout_mode = 2
+text = "Shape 3"
+horizontal_alignment = 2
+
+[node name="SHAPE_3" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="5"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="6"]
+layout_mode = 2
+text = "Shape 4"
+horizontal_alignment = 2
+
+[node name="SHAPE_4" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="8"]
+layout_mode = 2
+text = "Shape 5"
+horizontal_alignment = 2
+
+[node name="SHAPE_5" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="9"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="10"]
+layout_mode = 2
+text = "Shape 6"
+horizontal_alignment = 2
+
+[node name="SHAPE_6" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="11"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label7" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="12"]
+layout_mode = 2
+text = "Shape 7"
+horizontal_alignment = 2
+
+[node name="SHAPE_7" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="13"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label8" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="14"]
+layout_mode = 2
+text = "Shape 8"
+horizontal_alignment = 2
+
+[node name="SHAPE_8" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="15"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label9" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="16"]
+layout_mode = 2
+text = "Shape 9"
+horizontal_alignment = 2
+
+[node name="SHAPE_9" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer" index="17"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="GridContainer2" type="GridContainer" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2" index="2"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/h_separation = 4
+columns = 2
+
+[node name="Label10" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer2" index="0"]
+layout_mode = 2
+text = "Shape Invalid Background"
+horizontal_alignment = 2
+
+[node name="SHAPE_INVALID_BG" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer2" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label11" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer2" index="2"]
+layout_mode = 2
+text = "Shape Background"
+horizontal_alignment = 2
+
+[node name="SHAPE_BG" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer2" index="3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label12" type="Label" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer2" index="4"]
+layout_mode = 2
+text = "Shape Given Background"
+horizontal_alignment = 2
+
+[node name="SHAPE_GIVEN_BG" type="ColorPickerButton" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer2/GridContainer2" index="5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer" index="2"]
+layout_mode = 2
+
+[node name="SaveThemeBtn" type="Button" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3" index="0"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Save"
+
+[node name="SaveThemeAsBtn" type="Button" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Save As"
+
+[node name="LoadThemeBtn" type="Button" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3" index="2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Load"
+
+[node name="DefaultThemeBtn" type="Button" parent="Margin/Tabs/Theme/Row/MarginContainer/HBoxContainer/VBoxContainer3" index="3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Reset"
+
+[node name="Sudoku" type="MarginContainer" parent="Margin/Tabs" index="2"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Margin/Tabs/Sudoku" index="0"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Grid" type="GridContainer" parent="Margin/Tabs/Sudoku/MarginContainer" index="0"]
+layout_mode = 2
+columns = 2
+
+[node name="InfoShiftCenter" parent="Margin/Tabs/Sudoku/MarginContainer/Grid" index="0" instance=ExtResource("2_t66uw")]
+layout_mode = 2
+title = "Shift=Center,Ctrl=Corner"
+info = "Swaps the behavior of `Shift` and `Control`, such that `Shift` places center-markings and `Control` places corner-markings."
+
+[node name="ShiftCenter" type="CheckBox" parent="Margin/Tabs/Sudoku/MarginContainer/Grid" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = SubResource("Theme_2ape4")
+text = "Shift=Center,Ctrl=Corner"
+
+[node name="InfoShowInvalid" parent="Margin/Tabs/Sudoku/MarginContainer/Grid" index="2" instance=ExtResource("2_t66uw")]
+layout_mode = 2
+title = "Show Invalid On Check"
+info = "When clicking \"Check\" with an incorrect solution, highlight digits involved in the errors the checker found."
+
+[node name="ShowInvalid" type="CheckBox" parent="Margin/Tabs/Sudoku/MarginContainer/Grid" index="3"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = SubResource("Theme_2ape4")
+text = "Show Invalid On Check"
+
+[node name="InfoShapesMode" parent="Margin/Tabs/Sudoku/MarginContainer/Grid" index="4" instance=ExtResource("2_t66uw")]
+layout_mode = 2
+title = "Shapes Mode"
+info = "Swaps out numbers for shapes. Incompatible with `Killer` difficulty."
+
+[node name="ShapesMode" type="CheckBox" parent="Margin/Tabs/Sudoku/MarginContainer/Grid" index="5"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = SubResource("Theme_2ape4")
+text = "Shapes Mode"
+
+[node name="InfoThrottleGeneration" parent="Margin/Tabs/Sudoku/MarginContainer/Grid" index="6" instance=ExtResource("2_t66uw")]
+layout_mode = 2
+title = "Throttle Puzzle Generation"
+info = "Slow down the generation of puzzles in the background, to reduce CPU usage."
+
+[node name="ThrottleGeneration" type="CheckBox" parent="Margin/Tabs/Sudoku/MarginContainer/Grid" index="7"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = SubResource("Theme_2ape4")
+text = "Throttle Puzzle Generation"
+
+[node name="Connection" type="MarginContainer" parent="Margin/Tabs" index="3"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+metadata/_tab_index = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin/Tabs/Connection" index="0"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="InfoGrid" type="GridContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+columns = 2
+
+[node name="LabelIP" type="Label" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="0"]
+layout_mode = 2
+tooltip_text = "The IP address running the Archipelago server."
+mouse_filter = 1
+text = "IP:"
+horizontal_alignment = 2
+
+[node name="IP" type="LineEdit" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(169.5, 29)
+layout_mode = 2
+focus_neighbor_top = NodePath("../ConnectButton")
+focus_neighbor_bottom = NodePath("../Port")
+focus_next = NodePath("../Port")
+placeholder_text = "archipelago.gg"
+script = ExtResource("11_qvai2")
+
+[node name="LabelPort" type="Label" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="2"]
+layout_mode = 2
+tooltip_text = "The port running the Archipelago server."
+mouse_filter = 1
+text = "Port:"
+horizontal_alignment = 2
+
+[node name="Port" type="LineEdit" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(169.5, 29)
+layout_mode = 2
+focus_neighbor_top = NodePath("../IP")
+focus_neighbor_bottom = NodePath("../Slot")
+focus_next = NodePath("../Slot")
+placeholder_text = "38281"
+script = ExtResource("11_qvai2")
+
+[node name="LabelSlot" type="Label" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="4"]
+layout_mode = 2
+tooltip_text = "The 'Slot' name you wish to connect to."
+mouse_filter = 1
+text = "Slot:"
+horizontal_alignment = 2
+
+[node name="Slot" type="LineEdit" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(169.5, 29)
+layout_mode = 2
+focus_neighbor_top = NodePath("../Port")
+focus_neighbor_bottom = NodePath("../Password")
+focus_next = NodePath("../Password")
+script = ExtResource("11_qvai2")
+
+[node name="LabelPassword" type="Label" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="6"]
+layout_mode = 2
+tooltip_text = "The (Optional) password of the room."
+mouse_filter = 1
+text = "Password:"
+horizontal_alignment = 2
+
+[node name="Password" type="LineEdit" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(169.5, 29)
+layout_mode = 2
+focus_neighbor_top = NodePath("../Slot")
+focus_neighbor_bottom = NodePath("../ConnectButton")
+focus_next = NodePath("../ConnectButton")
+script = ExtResource("11_qvai2")
+
+[node name="Nil" type="Control" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="8"]
+layout_mode = 2
+
+[node name="ConnectButton" type="Button" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid" index="9"]
+layout_mode = 2
+focus_next = NodePath("../IP")
+text = "Connect"
+script = ExtResource("12_r850e")
+
+[node name="DeathLinkContainer" type="VBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="DeathLink" type="CheckBox" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "DeathLink"
+flat = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer" index="1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer" index="0"]
+layout_mode = 2
+text = "Lives:"
+
+[node name="Lives" type="LineEdit" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(169.5, 29)
+layout_mode = 2
+placeholder_text = "0"
+script = ExtResource("11_qvai2")
+type = 1
+
+[node name="ConnTextLabel" type="Label" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="ErrorLabel" type="Label" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer" index="2"]
+layout_mode = 2
+theme_type_variation = &"ErrLabel"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="DebugSettingsToggle" type="CheckButton" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2" index="0"]
+layout_mode = 2
+button_pressed = true
+text = "Debug Settings"
+alignment = 2
+
+[node name="ConnectDebugSettings" type="MarginContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2" index="1" node_paths=PackedStringArray("toggle_switch", "skip_data_packages", "remove_btn", "remove_all_btn", "add_field", "add_btn")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(325, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 16
+script = ExtResource("13_r5tca")
+toggle_switch = NodePath("../DebugSettingsToggle")
+skip_data_packages = NodePath("VBoxContainer/SkipDataPackages")
+remove_btn = NodePath("VBoxContainer/HBoxContainer3/Remove")
+remove_all_btn = NodePath("VBoxContainer/HBoxContainer3/RemoveAll")
+add_field = NodePath("VBoxContainer/HBoxContainer2/SkipDataAddField")
+add_btn = NodePath("VBoxContainer/HBoxContainer2/SkipDataAddBtn")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings" index="0"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer/HBoxContainer" index="0"]
+layout_mode = 2
+text = "Skip Data Packages:"
+
+[node name="InfoButton" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer/HBoxContainer" index="1" instance=ExtResource("2_t66uw")]
+layout_mode = 2
+size_flags_horizontal = 10
+info = "Game names listed here will not have their DataPackages downloaded. This will result in buggy and/or no names for items/locations related to these games; only use this in case of emergency (ex. the datapackage is failing to download completely anyway)"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="SkipDataAddField" type="LineEdit" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer/HBoxContainer2" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Game Name"
+
+[node name="SkipDataAddBtn" type="Button" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer/HBoxContainer2" index="1"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "+"
+
+[node name="SkipDataPackages" type="ItemList" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" index="2"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+select_mode = 1
+allow_reselect = true
+allow_rmb_select = true
+auto_height = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" index="3"]
+layout_mode = 2
+
+[node name="Remove" type="Button" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer/HBoxContainer3" index="0"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Remove"
+
+[node name="RemoveAll" type="Button" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer/HBoxContainer3" index="1"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Remove All"
+
+[connection signal="toggled" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/DebugSettingsToggle" to="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" method="set_visible"]
