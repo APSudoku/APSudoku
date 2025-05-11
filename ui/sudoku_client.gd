@@ -24,6 +24,7 @@ var _entry_mode: SudokuGrid.EntryMode = SudokuGrid.EntryMode.ANSWER
 func _ready():
 	super()
 	get_window().min_size = Vector2(1050,500)
+	get_window().title += " (%s)" % ProjectSettings.get_setting("application/config/version")
 	if Engine.is_editor_hint():
 		await get_tree().create_timer(1).timeout
 		var q := 0
