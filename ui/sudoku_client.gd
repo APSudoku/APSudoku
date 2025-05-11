@@ -81,10 +81,14 @@ func refresh_hint_count() -> void:
 				use_prog = true
 			if w[1] > 0:
 				use_nonprog = true
+		var weights: Array[int] = _cur_weights()
+		if weights[0] > 0:
+			use_prog = true
+		if weights[1] > 0:
+			use_nonprog = true
 		var count := 0
 		if use_prog: count += _prog_locs.size()
 		if use_nonprog: count += _non_prog_locs.size()
-		var weights: Array[int] = _cur_weights()
 		if weights[0] > 0 != use_prog or weights[1] > 0 != use_nonprog:
 			var cur_count := 0
 			if weights[0] > 0: cur_count += _prog_locs.size()
