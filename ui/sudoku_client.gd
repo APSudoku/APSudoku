@@ -113,8 +113,7 @@ func refresh_hint_count() -> void:
 		%CountLabel.text = ""
 		sudoku_grid.hinted_out = "APSudoku has been disabled by the host. No hints will be earned."
 
-func grant_hint(diff: PuzzleGrid.Difficulty) -> void:
-	var diff_name := PuzzleGrid.diff_to_str(diff)
+func grant_hint() -> void:
 	var weights: Array[int] = _cur_weights()
 
 	if _prog_locs.is_empty():

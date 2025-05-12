@@ -4,7 +4,7 @@ const CHEAT_MODE := false
 
 signal modifier_entry_mode(val: EntryMode)
 signal cycle_entry_mode
-signal grant_hint(diff: PuzzleGrid.Difficulty)
+signal grant_hint()
 signal difficulty_changed(new_diff: PuzzleGrid.Difficulty)
 
 @export var settings_tab: SudokuSettingsTab
@@ -143,7 +143,7 @@ func submit_solution() -> bool:
 		return false
 	if check_solve():
 		if Archipelago.is_ap_connected():
-			grant_hint.emit(difficulty)
+			grant_hint.emit()
 		else: await PopupManager.popup_dlg("Not connected, so no hint granted.", "Correct!", false)
 		clear_active()
 		return true
