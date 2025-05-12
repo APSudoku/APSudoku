@@ -115,8 +115,7 @@ func refresh_hint_count() -> void:
 
 func grant_hint(diff: PuzzleGrid.Difficulty) -> void:
 	var diff_name := PuzzleGrid.diff_to_str(diff)
-	var weights: Array[int]
-	weights.assign(setting_weights[diff_name])
+	var weights: Array[int] = _cur_weights()
 
 	if _prog_locs.is_empty():
 		weights[0] = 0
