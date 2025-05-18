@@ -40,6 +40,8 @@ func _ready():
 	sudoku_grid.cycle_entry_mode.connect(cycle_entry)
 	sudoku_grid.grant_hint.connect(grant_hint)
 
+	_setup_entry_cboxes()
+
 	Archipelago.load_console(self, false)
 
 	Archipelago.roominfo.connect(on_roominfo)
@@ -212,6 +214,10 @@ func try_disconnect() -> void:
 		sudoku_grid.clear()
 	Archipelago.ap_disconnect()
 
+func _setup_entry_cboxes() -> void:
+	var cboxes: Array[CheckBox] = [%RadioAnswer,%RadioCenter,%RadioCorner]
+	for q in 3:
+		cboxes[q].pressed.connect(set_entry_mode.bind(q))
 func select_entry_button(mode: int, from_mod := false) -> void:
 	assert(not (SudokuGrid.config.shapes_mode and mode == SudokuGrid.EntryMode.CENTER))
 	var cboxes = [%RadioAnswer,%RadioCenter,%RadioCorner]
