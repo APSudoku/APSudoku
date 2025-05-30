@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://cyls0xe4mengx"]
+
+[ext_resource type="PackedScene" uid="uid://bdweotrsewo6q" path="res://puzzles/cell.tscn" id="1_8tntg"]
+[ext_resource type="Script" uid="uid://ddcqrsdubjvmr" path="res://puzzles/corner_cell.gd" id="2_guu5s"]
+
+[sub_resource type="Gradient" id="Gradient_t4qsh"]
+colors = PackedColorArray(0.75, 0.75, 0.75, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cgkgr"]
+gradient = SubResource("Gradient_t4qsh")
+width = 4
+height = 4
+
+[sub_resource type="Curve" id="Curve_jxi1g"]
+_data = [Vector2(0.420213, 1), 0.0, 0.0, 0, 0]
+point_count = 1
+
+[sub_resource type="CurveTexture" id="CurveTexture_03ux8"]
+curve = SubResource("Curve_jxi1g")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dj2mg"]
+particle_flag_disable_z = true
+angle_min = -45.0
+angle_max = 45.0
+direction = Vector3(1, 1, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 500.0
+gravity = Vector3(0, 0, 0)
+color = Color(1, 0, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+hue_variation_curve = SubResource("CurveTexture_03ux8")
+
+[node name="CornerCell" node_paths=PackedStringArray("party_particles") instance=ExtResource("1_8tntg")]
+script = ExtResource("2_guu5s")
+party_particles = NodePath("PartyParticles")
+
+[node name="PartyParticles" type="GPUParticles2D" parent="." index="0"]
+z_index = 1000
+emitting = false
+amount = 64
+texture = SubResource("GradientTexture2D_cgkgr")
+one_shot = true
+explosiveness = 0.5
+fixed_fps = 0
+draw_order = 0
+process_material = SubResource("ParticleProcessMaterial_dj2mg")

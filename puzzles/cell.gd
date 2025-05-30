@@ -6,6 +6,7 @@ signal recheck_focus
 signal grid_input
 signal grid_focus(cell: Cell)
 signal select_alike(cell: Cell)
+signal answer_filled(val: int)
 
 var index: int = -1
 var cage: PuzzleCage
@@ -290,6 +291,7 @@ func erase() -> void:
 	if is_given: return
 	if value:
 		value = 0
+		answer_filled.emit(0)
 		grid_redraw.emit()
 		return
 	for mark in center_marks:
@@ -308,6 +310,7 @@ func enter_val(v: int, mode: SudokuGrid.EntryMode) -> void:
 	match mode:
 		SudokuGrid.EntryMode.ANSWER:
 			value = 0 if value == v else v
+			answer_filled.emit(value)
 		SudokuGrid.EntryMode.CENTER:
 			center_marks[v-1] = not center_marks[v-1]
 		SudokuGrid.EntryMode.CORNER:
