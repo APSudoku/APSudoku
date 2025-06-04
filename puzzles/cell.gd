@@ -305,7 +305,29 @@ func erase() -> void:
 			grid_redraw.emit()
 			return
 
-func enter_val(v: int, mode: SudokuGrid.EntryMode) -> void:
+func has_val(v: int, mode: SudokuGrid.EntryMode) -> bool:
+	match mode:
+		SudokuGrid.EntryMode.ANSWER:
+			return value == v
+		SudokuGrid.EntryMode.CENTER:
+			return center_marks[v-1]
+		SudokuGrid.EntryMode.CORNER:
+			return corner_marks[v-1]
+	assert(false)
+	return false
+
+func enter_val(v: int, mode: SudokuGrid.EntryMode, state: bool = true) -> void:
+	if is_given: return
+	match mode:
+		SudokuGrid.EntryMode.ANSWER:
+			value = v if state else 0
+			answer_filled.emit(value)
+		SudokuGrid.EntryMode.CENTER:
+			center_marks[v-1] = state
+		SudokuGrid.EntryMode.CORNER:
+			corner_marks[v-1] = state
+	grid_redraw.emit()
+func toggle_val(v: int, mode: SudokuGrid.EntryMode) -> void:
 	if is_given: return
 	match mode:
 		SudokuGrid.EntryMode.ANSWER:

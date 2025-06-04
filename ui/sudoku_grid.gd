@@ -170,9 +170,17 @@ func check_solve() -> bool:
 
 func type_number(v: int) -> void:
 	if v < 1 or v > 9: return
+	var state := false
 	for c in cells:
-		if c.is_selected:
-			c.enter_val(v, mode)
+		if c.is_given or not c.is_selected:
+			continue
+		if not c.has_val(v, mode):
+			state = true
+			break
+	for c in cells:
+		if c.is_given or not c.is_selected:
+			continue
+		c.enter_val(v, mode, state)
 
 var _shift: bool = false
 var _ctrl: bool = false
