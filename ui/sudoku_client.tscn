@@ -39,6 +39,12 @@ admin_login_panel = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/Marg
 admin_control_panel = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel")
 admin_login_error = NodePath("Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/AdminError")
 
+[node name="Tabs" parent="." index="0"]
+current_tab = 4
+
+[node name="Console" parent="Tabs" index="1"]
+visible = false
+
 [node name="ConnectBox" parent="Tabs/Console" index="1"]
 visible = false
 
@@ -720,7 +726,6 @@ layout_mode = 2
 
 [node name="AdminPanel" type="MarginContainer" parent="Tabs" index="5"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 focus_mode = 2
 mouse_filter = 0
@@ -747,10 +752,6 @@ text = "APSudoku Admin Control Panel"
 [node name="MarginContainer" type="MarginContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer" index="1"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
 
 [node name="AdminLoginScreen" type="VBoxContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer" index="0"]
 visible = false
@@ -789,7 +790,7 @@ horizontal_alignment = 1
 
 [node name="AdminControlPanel" type="VBoxContainer" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer" index="1"]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 8
 script = ExtResource("22_arbtu")
 metadata/_custom_type_script = "uid://bvyjl05157b1k"
 
@@ -803,8 +804,8 @@ text = "Allow APSudoku"
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
-theme_override_constants/h_separation = 16
-theme_override_constants/v_separation = 16
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
 columns = 2
 
 [node name="Easy" parent="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties" index="0" instance=ExtResource("23_ctivq")]
