@@ -860,6 +860,7 @@ text = "REFRESH / REVERT CHANGES"
 [connection signal="text_submitted" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/HBoxContainer/Pwd_Box" to="." method="check_admin" unbinds=1]
 [connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/Button" to="." method="check_admin"]
 [connection signal="enabled_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/ToggleSudoku" method="set_pressed"]
+[connection signal="settings_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="." method="on_update_settings"]
 [connection signal="weights_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Easy" method="update_weights"]
 [connection signal="weights_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Normal" method="update_weights"]
 [connection signal="weights_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/Difficulties/Hard" method="update_weights"]
