@@ -355,6 +355,7 @@ func set_difficulty(diff: int):
 	difficulty = diff as PuzzleGrid.Difficulty
 	difficulty_changed.emit(difficulty)
 
+
 func _lost_puzzle(force_clear := true) -> bool:
 	if deaths_towards_amnesty == death_amnesty:
 		deaths_towards_amnesty = 0

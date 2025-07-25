@@ -837,6 +837,7 @@ text = "APPLY CHANGES"
 layout_mode = 2
 text = "REFRESH / REVERT CHANGES"
 
+[connection signal="difficulty_changed" from="Tabs/Sudoku" to="." method="update_setting_label" unbinds=1]
 [connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/ClearInvalid" to="Tabs/Sudoku" method="clear_invalid"]
 [connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry1" to="Tabs/Sudoku" method="type_number" binds= [1]]
 [connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/GridContainer/NumPad/Entry2" to="Tabs/Sudoku" method="type_number" binds= [2]]
