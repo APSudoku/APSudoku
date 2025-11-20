@@ -2,6 +2,7 @@ class_name SudokuSettingsTab extends MarginContainer
 
 signal try_connect
 signal try_disconnect
+signal update_shapes_mode(val: bool)
 
 @export var fields: Array[Control]
 @export var connect_text: Label
@@ -39,6 +40,18 @@ func load_settings() -> void:
 
 func set_puzzles_to_keep(val: float) -> void:
 	SudokuGrid.config.puzzles_to_keep = roundi(val)
+
+func set_shift_center(val: bool) -> void:
+	SudokuGrid.config.shift_center = val
+
+func set_show_invalid(val: bool) -> void:
+	SudokuGrid.config.show_invalid = val
+
+func set_shapes_mode(val: bool) -> void:
+	update_shapes_mode.emit(val)
+
+func set_throttle_gen(val: bool) -> void:
+	SudokuGrid.config.throttle_bg_generation = val
 
 func attempt_connection() -> void:
 	try_connect.emit()

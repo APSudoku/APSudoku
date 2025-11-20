@@ -858,6 +858,7 @@ text = "REFRESH / REVERT CHANGES"
 [connection signal="pressed" from="Tabs/Sudoku/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer3/VBoxContainer2/CheckButton" to="Tabs/Sudoku" method="submit_solution"]
 [connection signal="try_connect" from="Tabs/Settings" to="." method="try_connect"]
 [connection signal="try_disconnect" from="Tabs/Settings" to="." method="try_disconnect"]
+[connection signal="update_shapes_mode" from="Tabs/Settings" to="." method="set_shapes_mode"]
 [connection signal="text_submitted" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/HBoxContainer/Pwd_Box" to="." method="check_admin" unbinds=1]
 [connection signal="pressed" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminLoginScreen/Button" to="." method="check_admin"]
 [connection signal="enabled_updated" from="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel" to="Tabs/AdminPanel/MarginContainer/VBoxContainer/MarginContainer/AdminControlPanel/ToggleSudoku" method="set_pressed"]

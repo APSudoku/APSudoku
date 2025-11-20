@@ -254,11 +254,15 @@ func set_entry_mode(mode: int, no_button := false) -> void:
 func set_entry_mode_no_button(mode: int) -> void:
 	set_entry_mode(mode, true)
 
-func set_shift_center(val: bool) -> void:
-	SudokuGrid.config.shift_center = val
-
-func set_show_invalid(val: bool) -> void:
-	SudokuGrid.config.show_invalid = val
+func init_theme() -> void:
+	if not DirAccess.dir_exists_absolute("user://themes/"):
+		DirAccess.make_dir_recursive_absolute("user://themes/")
+	assert(%Sudoku.sudoku_theme)
+	var path: String = SudokuGrid.config.theme_path
+	if FileAccess.file_exists(path):
+		%Sudoku.sudoku_theme.update_from_copy(ResourceLoader.load(path, "SudokuTheme", ResourceLoader.CACHE_MODE_REPLACE))
+	else:
+		ResourceSaver.save(%Sudoku.sudoku_theme, path)
 
 func set_shapes_mode(val: bool) -> void:
 	SudokuGrid.config.shapes_mode = val
@@ -272,20 +276,6 @@ func set_shapes_mode(val: bool) -> void:
 	else:
 		%RadioCenter.disabled = false
 		%RadioCenter.queue_redraw()
-
-func set_throttle_gen(val: bool) -> void:
-	SudokuGrid.config.throttle_bg_generation = val
-
-func init_theme() -> void:
-	if not DirAccess.dir_exists_absolute("user://themes/"):
-		DirAccess.make_dir_recursive_absolute("user://themes/")
-	assert(%Sudoku.sudoku_theme)
-	var path: String = SudokuGrid.config.theme_path
-	if FileAccess.file_exists(path):
-		%Sudoku.sudoku_theme.update_from_copy(ResourceLoader.load(path, "SudokuTheme", ResourceLoader.CACHE_MODE_REPLACE))
-	else:
-		ResourceSaver.save(%Sudoku.sudoku_theme, path)
-
 
 func save_theme(path := "") -> void:
 	if path.is_empty(): path = SudokuGrid.config.theme_path

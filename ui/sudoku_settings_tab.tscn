@@ -644,6 +644,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Remove All"
 
+[connection signal="toggled" from="Margin/Tabs/Sudoku/MarginContainer/Grid/ShiftCenter" to="." method="set_shift_center"]
+[connection signal="toggled" from="Margin/Tabs/Sudoku/MarginContainer/Grid/ShowInvalid" to="." method="set_show_invalid"]
+[connection signal="toggled" from="Margin/Tabs/Sudoku/MarginContainer/Grid/ShapesMode" to="." method="set_shapes_mode"]
+[connection signal="toggled" from="Margin/Tabs/Sudoku/MarginContainer/Grid/ThrottleGeneration" to="." method="set_throttle_gen"]
 [connection signal="value_changed" from="Margin/Tabs/Sudoku/MarginContainer/Grid/HBoxContainer/PuzzlesToKeep" to="." method="set_puzzles_to_keep"]
 [connection signal="text_submitted" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/IP" to="." method="attempt_connection" unbinds=1]
 [connection signal="text_submitted" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Port" to="." method="attempt_connection" unbinds=1]

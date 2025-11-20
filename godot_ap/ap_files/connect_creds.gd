@@ -37,4 +37,3 @@ func update(nip: String, nport: String, nslot: String, npwd: String = ""):
 
 func _to_string():
 	return "APCREDS(%s:%s,%s,%s)" % [ip,port,slot,pwd]
-
