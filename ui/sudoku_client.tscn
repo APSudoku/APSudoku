@@ -649,7 +649,7 @@ layout_mode = 2
 title = "How to Play / Difficulty Info"
 info = "Fill every Row, Column, and outlined Region (3x3 box) with the digits 1-9, exactly once each.
 
-In 'Killer' mode, outlined Cages must sum to the indicated total.
+In 'Killer' mode, outlined Cages must sum to the indicated total, and digits cannot repeat within a Cage.
 
 Different difficulties can have different odds of giving you a \"progression\" hint, \"non-progression\" hint, or no hint at all. Hosts can change these odds in the AdminPanel tab, using the multiworld's admin password."
 
