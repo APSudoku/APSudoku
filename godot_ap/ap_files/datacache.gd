@@ -5,7 +5,7 @@ var location_name_to_id: Dictionary[String, int] = {}
 var checksum: String = ""
 
 static func from(data: Dictionary) -> DataCache:
-	var c = DataCache.new()
+	var c := DataCache.new()
 	c.item_name_to_id.assign(data.get("item_name_to_id",c.item_name_to_id))
 	for k in c.item_name_to_id.keys():
 		c.item_name_to_id[k] = c.item_name_to_id[k] as int

@@ -13,7 +13,7 @@ static func from(json: Dictionary) -> Version:
 	v.build = json["build"]
 	return v
 static func val(v1:int, v2:int, v3:int) -> Version:
-	var v = Version.new()
+	var v := Version.new()
 	v.major = v1
 	v.minor = v2
 	v.build = v3

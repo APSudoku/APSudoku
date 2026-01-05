@@ -10,6 +10,9 @@ class_name AP extends Node
 @export var AP_VERSION := Version.val(0,5,0)
 ## The ItemHandling to use when connecting.
 @export var AP_ITEM_HANDLING := ItemHandling.ALL
+@export_group("Extra Options")
+## Aliases for Traps in TrapLink. When the key is received, the value will be used instead.
+@export var TRAP_LINK_ALIASES: Dictionary[String, String]
 @export_group("Client Settings")
 ## Prints what items have been previously collected when reconnecting to a slot.
 @export var AP_PRINT_ITEMS_ON_CONNECT := false
@@ -164,6 +167,7 @@ enum ItemHandling {
 }
 
 var last_sent_deathlink_time: float
+var last_sent_traplink_time: float
 
 ## The current connection credentials to be used
 var creds: APCredentials = APCredentials.new()
@@ -407,7 +411,10 @@ func _handle_command(json: Dictionary) -> void:
 			roominfo.emit(conn, json)
 			SignalChooser.new().register_multiple(
 				[all_datapacks_loaded, disconnected],
-				[send_command.bind("Connect",args), Util.nil])
+				[func():
+					send_command("Connect",args)
+					conn._load_locations(),
+					Util.nil])
 			_send_datapack_request()
 		"ConnectionRefused":
 			var err_str := str(json["errors"])
@@ -521,11 +528,19 @@ func _handle_command(json: Dictionary) -> void:
 			var tags: Array = json.get("tags", [])
 			if tags.has("DeathLink"):
 				var tstamp: float = json["data"].get("time", 0.0)
-				if is_equal_approx(tstamp, last_sent_deathlink_time):
+				if absf(tstamp - last_sent_deathlink_time) < 0.5:
 					return # Skip deaths from self
 				var source: String = json["data"].get("source", "")
 				var cause: String = json["data"].get("cause", "")
 				conn.deathlink.emit(source, cause, json)
+			if tags.has("TrapLink"):
+				var tstamp: float = json["data"].get("time", 0.0)
+				if is_equal_approx(tstamp, last_sent_traplink_time):
+					return # Skip traps from self
+				var source: String = json["data"].get("source", "")
+				var trap_name: String = json["data"].get("trap_name", "")
+				trap_name = TRAP_LINK_ALIASES.get(trap_name, trap_name)
+				conn.traplink.emit(source, trap_name, json)
 		"LocationInfo":
 			conn._on_locinfo(json)
 		"Retrieved":
@@ -599,7 +614,7 @@ static func get_datacache(game: String) -> DataCache:
 #region ITEMS
 func _receive_item(index: int, item: NetworkItem) -> bool:
 	assert(item.dest_player_id == conn.player_id)
-	if conn.received_index(index):
+	if conn._received_index(index):
 		return false # Already recieved, skip
 	var data: DataCache = conn.get_gamedata_for_player(conn.player_id)
 	var msg := ""
@@ -1207,6 +1222,12 @@ func set_deathlink(state: bool) -> void:
 
 func is_deathlink() -> bool:
 	return "DeathLink" in Archipelago.AP_GAME_TAGS
+
+func set_traplink(state: bool) -> void:
+	set_tag("TrapLink", state)
+
+func is_traplink() -> bool:
+	return "TrapLink" in Archipelago.AP_GAME_TAGS
 
 enum ClientStatus {
 	CLIENT_UNKNOWN = 0,
