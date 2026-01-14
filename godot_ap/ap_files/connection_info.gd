@@ -1,3 +1,7 @@
+## Data representing a connection to the Archipelago server.
+##
+## Each new connection will be sent via the 'Archipelago.connected' signal.
+## As each connection is a new object, any connections to signals of this class will automatically be cleaned up upon disconnecting.
 class_name ConnectionInfo
 
 # Variables / data
@@ -19,11 +23,13 @@ var slot_locations: Dictionary[int, bool] = {}
 ## The NetworkItems received from the server, in index order.
 var received_items: Array[NetworkItem] = []
 
-## The hints for this slot. Only updated if [set_hint_notify] has been used.
-var hints: Array[NetworkHint] = []
-
-## Fires after `locations` and `locs_by_name` have been populated
-signal locations_loaded
+## The hints for this slot.
+var hints: Array[NetworkHint] = [] :
+	get:
+		if not _hint_listening:
+			AP.warn("""Tried to access hint information, but the client isn't listening for hints from the server!
+			Call 'set_hint_notify()' or 'install_hint_listenter()' first!""")
+		return hints
 
 ## All locations, by ID
 var locations: Dictionary[int, APLocation] = {}
@@ -68,40 +74,48 @@ func get_location(locid: int) -> APLocation:
 func get_loc_by_name(loc_name: String) -> APLocation:
 	return locs_by_name.get(loc_name, APLocation.nil())
 
-## Loads (or reloads) all locations from the datapackage.
-## Emits the `locations_loaded` signal when complete.
+# Loads (or reloads) all locations from the datapackage.
 func _load_locations() -> void:
 	locations.clear()
 	locs_by_name.clear()
-	if Archipelago.datapack_pending:
-		await Archipelago.all_datapacks_loaded
+	assert(not Archipelago._datapack_pending) # should never be called before datapacks are loaded...
 	for locid in Archipelago.location_list():
 		var loc := APLocation.make(locid)
 		locations[locid] = loc
 		locs_by_name[loc.name] = loc
-	locations_loaded.emit()
 
 # Incoming server packets
 @warning_ignore_start("unused_signal")
-signal bounce(json: Dictionary) ## Emitted when a `Bounce` packet is received.
-signal deathlink(source: String, cause: String, json: Dictionary) ## Emitted when a `Bounce` packet of type `DeathLink` is received, after the `bounce` signal.
-signal setreply(json: Dictionary) ## Emitted when a `SetReply` packet is received
-signal roomupdate(json: Dictionary) ## Emitted when a `RoomUpdate` packet is received
-signal obtained_item(item: NetworkItem) ## Emitted for each item received
-signal obtained_items(items: Array[NetworkItem]) ## Emitted for each item *packet* received
-signal refresh_items(items: Array[NetworkItem]) ## Emitted when the server re-sends ALL obtained items
-signal on_hint_update(hints: Array[NetworkHint]) ## Emitted when hints relevant to this client change
-
+## Emitted when a `Bounce` packet is received.
+signal bounce(json: Dictionary)
+## Emitted when a `Bounce` packet of type `DeathLink` is received, after the `bounce` signal.
+signal deathlink(source: String, cause: String, json: Dictionary)
 ## Emitted when a `Bounce` packet of type `TrapLink` is received, after the `bounce` signal.
 ## 'trap_name' will be the trap name AFTER resolving the received name through `TRAP_LINK_ALIASES`.
 signal traplink(source: String, trap_name: String, json: Dictionary)
 
-signal all_scout_cached ## Emitted when a scout packet containing ALL locations is received (see `force_scout_all`)
+## Emitted when a `SetReply` packet is received
+signal setreply(json: Dictionary)
+## Emitted when a `RoomUpdate` packet is received
+signal roomupdate(json: Dictionary)
+## Emitted for each item received
+signal obtained_item(item: NetworkItem)
+## Emitted for each item *packet* received
+signal obtained_items(items: Array[NetworkItem])
+## Emitted when the server re-sends ALL obtained items
+signal refresh_items(items: Array[NetworkItem])
+## Used as part of the `set_hint_notify()` / `install_hint_listener()` functions.
+## Use `set_hint_notify()` instead of connecting to this signal directly.
+signal _on_hint_update(hints: Array[NetworkHint])
+
+## Emitted when a scout packet containing ALL locations is received (see `force_scout_all`)
+signal all_scout_cached
 @warning_ignore_restore("unused_signal")
 # Outgoing server packets
 var _notified_keys: Dictionary[String, bool] = {}
 var _hint_listening: bool = false
-func _install_hint_listener() -> void:
+## Tell the server to send us information about the hints for this slot.
+func install_hint_listener() -> void:
 	if _hint_listening: return
 	_hint_listening = true
 	var hint_str := "_read_hints_%d_%d" % [team_id, player_id]
@@ -112,16 +126,16 @@ func _load_hints_from_json(new_hints: Array) -> void:
 	for json in new_hints:
 		hints.append(NetworkHint.from(json))
 	hints.make_read_only()
-	on_hint_update.emit(hints)
+	_on_hint_update.emit(hints)
 
 
 ## Connects the specified `Callable(Array[NetworkHint])->void` to be called every time
 ## hints are updated for this client. Will call immediately, if hints are already loaded;
 ## else will immediately call for hints to be loaded, which will trigger an update.
 func set_hint_notify(proc: Callable) -> void:
-	on_hint_update.connect(proc)
+	_on_hint_update.connect(proc)
 	if _hint_listening: proc.call(hints)
-	else: _install_hint_listener()
+	else: install_hint_listener()
 ## Sends a `SetNotify` packet, and connects the specified `Callable(Variant)->void`
 ## to be called every time the specified `key` is updated on the server.
 func set_notify(key: String, proc: Callable) -> void:
