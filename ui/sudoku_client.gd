@@ -279,9 +279,16 @@ func set_shapes_mode(val: bool) -> void:
 
 func save_theme(path := "") -> void:
 	if path.is_empty(): path = SudokuGrid.config.theme_path
-	var err := ResourceSaver.save(%Sudoku.sudoku_theme, path)
+	var dir_path := ProjectSettings.globalize_path(path).replace("\\","/")
+	dir_path = dir_path.substr(0, dir_path.rfind("/"))
+	var err := DirAccess.make_dir_recursive_absolute(dir_path)
 	if err:
-		AP.log("Error saving theme file '%s': '%s'" % [path,error_string(err)])
+		AP.warn("Error saving theme file - failed to create directory '%s': '%s' - " % [dir_path,error_string(err)])
+		return
+	err = ResourceSaver.save(%Sudoku.sudoku_theme, path)
+	if err:
+		AP.warn("Error saving theme file '%s': '%s'" % [path,error_string(err)])
+		return
 func save_theme_as() -> void:
 	var dir_path := ProjectSettings.globalize_path(SudokuGrid.config.theme_path).replace("\\","/")
 	var pos := dir_path.rfind("/")

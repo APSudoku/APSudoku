@@ -4,6 +4,20 @@ signal try_connect
 signal try_disconnect
 signal update_shapes_mode(val: bool)
 
+signal theme_save
+signal theme_save_as
+signal theme_load
+signal theme_reset
+
+func on_theme_save() -> void:
+	theme_save.emit()
+func on_theme_save_as() -> void:
+	theme_save_as.emit()
+func on_theme_load() -> void:
+	theme_load.emit()
+func on_theme_reset() -> void:
+	theme_reset.emit()
+
 @export var fields: Array[Control]
 @export var connect_text: Label
 @export var error_text: Label
