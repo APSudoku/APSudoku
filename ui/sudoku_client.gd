@@ -157,7 +157,7 @@ func on_connect(conn: ConnectionInfo, json: Dictionary) -> void:
 	admin_control_panel.on_connect(conn, json)
 
 	conn.roomupdate.connect(refresh_hint_count.unbind(1))
-	conn.on_hint_update.connect(refresh_hint_count.unbind(1))
+	conn._on_hint_update.connect(refresh_hint_count.unbind(1))
 	conn.deathlink.connect(%Sudoku.deathlink_recv)
 	settings_tab.connect_button.disabled = false
 	settings_tab.connect_button.text = "Disconnect"
