@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cxuu7f0ha10ji"]
+[gd_scene load_steps=18 format=3 uid="uid://cxuu7f0ha10ji"]
 
 [ext_resource type="PackedScene" uid="uid://dp2yir3r1061y" path="res://godot_ap/ui/settings_tab.tscn" id="1_8sos6"]
 [ext_resource type="Script" uid="uid://bkumq0o2ums0k" path="res://ui/sudoku_settings_tab.gd" id="2_dwlso"]
@@ -29,21 +29,30 @@ CheckBox/icons/radio_unchecked_disabled = ExtResource("8_nnp5i")
 CheckBox/icons/unchecked = ExtResource("9_r72j3")
 CheckBox/icons/unchecked_disabled = ExtResource("10_mjv2u")
 
-[node name="Settings" node_paths=PackedStringArray("fields", "connect_text", "error_text", "connect_button", "lives", "deathlink", "tabs", "sudoku_tab", "connection_tab", "theme_tab") instance=ExtResource("1_8sos6")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dwlso"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.8, 0, 0, 1)
+
+[node name="Settings" node_paths=PackedStringArray("fields", "connect_text", "error_text", "connect_button", "lives", "deathlink", "deathlink_group", "tabs", "sudoku_tab", "connection_tab", "theme_tab") instance=ExtResource("1_8sos6")]
 script = ExtResource("2_dwlso")
-fields = [NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/IP"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Port"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Slot"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Password"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer/Lives"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/DeathLink")]
+fields = [NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/IP"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Port"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Slot"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Password"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer/HBoxContainer/Lives"), NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer/DeathLink")]
 connect_text = NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/ConnTextLabel")
 error_text = NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/ErrorLabel")
 connect_button = NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/ConnectButton")
-lives = NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer/Lives")
-deathlink = NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/DeathLink")
+lives = NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer/HBoxContainer/Lives")
+deathlink = NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer/DeathLink")
+deathlink_group = NodePath("Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer/DeathLinkGroup")
 tabs = NodePath("Margin/Tabs")
 sudoku_tab = NodePath("Margin/Tabs/Sudoku")
 connection_tab = NodePath("Margin/Tabs/Connection")
 theme_tab = NodePath("Margin/Tabs/Theme")
 
 [node name="Tabs" parent="Margin" index="0"]
-current_tab = 1
+current_tab = 2
 
 [node name="Theme" parent="Margin/Tabs" index="1"]
 visible = false
@@ -357,6 +366,7 @@ layout_mode = 2
 text = "Reset"
 
 [node name="Sudoku" type="MarginContainer" parent="Margin/Tabs" index="2"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -436,7 +446,6 @@ size_flags_horizontal = 0
 max_value = 10.0
 
 [node name="Connection" type="MarginContainer" parent="Margin/Tabs" index="3"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
@@ -454,6 +463,7 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer" index="0"]
 layout_mode = 2
+theme_override_constants/separation = 12
 
 [node name="InfoGrid" type="GridContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer" index="0"]
 layout_mode = 2
@@ -536,29 +546,72 @@ focus_next = NodePath("../IP")
 text = "Connect"
 script = ExtResource("12_r850e")
 
-[node name="DeathLinkContainer" type="VBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer" index="1"]
+[node name="PanelContainer" type="PanelContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer" index="1"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dwlso")
+
+[node name="MarginContainer" type="MarginContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer" index="0"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="DeathLinkContainer" type="VBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer" index="0"]
 layout_mode = 2
 
-[node name="DeathLink" type="CheckBox" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer" index="0"]
+[node name="DeathLink" type="CheckBox" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
 text = "DeathLink"
 flat = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer" index="1"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer" index="1"]
 layout_mode = 2
+size_flags_horizontal = 4
 
-[node name="Label" type="Label" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer/HBoxContainer" index="0"]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Lives:"
 
-[node name="Lives" type="LineEdit" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer" index="1"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(169.5, 29)
+[node name="InfoButton" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer/HBoxContainer" index="1" instance=ExtResource("2_t66uw")]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+title = "DeathLink: Lives"
+info = "You can fail this number of times before sending a DeathLink out to other players. Lives reset back to this number each time you send a DeathLink. (ex. Lives: 1 means every other mistake sends a DeathLink)"
+
+[node name="Lives" type="LineEdit" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer/HBoxContainer" index="2"]
+custom_minimum_size = Vector2(75, 29)
 layout_mode = 2
 placeholder_text = "0"
 script = ExtResource("11_qvai2")
 type = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer" index="2"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer/HBoxContainer2" index="0"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Group:"
+
+[node name="InfoButton" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer/HBoxContainer2" index="1" instance=ExtResource("2_t66uw")]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+title = "DeathLink: Groups"
+info = "DeathLinks will only interact with other clients that are assigned to the same DeathLink Group.
+
+Not all games  support groups. Clients that do not support DeathLink groups are counted as part of the empty group, so using an empty string will interact with them."
+
+[node name="DeathLinkGroup" type="LineEdit" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer" index="3"]
+custom_minimum_size = Vector2(75, 29)
+layout_mode = 2
+script = ExtResource("11_qvai2")
 
 [node name="ConnTextLabel" type="Label" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer" index="1"]
 layout_mode = 2
@@ -658,5 +711,6 @@ text = "Remove All"
 [connection signal="text_submitted" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Slot" to="." method="attempt_connection" unbinds=1]
 [connection signal="text_submitted" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/Password" to="." method="attempt_connection" unbinds=1]
 [connection signal="pressed" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/InfoGrid/ConnectButton" to="." method="on_connect_button"]
-[connection signal="text_submitted" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/DeathLinkContainer/HBoxContainer/Lives" to="." method="attempt_connection" unbinds=1]
+[connection signal="text_submitted" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer/HBoxContainer/Lives" to="." method="attempt_connection" unbinds=1]
+[connection signal="text_submitted" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer/DeathLinkGroup" to="." method="attempt_connection" unbinds=1]
 [connection signal="toggled" from="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/DebugSettingsToggle" to="Margin/Tabs/Connection/HBoxContainer/VBoxContainer2/ConnectDebugSettings/VBoxContainer" method="set_visible"]

@@ -24,6 +24,7 @@ func on_theme_reset() -> void:
 @export var connect_button: Button
 @export var lives: CustomLineEdit
 @export var deathlink: CheckBox
+@export var deathlink_group: CustomLineEdit
 
 @export var tabs: TabContainer
 @export var sudoku_tab: MarginContainer

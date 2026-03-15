@@ -203,7 +203,7 @@ func try_connect() -> void:
 		if not await PopupManager.popup_dlg("Connecting while a puzzle is active requires forfeiting the puzzle. Are you sure?", "Forfeit?"):
 			return
 		sudoku_grid.clear()
-	Archipelago.set_deathlink(settings_tab.deathlink.button_pressed)
+	Archipelago.set_deathlink(settings_tab.deathlink.button_pressed, settings_tab.deathlink_group.get_val())
 	%Sudoku.death_amnesty = settings_tab.lives.get_val()
 	settings_tab.ap_connect()
 func try_disconnect() -> void:
