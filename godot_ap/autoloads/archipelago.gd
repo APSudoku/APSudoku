@@ -213,6 +213,9 @@ var last_sent_deathlink_time: float
 ## Timestamp of the last sent TrapLink packet. Automatically updated by 'ConnectionInfo.send_traplink'.
 var last_sent_traplink_time: float
 
+## The group that is used for DeathLink for this connection
+var deathlink_group: String : set = set_deathlink_group, get = get_deathlink_group
+
 ## The current connection credentials to be used
 var creds: APCredentials = APCredentials.new()
 ## The current APLock object. A default lock object is `unlocked`.
@@ -595,7 +598,7 @@ func _handle_command(json: Dictionary) -> void: # Handle an incoming packet from
 		"Bounced":
 			conn.bounce.emit(json)
 			var tags: Array = json.get("tags", [])
-			if tags.has("DeathLink"):
+			if tags.has(get_deathlink_tag()):
 				var tstamp: float = json["data"].get("time", 0.0)
 				if absf(tstamp - last_sent_deathlink_time) < 0.5:
 					return # Skip deaths from self
@@ -634,18 +637,21 @@ func handle_datapackage_checksums(checksums: Dictionary) -> void:
 		_datapack_cache = cachefile.get_var(true)
 		cachefile.close()
 	_datapack_pending = []
-	for game in checksums.keys():
+	for game: String in checksums.keys():
 		if _datapack_cache.has(game):
-			var cached = _datapack_cache[game]
-			if cached["checksum"] == checksums[game] and cached["fields"] == datapack_cached_fields:
-				continue #already up-to-date, matching checksum
+			if FileAccess.file_exists("user://ap/datapacks/%s.json" % game.validate_filename()):
+				# cache file is valid
+				var cached: Dictionary = _datapack_cache[game]
+				if cached["checksum"] == checksums[game] and cached["fields"] == datapack_cached_fields:
+					continue # already up-to-date, matching checksum
+
 		_datapack_pending.append(game)
 
 # Caches and stores to disk `data` as the DataCache file for `game`
 func _handle_datapack(game: String, data: Dictionary) -> void:
-	var data_file := FileAccess.open("user://ap/datapacks/%s.json" % game, FileAccess.WRITE)
+	var data_file := FileAccess.open("user://ap/datapacks/%s.json" % game.validate_filename(), FileAccess.WRITE)
 	_datapack_cache[game] = {"checksum":data["checksum"],"fields":datapack_cached_fields.duplicate()}
-	for key in data.keys():
+	for key: String in data.keys():
 		if not key in datapack_cached_fields:
 			data.erase(key)
 	data_file.store_string(JSON.stringify(data, "\t" if READABLE_DATAPACK_FILES else ""))
@@ -672,7 +678,7 @@ static var _data_caches: Dictionary[String, DataCache] = {} # DataPackage object
 static func get_datacache(game: String) -> DataCache:
 	var ret: DataCache = _data_caches.get(game)
 	if ret: return ret
-	var data_file := FileAccess.open("user://ap/datapacks/%s.json" % game, FileAccess.READ)
+	var data_file := FileAccess.open("user://ap/datapacks/%s.json" % game.validate_filename(), FileAccess.READ)
 	if not data_file:
 		return DataCache.new()
 	ret = DataCache.from_file(data_file)
@@ -1083,7 +1089,7 @@ func init_command_manager(can_connect: bool, server_autofills: bool = true):
 				var ret: Array[String] = []
 				var opts: Array[String] = []
 				if arg_count < 3:
-					opts.assign(["TextOnly","HintGame","Tracker","DeathLink"])
+					opts.assign(["TextOnly","HintGame","Tracker",get_deathlink_tag()])
 					var matched := false
 					for opt in opts:
 						if args[1] == opt:
@@ -1271,7 +1277,7 @@ func set_tags(tags: Array[String]) -> void:
 		_update_tags()
 ## Sets the Archipelago connection tags (overwrites tags except supported tags 'DeathLink' / 'TrapLink')
 func set_misc_tags(tags: Array[String]) -> void:
-	const supported_tags: Array[String] = ["DeathLink", "TrapLink"]
+	var supported_tags: Array[String] = [get_deathlink_tag(), "TrapLink"]
 	tags = tags.duplicate()
 	for tag in supported_tags:
 		if tag in AP_GAME_TAGS:
@@ -1286,12 +1292,31 @@ func _ensure_connected(console: BaseConsole) -> bool:
 	console.add(BaseConsole.make_text("Not connected to Archipelago! Please connect first!", "", ComplexColor.as_special(SpecialColor.UI_MESSAGE)))
 	return false
 
+## Changes this connection's DeathLink group
+## Will only send/receive deaths with other clients in the same group
+func set_deathlink_group(group: String) -> void:
+	if group == deathlink_group: return
+	var deathlink := is_deathlink()
+	if deathlink:
+		set_deathlink(false)
+	deathlink_group = group
+	if deathlink:
+		set_deathlink(true)
+## Returns the current DeathLink group name
+## Will only send/receive deaths with other clients in the same group
+func get_deathlink_group() -> String:
+	return deathlink_group
+## Returns the tag being used for DeathLink (including DeathLink group support)
+func get_deathlink_tag() -> String:
+	return "DeathLink" + deathlink_group
 ## Turn 'DeathLink' on or off
-func set_deathlink(state: bool) -> void:
-	set_tag("DeathLink", state)
+func set_deathlink(state: bool, group: String = "") -> void:
+	deathlink_group = group
+	set_tag(get_deathlink_tag(), state)
 ## Check if 'DeathLink' is on
 func is_deathlink() -> bool:
-	return has_tag("DeathLink")
+	return has_tag(get_deathlink_tag())
+
 ## Turn 'TrapLink' on or off
 func set_traplink(state: bool) -> void:
 	set_tag("TrapLink", state)
