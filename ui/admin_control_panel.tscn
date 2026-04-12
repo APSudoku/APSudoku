@@ -1,0 +1,85 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnee7wme65jr3"]
+
+[ext_resource type="Script" uid="uid://bvyjl05157b1k" path="res://ui/admin_control_panel.gd" id="1_v18te"]
+[ext_resource type="PackedScene" uid="uid://b8dujcc1olxkl" path="res://ui/admin_panel_difficulty_settings.tscn" id="2_3ciqd"]
+[ext_resource type="PackedScene" uid="uid://7sxs07p5mo4o" path="res://ui/infobutton.tscn" id="2_sy7sm"]
+
+[node name="AdminControlPanel" type="VBoxContainer"]
+theme_override_constants/separation = 2
+script = ExtResource("1_v18te")
+metadata/_custom_type_script = "uid://bvyjl05157b1k"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ToggleHintGames" type="CheckButton" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Disable All* Hint Games"
+
+[node name="InfoButton" parent="HBoxContainer2" instance=ExtResource("2_sy7sm")]
+layout_mode = 2
+title = "Disable All Hint Games"
+info = "This setting can't actually force ALL hint games to be disabled- but the intent is that any hint game can choose to disable itself based on this setting."
+
+[node name="ToggleSudoku" type="CheckButton" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Disable APSudoku"
+
+[node name="InfoButton2" parent="HBoxContainer2" instance=ExtResource("2_sy7sm")]
+layout_mode = 2
+info = "If toggled on, this setting will prevent all APSudoku clients from generating hints."
+
+[node name="Difficulties" type="GridContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="Easy" parent="Difficulties" instance=ExtResource("2_3ciqd")]
+layout_mode = 2
+diffname = "Easy"
+
+[node name="Normal" parent="Difficulties" instance=ExtResource("2_3ciqd")]
+layout_mode = 2
+diffname = "Normal"
+
+[node name="Hard" parent="Difficulties" instance=ExtResource("2_3ciqd")]
+layout_mode = 2
+diffname = "Hard"
+
+[node name="Killer" parent="Difficulties" instance=ExtResource("2_3ciqd")]
+layout_mode = 2
+diffname = "Killer"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 20
+
+[node name="ApplyButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "APPLY CHANGES"
+
+[node name="RevertButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "REFRESH / REVERT CHANGES"
+
+[connection signal="disabled_all_updated" from="." to="HBoxContainer2/ToggleHintGames" method="set_pressed"]
+[connection signal="disabled_updated" from="." to="HBoxContainer2/ToggleSudoku" method="set_pressed"]
+[connection signal="weights_updated" from="." to="Difficulties/Easy" method="update_weights"]
+[connection signal="weights_updated" from="." to="Difficulties/Normal" method="update_weights"]
+[connection signal="weights_updated" from="." to="Difficulties/Hard" method="update_weights"]
+[connection signal="weights_updated" from="." to="Difficulties/Killer" method="update_weights"]
+[connection signal="toggled" from="HBoxContainer2/ToggleHintGames" to="." method="set_hintgame_disabled"]
+[connection signal="toggled" from="HBoxContainer2/ToggleSudoku" to="." method="set_sudoku_disabled"]
+[connection signal="update_values" from="Difficulties/Easy" to="." method="set_values"]
+[connection signal="update_values" from="Difficulties/Normal" to="." method="set_values"]
+[connection signal="update_values" from="Difficulties/Hard" to="." method="set_values"]
+[connection signal="update_values" from="Difficulties/Killer" to="." method="set_values"]
+[connection signal="pressed" from="HBoxContainer/ApplyButton" to="." method="apply_settings"]
+[connection signal="pressed" from="HBoxContainer/RevertButton" to="." method="revert_settings"]

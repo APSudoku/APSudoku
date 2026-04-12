@@ -584,7 +584,7 @@ title = "DeathLink: Lives"
 info = "You can fail this number of times before sending a DeathLink out to other players. Lives reset back to this number each time you send a DeathLink. (ex. Lives: 1 means every other mistake sends a DeathLink)"
 
 [node name="Lives" type="LineEdit" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer/HBoxContainer" index="2"]
-custom_minimum_size = Vector2(75, 29)
+custom_minimum_size = Vector2(169.5, 29)
 layout_mode = 2
 placeholder_text = "0"
 script = ExtResource("11_qvai2")
@@ -609,7 +609,7 @@ info = "DeathLinks will only interact with other clients that are assigned to th
 Not all games  support groups. Clients that do not support DeathLink groups are counted as part of the empty group, so using an empty string will interact with them."
 
 [node name="DeathLinkGroup" type="LineEdit" parent="Margin/Tabs/Connection/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/DeathLinkContainer" index="3"]
-custom_minimum_size = Vector2(75, 29)
+custom_minimum_size = Vector2(169.5, 29)
 layout_mode = 2
 script = ExtResource("11_qvai2")
 

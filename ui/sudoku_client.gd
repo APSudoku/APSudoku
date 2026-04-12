@@ -349,8 +349,8 @@ func check_admin() -> void:
 
 var is_enabled: bool = true
 var setting_weights: Dictionary[String, Array]
-func on_update_settings(settings: Dictionary) -> void:
-	is_enabled = settings.get("enabled", true)
+func on_update_settings(settings: Dictionary, disable_all: bool) -> void:
+	is_enabled = settings.get("enabled", true) and not disable_all
 	setting_weights.merge(settings.get("weights", {}), true)
 	update_setting_label()
 	refresh_hint_count()
