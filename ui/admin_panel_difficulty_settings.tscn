@@ -14,6 +14,7 @@ border_width_right = 4
 border_width_bottom = 4
 
 [node name="Difficulty" type="VBoxContainer" node_paths=PackedStringArray("label", "spinboxes")]
+theme_override_constants/separation = 0
 script = ExtResource("1_lonej")
 label = NodePath("Label")
 spinboxes = [NodePath("PanelContainer/GridContainer/ProgVal"), NodePath("PanelContainer/GridContainer/NonProgVal"), NodePath("PanelContainer/GridContainer/NoHintVal")]
@@ -29,6 +30,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_ctivq")
 
 [node name="GridContainer" type="GridContainer" parent="PanelContainer"]
 layout_mode = 2
+theme_override_constants/v_separation = 1
 columns = 2
 
 [node name="Prog" type="Label" parent="PanelContainer/GridContainer"]
