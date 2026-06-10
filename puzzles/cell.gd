@@ -327,6 +327,20 @@ func enter_val(v: int, mode: SudokuGrid.EntryMode, state: bool = true) -> void:
 		SudokuGrid.EntryMode.CORNER:
 			corner_marks[v-1] = state
 	grid_redraw.emit()
+
+func remove_hint(v: int) -> void:
+	if is_given or v < 1 or v > 9:
+		return
+	var updated := false
+	if center_marks[v-1]:
+		center_marks[v-1] = false
+		updated = true
+	if corner_marks[v-1]:
+		corner_marks[v-1] = false
+		updated = true
+	if updated:
+		grid_redraw.emit()
+
 func toggle_val(v: int, mode: SudokuGrid.EntryMode) -> void:
 	if is_given: return
 	match mode:

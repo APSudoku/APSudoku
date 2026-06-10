@@ -181,6 +181,13 @@ func type_number(v: int) -> void:
 		if c.is_given or not c.is_selected:
 			continue
 		c.enter_val(v, mode, state)
+	if state and mode == EntryMode.ANSWER:
+		for c in cells:
+			if c.is_given or not c.is_selected:
+				continue
+			c.remove_hint(v)
+			for n in c.neighbors:
+				n.remove_hint(v)
 
 var _shift: bool = false
 var _ctrl: bool = false
