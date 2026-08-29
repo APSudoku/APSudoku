@@ -5,9 +5,9 @@ signal weights_updated(weights: Dictionary)
 signal disabled_updated(val: bool)
 signal disabled_all_updated(val: bool)
 
-const SETTING_KEY := "APSudoku_Settings"
-const HINTGAME_KEY := "HintGame_Settings"
-const DISABLE_ALL_HINTGAME_KEY := "DisableAllHintGames"
+const SETTING_KEY := "_admin_APSudoku_Settings"
+const HINTGAME_KEY := "_admin_HintGame_Settings"
+const DISABLE_ALL_HINTGAME_KEY := "_admin_DisableAllHintGames"
 
 var active_settings: Dictionary = {
 	"enabled": true,
